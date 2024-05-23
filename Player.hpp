@@ -1,0 +1,8 @@
+//
+// Created by Barak Rozenkvit on 23/05/2024.
+//
+
+#ifndef HOMEASSIGNMENT3_SP2_PLAYER_HPP
+#define HOMEASSIGNMENT3_SP2_PLAYER_HPP
+
+#endif //HOMEASSIGNMENT3_SP2_PLAYER_HPP
