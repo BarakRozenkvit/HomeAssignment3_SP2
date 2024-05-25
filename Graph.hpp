@@ -1,10 +1,10 @@
 #include <vector>
-
+#pragma once
 using namespace std;
 
 class Graph {
 
-    vector<vector<int>> _adjMatrix {
+    vector<vector<short>> _adjMatrix {
             {0, 0, 0, 1, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -63,6 +63,14 @@ class Graph {
     public:
         Graph(){}
 
+        bool set(int n,int i, int j) {
+            if(_adjMatrix[i][j] > 1){return false;}
+            if(i!=j && _adjMatrix[i][j] == 0){return false;}
+            _adjMatrix[i][j] = n;
+            _adjMatrix[j][i] = n;
+            return true;
+        }
 
+        vector<vector<short>>& getAdjMatrix(){return _adjMatrix;}
 
 };

@@ -1,5 +1,6 @@
+#pragma once
 class Hexagon{
-    int _vertices[6] = {};
+    int _vertices[6];
 
 public:
     Hexagon(){}
@@ -7,5 +8,13 @@ public:
         _vertices[0] = v0;_vertices[1] = v1;
         _vertices[2] = v2;_vertices[3] = v3;
         _vertices[4] = v4;_vertices[5] = v5;
+    }
+    bool contains(int n){
+        for(int i=0;i<6;i++){
+            if(_vertices[i] == n){
+                return true;
+            }
+        }
+        return false;
     }
 };

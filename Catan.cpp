@@ -1,8 +1,107 @@
+#include "Catan.hpp"
+#include <iostream>
 
 
-
-int main(){
-
-    // Determine who playes first by rolling dices
+Catan::Catan(Player* p1, Player* p2, Player* p3) {
+    _board = Board();
+    _turnsOrder[0] = p1;_turnsOrder[1] = p2;_turnsOrder[2] = p3;
 
 }
+
+Player* Catan::nextPlayer(){
+    _turnCounter++;
+    if(_turnCounter == 3){_turnCounter=0;}
+    return _turnsOrder[_turnCounter];
+}
+
+Player* Catan::currentPlayer() {
+    return _turnsOrder[_turnCounter];
+}
+
+bool Catan::placeProperty(string property,int x,int y){
+    // TODO:check if string valid
+    Property instance = Property(property,1,currentPlayer()->getID());
+    if (currentPlayer()->isFirstTurn()) {
+        return _board.placeProperty(instance, true, x, y);
+    } else if (currentPlayer()->Buy(instance)) {
+        return _board.placeProperty(instance, false, x, y);
+    }
+    return false;
+}
+
+void Catan::getResources(int rand) {
+    vector<ResourceCard> resources;
+    if(currentPlayer()->isFirstTurn()) {
+        resources = _board.getResources(currentPlayer()->getID(),rand, true);
+        currentPlayer()->setFirstTurn(false);
+    }
+    else{
+        resources = _board.getResources(currentPlayer()->getID(),rand, false);
+    }
+    currentPlayer()->addResources(resources);
+}
+
+bool Catan::drawDevelopmentCard(){
+    int cardAmount=0;
+    for(int i=0;i<_developmentCards.size();i++){
+        cardAmount += _developmentCards[i]->getAmount();
+    }
+
+    srand(time(0));
+    int card_number = (rand() % cardAmount) - 1;
+
+    int counter = 0;
+    for(int i=0;i<_developmentCards.size();i++){
+    }
+}
+
+bool Catan::flashDevelopmentCard() {
+    return false;
+}
+
+bool Catan::flashKnight(){
+    if(biggestArmy == nullptr && getCard->amountFlashed() == 3){
+        biggestArmy = currentPlayer();
+        maxArmySize = getCard->amountFlashed();
+        currentPlayer()->addWinningPoints(2);
+    }
+    else if(biggestArmy != nullptr && maxArmySize < getCard -> amountFlashed()){
+        biggestArmy->removeWinningPoints(2);
+        biggestArmy = currentPlayer();
+        maxArmySize = getCard -> amountFlashed();
+        currentPlayer()->addWinningPoints(2);
+    }
+    return true;
+}
+
+bool Catan::flashMonopoly(string desiredResource){
+    vector<ResourceCard> resource = {ResourceCard(desiredResource)};
+    nextPlayer();
+    for (int i = 0; i < 2; i++) {
+        resource[0].addAmount(currentPlayer()->removeResource(resource[0]));
+        nextPlayer();
+    }
+    currentPlayer()->addResources(resource);
+    return true;
+}
+
+bool Catan::flashBuilder(int x1,int y1,int x2, int y2){
+    Property instance = Property("Road",2,currentPlayer()->getID());
+    currentPlayer()->removeProperty(instance);
+    _board.placeProperty(instance, false,x1,y1);
+    _board.placeProperty(instance, false,x2,y2);
+    return true;
+}
+
+bool flashWealthyYear(){}
+
+string Catan::flashDevelopmentCard(int idx){
+    DevelopmentCard* getCard = currentPlayer()->useDevelopmentCard(idx);
+    if(!getCard){return "";}
+    if(getCard->getFeature()=="Promotion"){
+        PromotionCard* getCardProm = static_cast<PromotionCard*>(getCard);
+        return getCardProm->getBenefit();
+    }
+    return getCard->getFeature();
+}
+
