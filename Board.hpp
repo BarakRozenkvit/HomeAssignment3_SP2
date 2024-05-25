@@ -17,6 +17,6 @@ public:
 
     vector<ResourceCard> getResources(int id,int rand,bool firstTurn);
 
-    vector<ResourceCard> getInitialResources(int id);
+    void moveGambit();
 
 };

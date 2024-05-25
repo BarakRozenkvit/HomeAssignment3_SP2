@@ -32,7 +32,7 @@ public:
 
     bool flashBuilder(int x1,int y1,int x2, int y2);
 
-    bool flashWealthyYear();
+    void flashWealthyYear(string resource1,string resource2);
 
     string flashDevelopmentCard(int idx);
 

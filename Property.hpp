@@ -38,7 +38,7 @@ public:
 
     int getOwnerID(){return _owner_id;}
 
-    int removeAmount(int amount){_amount -= amount;}
+    void removeAmount(int amount){_amount -= amount;}
 
 
 };

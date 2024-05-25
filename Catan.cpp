@@ -52,19 +52,31 @@ bool Catan::drawDevelopmentCard(){
 
     int counter = 0;
     for(int i=0;i<_developmentCards.size();i++){
+        counter += _developmentCards[i]->getAmount();
+        if(card_number <= counter) {
+            if (_developmentCards[i]->getType() == "Promotion") {
+                string benefit = static_cast<PromotionCard *>(_developmentCards[i])->getBenefit();
+                currentPlayer()->addDevelopmentCard(benefit);
+                return true;
+            } else {
+                currentPlayer()->addDevelopmentCard(_developmentCards[i]->getFeature());
+                return true;
+            }
+        }
     }
+    return false;
 }
 
 bool Catan::flashKnight(){
-    if(biggestArmy == nullptr && getCard->amountFlashed() == 3){
+    if(biggestArmy == nullptr && currentPlayer()->amountFlashed("Knight") == 3){
         biggestArmy = currentPlayer();
-        maxArmySize = getCard->amountFlashed();
+        maxArmySize = currentPlayer()->amountFlashed("Knight");
         currentPlayer()->addWinningPoints(2);
     }
-    else if(biggestArmy != nullptr && maxArmySize < getCard -> amountFlashed()){
+    else if(biggestArmy != nullptr && maxArmySize < currentPlayer()->amountFlashed("Knight")){
         biggestArmy->removeWinningPoints(2);
         biggestArmy = currentPlayer();
-        maxArmySize = getCard -> amountFlashed();
+        maxArmySize = currentPlayer()->amountFlashed("Knight");
         currentPlayer()->addWinningPoints(2);
     }
     return true;
@@ -89,7 +101,14 @@ bool Catan::flashBuilder(int x1,int y1,int x2, int y2){
     return true;
 }
 
-bool flashWealthyYear(){}
+void Catan::flashWealthyYear(string resource1,string resource2){
+    vector<ResourceCard> res;
+    if(resource1 == resource2){
+        res = {ResourceCard(resource1,2)};
+    } else{}
+     res = {ResourceCard(resource1),ResourceCard(resource2)};
+    currentPlayer()->addResources(res);
+}
 
 string Catan::flashDevelopmentCard(int idx){
     DevelopmentCard* getCard = currentPlayer()->useDevelopmentCard(idx);

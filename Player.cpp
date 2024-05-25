@@ -24,11 +24,6 @@ bool Player::Buy(Property& property) {
     return true;
 }
 
-bool Player::remove(Property &property) {
-    _winPoints -= property.getPointsValue();
-    return true;
-}
-
 void Player::addResources(vector<ResourceCard>& resources) {
     for(int i=0;i< resources.size();i++){
         for(int j=0;j<_resourceCards.size();j++){
@@ -39,6 +34,27 @@ void Player::addResources(vector<ResourceCard>& resources) {
 
     }
     return;
+}
+
+DevelopmentCard* Player::useDevelopmentCard(int idx){
+    if(_developmentCard.size() == 0){return nullptr;}
+    if(_developmentCard[idx]->getAmount() == 0){return nullptr;}
+    _developmentCard[idx]->flashCard();
+    return _developmentCard[idx];
+}
+
+int Player::amountFlashed(string feature){
+    for(int i=0;i<_developmentCard.size();i++){
+        if(_developmentCard[i]->getFeature() == feature){
+            return _developmentCard[i]->amountFlashed();
+        }
+        if(_developmentCard[i]->getFeature() == "Promotion"){
+            if(static_cast<PromotionCard*>(_developmentCard[i]) ->getBenefit() == feature){
+                return _developmentCard[i]->amountFlashed();
+            }
+        }
+    }
+    return 0;
 }
 
 void Player::print(){
@@ -62,4 +78,21 @@ void Player::print(){
         }
     }
     cout<<endl;
+}
+
+void Player::addDevelopmentCard(string type) {
+    for(int i=0;i<_developmentCard.size();i++){
+        if(_developmentCard[i]->getFeature() == type){
+            _developmentCard[i]->addAmount(1);
+            return;
+        }
+        if(_developmentCard[i]->getFeature() == "Promotion"){
+            if(static_cast<PromotionCard*>(_developmentCard[i]) ->getBenefit() == type){
+                _developmentCard[i]->addAmount(1);
+                return;
+            }
+        }
+    }
+    _developmentCard.push_back(new DevelopmentCard(type));
+    return;
 }

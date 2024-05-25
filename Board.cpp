@@ -71,7 +71,6 @@ bool Board::placeProperty(Property& property,bool firstTurn,int i,int j) {
     }
 }
 
-
 vector<ResourceCard> Board::getResources(int id,int rand,bool firstTurn){
     vector<ResourceCard> resources;
     for(int i=0;i<_graph.getAdjMatrix().size();i++){
@@ -85,5 +84,7 @@ vector<ResourceCard> Board::getResources(int id,int rand,bool firstTurn){
     }
     return resources;
 }
+
+void Board::moveGambit(){}
 
 

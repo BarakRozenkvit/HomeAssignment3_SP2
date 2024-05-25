@@ -44,7 +44,7 @@ public:
 
 class DevelopmentCard : public Card{
     std::string _feature;
-    bool _flashedAmount = 0;
+    int _flashedAmount = 0;
     std::vector<ResourceCard> _cost = {ResourceCard("Iron",1),
                                        ResourceCard("Wool",1),
                                        ResourceCard("Wheat",1)};

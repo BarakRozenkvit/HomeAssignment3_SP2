@@ -28,11 +28,9 @@ public:
     ~Player(){}
 
     string getName(){return _name;}
-
     int getID(){return _id;}
 
     bool isFirstTurn(){return _firstTurn;}
-
     void setFirstTurn(bool boolean){_firstTurn = boolean;}
 
     bool Buy(Property& property);
@@ -49,8 +47,6 @@ public:
         }
     }
 
-    bool remove(Property& property);
-
     void addResources(vector<ResourceCard>& resources);
     int removeResource(ResourceCard resource){
         int amount = 0;
@@ -58,12 +54,12 @@ public:
             if(_resourceCards[i].getResource() == resource.getResource()){
                 amount += _resourceCards[i].getAmount();
                 _resourceCards[i].clear();
-                return amount;
             }
         }
+        return amount;
     }
 
-    int getArmySize(){
+    int getKnights(){
         for(int i=0;i<_developmentCard.size();i++){
             if(_developmentCard[i]->getFeature() == "Knight"){
                 return _developmentCard[i]->amountFlashed();
@@ -72,15 +68,9 @@ public:
         return 0;
     }
 
-    DevelopmentCard* useDevelopmentCard(int idx){
-        if(_developmentCard.size() == 0){return nullptr;}
-        if(_developmentCard[idx]->getAmount() == 0){return nullptr;}
-        _developmentCard[idx]->flashCard();
-        return _developmentCard[idx];
-    }
+    void addDevelopmentCard(string type);
+    DevelopmentCard* useDevelopmentCard(int idx);
+    int amountFlashed(string feature);
 
-    void setName(string name){_name = name;}
-
-//    friend std::ostream& operator<<(Player* p,std::ostream& out){
     void print();
 };
