@@ -52,16 +52,6 @@ int main() {
 
         Player* p = catan.nextPlayer();
 
-
-
-//                player[p].getDevelopmenCards()
-//                if Using them{
-//                    player[p].RemoveDevelopment(int x);
-//                }
-//
-//
-//                else{
-//                    int num = throw()
         int chooseA;
         cout<<"Hi "<<p->getName()<<" it's your Turn! -> Choose an Action:\n\t0 - Roll Dice\n\t1 - Use a Development Card"<<endl;
         cout<<"Your'e Choice: ";cin>>chooseA;
@@ -73,21 +63,23 @@ int main() {
                 string card = catan.flashDevelopmentCard(idx);
                 if (card == "Knight"){
 
-                }
-                else if(card == "WinningPoints"){
-
+                    catan.flashKnight();
                 }
                 else if(card == "Monopoly"){
+                    string desired_resource;
+                    //input
+                    catan.flashMonopoly(desired_resource);
+                }
+                else if(card == "Builder"){
+                    int x1,x2,y1,y2;
+                    //input
+
+                    catan.flashBuilder(x1,y1,x2,y2);
 
                 }
-                else if()
+                else if(card == "WealthyYear"){
 
-
-//                {new DevelopmentCard("Knight",4),new DevelopmentCard("WinningPoints",4),
-//                            new PromotionCard("Monopoly"),new PromotionCard("Builder"),
-//                            new PromotionCard("WealthyYear")}
-                else if(card == "Knight"){
-                    p.
+                    catan.flashWealthyYear();
 
                 }
             }

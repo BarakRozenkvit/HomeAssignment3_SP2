@@ -55,10 +55,6 @@ bool Catan::drawDevelopmentCard(){
     }
 }
 
-bool Catan::flashDevelopmentCard() {
-    return false;
-}
-
 bool Catan::flashKnight(){
     if(biggestArmy == nullptr && getCard->amountFlashed() == 3){
         biggestArmy = currentPlayer();
