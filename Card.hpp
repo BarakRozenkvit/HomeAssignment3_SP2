@@ -2,82 +2,79 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
 class Card{
-    std::string _type;
+    string _type;
+    string _name;
     int _amount;
 
 public:
-    Card(std::string type,int amount): _type(type),_amount(amount){};
-    Card(std::string type): _type(type), _amount(0){};
-    void add(){_amount++;}
-    void addAmount(int amount){_amount += amount;}
+    Card(string type,int amount): _type(type),_amount(amount){};
+    Card(string type): _type(type), _amount(0){};
+    Card(string type,string name,int amount): _type(type), _name(name), _amount(amount){};
+
+    string getType(){return _type;}
+    string getName(){return _name;}
+
+    void add(int amount){_amount += amount;}
     void remove(int amount){_amount -= amount;}
-    int getAmount(){return _amount;}
-    std::string getType(){return _type;}
+    int size(){return _amount;}
     void clear(){_amount=0;}
 };
 
-class ResourceCard : public Card{
-    std::string _resource;
+class CardSet{
+    vector<Card> _cards;
 
 public:
-    ResourceCard(std::string resource,int amount): _resource(resource),Card("Resource",amount){};
-    ResourceCard(std::string resource): _resource(resource),Card("Resource",0){};
+    CardSet();
 
-    std::string getResource(){return _resource;}
+    Card* search(string name);
+
+    void add(string type,string name,int amount);
+
+    void remove(string name,int amount);
+
+    Card* getAt(int idx);
+
+    int size();
+
+    CardSet& operator-=(CardSet& cardset){
+        for(int i=0;i<cardset.size();i++){
+            Card* other_card = cardset.getAt(i);
+            Card* this_card = search(other_card->getName());
+            this_card->remove(other_card->size());
+        }
+        return *this;
+    }
+
+    CardSet& operator+=(CardSet& cardset){
+        for(int i=0;i<cardset.size();i++){
+            Card* other_card = cardset.getAt(i);
+            Card* this_card = search(other_card->getName());
+            this_card->add(other_card->size());
+        }
+        return *this;
+    }
 };
 
-//class ResourceCard{
-//    std::string _type;
-//    int _amount;
-//
-//public:
-//    ResourceCard(std::string type,int amount): _type(type),_amount(amount){};
-//    ResourceCard(std::string type): _type(type), _amount(0){};
-//    void add(){_amount++;}
-//    void addAmount(int amount){_amount += amount;}
-//    void remove(int amount){_amount -= amount;}
-//    int getAmount(){return _amount;}
-//    std::string getType(){return _type;}
-//
-//};
+class ResourceCard : public Card{
+
+public:
+    ResourceCard(std::string resource,int amount): Card("c",resource,amount){};
+    ResourceCard(std::string resource): Card("Resource",resource,0){};
+};
 
 class DevelopmentCard : public Card{
-    std::string _feature;
     int _flashedAmount = 0;
-    std::vector<ResourceCard> _cost = {ResourceCard("Iron",1),
-                                       ResourceCard("Wool",1),
-                                       ResourceCard("Wheat",1)};
-
+    CardSet _cost;
 
 public:
-    DevelopmentCard(std::string feature): _feature(feature), Card("Development",0){};
-    DevelopmentCard(std::string feature,int amount): _feature(feature), Card("Development",amount){};
+    DevelopmentCard(string name);
+    DevelopmentCard(string name,int amount);
     ~DevelopmentCard(){};
 
-    std::string getFeature(){return _feature;}
     bool amountFlashed(){return _flashedAmount;}
     void flashCard(){_flashedAmount++;}
+    CardSet& getCost(){return _cost;}
 };
-
-class PromotionCard: public DevelopmentCard{
-    std::string _benefit;
-
-public:
-    PromotionCard(std::string benefit): _benefit(benefit), DevelopmentCard("Promotion",1){};
-    ~PromotionCard(){};
-
-    std::string  getBenefit(){return _benefit;}
-
-};
-
-
-
-//class Knights: public Development{};
-//class WinPoints: public Development{};
-//
-//class Monopol: public Promotion{
-//    Resource desired_resource;
-//};
-//class Builder: public Promotion{};
-//class WealthyYear: public Promotion{};

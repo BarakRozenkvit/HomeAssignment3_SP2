@@ -7,9 +7,7 @@ class Catan {
     Board _board;
     Player* _turnsOrder[3] = {};
     int _turnCounter = -1;
-    vector<DevelopmentCard*> _developmentCards = {new DevelopmentCard("Knight",4),new DevelopmentCard("WinningPoints",4),
-                                                  new PromotionCard("Monopoly"),new PromotionCard("Builder"),
-                                                 new PromotionCard("WealthyYear")};
+    CardSet _developmentCards;
     Player* biggestArmy = nullptr;
     int maxArmySize = 0;
 

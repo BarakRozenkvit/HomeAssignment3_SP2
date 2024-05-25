@@ -5,7 +5,11 @@
 Catan::Catan(Player* p1, Player* p2, Player* p3) {
     _board = Board();
     _turnsOrder[0] = p1;_turnsOrder[1] = p2;_turnsOrder[2] = p3;
-
+    _developmentCards.add("Development","Knight",4);
+    _developmentCards.add("Development","WinningPoints",4);
+    _developmentCards.add("Promotion","Monopoly",1);
+    _developmentCards.add("Promotion","Builder",1);
+    _developmentCards.add("Promotion","WealthyYear",1);
 }
 
 Player* Catan::nextPlayer(){
@@ -20,11 +24,9 @@ Player* Catan::currentPlayer() {
 
 bool Catan::placeProperty(string property,int x,int y){
     // TODO:check if string valid
-    Property instance = Property(property,1,currentPlayer()->getID());
-    if (currentPlayer()->isFirstTurn()) {
-        return _board.placeProperty(instance, true, x, y);
-    } else if (currentPlayer()->Buy(instance)) {
-        return _board.placeProperty(instance, false, x, y);
+    bool res = currentPlayer()->payToBuild(property, currentPlayer()->isFirstTurn());
+    if(res){
+        return _board.placeProperty(property,currentPlayer()->getID(),true, x, y);
     }
     return false;
 }

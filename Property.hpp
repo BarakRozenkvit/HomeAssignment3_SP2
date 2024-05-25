@@ -1,44 +1,51 @@
 #include "Card.hpp"
 #include <vector>
 #include <iostream>
-
 #pragma once
+
+using namespace std;
+
 class Property{
-    std::string _type;
-    std::vector<ResourceCard> _cost;
+    string _type;
+    CardSet _cost;
     int _owner_id;
     int _pointsVal;
     int _amount;
 
 public:
-    Property(std::string type,int amount,int owner_id): _type(type),_amount(amount),_owner_id(owner_id){
-        if(type == "Road"){
-            _pointsVal = 0;
-            _cost = {ResourceCard("Brick",1),ResourceCard("Wood",1)};
-        }
-        else if(type == "Village"){
-            _pointsVal = 1;
-            _cost = {ResourceCard("Brick",1),ResourceCard("Wood",1),
-                     ResourceCard("Wool",1),ResourceCard("Wheat",1)};
-        }
-        else if(type == "City"){
-            _pointsVal = 2;
-            _cost = {ResourceCard("Iron",3),ResourceCard("Wheat",2)};
-        }
-        else{
-            std::cout << "Error" << std::endl;
-        }
-    }
+    Property(string type,int amount);
 
     std::string getType(){return _type;}
-
-    std::vector<ResourceCard>& getCost(){return _cost;}
-
+    CardSet& getCost(){return _cost;}
     int getPointsValue(){return _pointsVal;}
-
     int getOwnerID(){return _owner_id;}
 
-    void removeAmount(int amount){_amount -= amount;}
+    void add(int amount){_amount += amount;}
+    void remove(int amount){_amount -= amount;}
+    int size(){return _amount;}
+    void clear(){_amount=0;}
 
+
+};
+
+class PropertySet{
+    vector<Property> _properties;
+
+public:
+    PropertySet();
+
+    Property* search(string type);
+
+    void add(string type,int amount);
+
+    void remove(string type,int amount);
+
+    int size();
+
+    PropertySet& operator-=(Property& property){
+        Property* res = search(property.getType());
+        res->remove(property.size());
+        return *this;
+    }
 
 };
