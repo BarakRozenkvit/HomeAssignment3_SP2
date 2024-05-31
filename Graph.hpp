@@ -34,9 +34,9 @@ class Graph {
             out << "   " << to_string(g._adjMatrix[38][38]) <<  "       " << to_string(g._adjMatrix[39][39] )<< "       " << to_string(g._adjMatrix[40][40] )<< "       " << to_string(g._adjMatrix[41][41]) << "      " << to_string(g._adjMatrix[42][42]) << " " << endl;
             out << " " << "   " << to_string(g._adjMatrix[38][43]) << "    " << to_string(g._adjMatrix[39][43]) << "   " <<  to_string(g._adjMatrix[39][44]) <<"   " <<  to_string(g._adjMatrix[40][44]) << "   " << to_string(g._adjMatrix[40][45]) << "   " << to_string(g._adjMatrix[41][45]) << "  " << to_string(g._adjMatrix[41][46]) << "    " << to_string(g._adjMatrix[42][46]) << "   "<<endl;
             out << " " << "     " << to_string(g._adjMatrix[43][43]) << "        " << to_string(g._adjMatrix[44][44]) <<  "       "<< to_string(g._adjMatrix[45][45] )<< "       " << to_string(g._adjMatrix[46][46]) <<" "<< " " << endl;
-            out << "   "<< "   " << to_string(g._adjMatrix[43][47])<< "        " << to_string(g._adjMatrix[44][48])<< "       " << "|" << "       " << "|" << " " << endl;
+            out << "   "<< "   " << to_string(g._adjMatrix[43][47])<< "        " << to_string(g._adjMatrix[44][48])<< "       " << to_string(g._adjMatrix[45][49]) << "       " << to_string(g._adjMatrix[46][50]) << " " << endl;
             out << " " <<"     " << to_string(g._adjMatrix[47][47]) << "       " << to_string(g._adjMatrix[48][48]) << "       " << to_string(g._adjMatrix[49][49] )<<"       "<< to_string(g._adjMatrix[50][50] )<<" "<< " " << endl;
-            out << " " << "      " << "\\" << "     " << "/"<< " " << "\\"<< "    " << "/" <<"  "<< "\\" << "     "<<"/"<< endl;
+            out << " " << "      " << to_string(g._adjMatrix[47][51]) << "     " << to_string(g._adjMatrix[48][51])<< " " << to_string(g._adjMatrix[48][52])<< "    " << to_string(g._adjMatrix[49][52]) <<"   "<< to_string(g._adjMatrix[49][53]) << "     "<<to_string(g._adjMatrix[50][53])<< endl;
             out << " " << " " <<"        " << to_string(g._adjMatrix[51][51]) << "       " << to_string(g._adjMatrix[52][52]) << "       " << to_string(g._adjMatrix[53][53]) <<" "<< " " << " " << endl;
 
             return out;
