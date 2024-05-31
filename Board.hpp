@@ -2,7 +2,10 @@
 #include "Land.hpp"
 #include "Graph.hpp"
 #include "Property.hpp"
+#include "Player.hpp"
 #pragma once
+
+using namespace std;
 
 class Board{
     Graph _graph;
@@ -13,9 +16,9 @@ class Board{
 public:
     Board(){init();}
 
-    bool placeProperty(Property& property,bool firstTurn,int x,int y);
+    bool placeProperty(string property,char id,bool isFirstTurn,int x,int y);
 
-    vector<ResourceCard> getResources(int id,int rand,bool firstTurn);
+    Set<ResourceCard> getResources(char id,bool isFirstTurn,int rand);
 
     void moveGambit();
 

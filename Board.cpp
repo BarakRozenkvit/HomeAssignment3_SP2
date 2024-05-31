@@ -37,48 +37,48 @@ void Board::init() {
     _lands[18] = Land("Hills", "Brick",hexagons[13], landNumbers[10]);
 }
 
-bool Board::placeProperty(Property& property,bool firstTurn,int i,int j) {
-    int val = property.getPointsValue();
-    int id = property.getOwnerID();
-    if (property.getType() == "Road") {
-        if (_graph.getAdjMatrix()[i][i] == id + 1 || _graph.getAdjMatrix()[i][i] == id + 2 ||
-            _graph.getAdjMatrix()[j][j] == id + 1 || _graph.getAdjMatrix()[j][j] == id + 2) {
-            return _graph.set(id + val, i, j);
+bool Board::placeProperty(string property,char id,bool isFirstTurn,int i,int j) {
+    if (property == "Road") {
+        if (_graph.getValue(i,i) == id + 1 || _graph.getValue(i,i) == id + 2 ||
+            _graph.getValue(j,j) == id + 1 || _graph.getValue(j,j) == id + 2) {
+            return _graph.setValue(id + 0, i, j);
         }
-        for (int k = 0; k < _graph.getAdjMatrix().size(); k++) {
-            if (_graph.getAdjMatrix()[i][k] == id || _graph.getAdjMatrix()[j][k] == id) {
-                return _graph.set(id + val, i, j);
+        for (int k = 0; k < _graph.size(); k++) {
+            if (_graph.getValue(i,k) == id || _graph.getValue(j,k) == id) {
+                return _graph.setValue(id + 0, i, j);
             }
         }
-    } else if (property.getType() == "Village") {
+    } else if (property == "Village") {
         bool noAdj = false, isPath = false;
         // scan for neighbors
-        for (int k = 0; k < _graph.getAdjMatrix().size(); k++) {
-            if (_graph.getAdjMatrix()[i][k] == id) { isPath = true; }
+        for (int k = 0; k < _graph.size(); k++) {
+            if (_graph.getValue(i,k) == id) { isPath = true; }
             // what is neighbors and check if no village there
-            if (_graph.getAdjMatrix()[i][k] >= 1 && _graph.getAdjMatrix()[k][k] == 0) { noAdj = true; }
+            if (_graph.getValue(i,k) >= 1 && _graph.getValue(k,k) == 0) { noAdj = true; }
         }
 
-        if(noAdj && firstTurn) {return _graph.set(id + val, i, j);}
-        if (noAdj && isPath) { return _graph.set(id + val, i, j); }
+        if(noAdj && isFirstTurn) {return _graph.setValue(id + 1, i, j);}
+        if (noAdj && isPath) { return _graph.setValue(id + 1, i, j); }
         return false;
 
     }
-    else {
-        if (_graph.getAdjMatrix()[i][j] == id + val - 1) {
-            return _graph.set(id + val, i, j);
+    else if(property == "City") {
+        if (_graph.getValue(i,j) == id + 2 - 1) {
+            return _graph.setValue(id + 2, i, j);
         }
     }
+    return false;
 }
 
-vector<ResourceCard> Board::getResources(int id,int rand,bool firstTurn){
-    vector<ResourceCard> resources;
-    for(int i=0;i<_graph.getAdjMatrix().size();i++){
-        int amount = _graph.getAdjMatrix()[i][i] - id;
+Set<ResourceCard> Board::getResources(char id,bool isFirstTurn,int rand){
+    Set<ResourceCard> resources;
+    for(int i=0;i<_graph.size();i++){
+        int amount = _graph.getValue(i,i) - id;
         if (amount < 0 || amount > 2){ continue;}
         for(int j=0;j<19;j++){
-            if(_lands[j].sitOn(i) && (_lands[j].getValue() == rand|| firstTurn)){
-                resources.push_back(_lands[j].getResources(amount));
+            if(_lands[j].sitOn(i) && (_lands[j].getValue() == rand|| isFirstTurn)){
+                if(_lands[j].getResourceType() == ""){ continue;}
+                resources.add(_lands[j].getResourceType(),amount);
             }
         }
     }

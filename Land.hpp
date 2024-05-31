@@ -1,5 +1,5 @@
 #include <string>
-#include "Card.hpp"
+#include "ResourceCard.hpp"
 #pragma once
 
 using namespace std;
@@ -28,15 +28,3 @@ class Land{
 
     int getValue(){return _value;}
 };
-
-//class Desert: public Land{public:Desert(): Land(){}};
-//
-//class Forest: public Land{ public: Forest(Wood woodCard): Land(woodCard){}};
-//
-//class Hill: public Land{ public: Hill(Brick brickCard): Land(brickCard){}};
-//
-//class Pasture: public Land{ public:Pasture(Wool woolCard): Land(woolCard){}};
-//
-//class Agricultural: public Land{ public:Agricultural(Wheat wheatCard): Land(wheatCard){}};
-//
-//class Mountain: public Land{ public: Mountain(Iron ironCard): Land(ironCard){}};

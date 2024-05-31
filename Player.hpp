@@ -1,21 +1,21 @@
 #include <string>
 #include <vector>
 #include "Property.hpp"
-#include "Card.hpp"
-#include "Board.hpp"
+#include "ResourceCard.hpp"
+#include "DevelopmentCard.hpp"
 #include <iostream>
 #pragma once
 
 using namespace std;
 
 class Player{
-    std::string _name;
-    int _id;
+    string _name;
+    char _id;
     int _winPoints;
     bool _firstTurn = true;
-    CardSet _resourceCards;
-    CardSet _developmentCard;
-    PropertySet _properties;
+    Set<ResourceCard> _resourceCards;
+    Set<DevelopmentCard> _developmentCard;
+    Set<Property> _properties;
 
 public:
     Player(){};
@@ -23,21 +23,27 @@ public:
     ~Player(){}
 
     string getName(){return _name;}
-    int getID(){return _id;}
+    char getID(){return _id;}
     bool isFirstTurn(){return _firstTurn;}
     void setFirstTurn(bool boolean){_firstTurn = boolean;}
     void addWinningPoints(int amount){_winPoints += amount;}
     void removeWinningPoints(int amount){_winPoints -= amount;}
 
-    bool payToBuild(string property,bool firstTurn);
+    bool payToBuild(string property);
 
-    bool buyDevelopmentCard(string type="Development",string name="");
+    bool buyDevelopmentCard(string type);
 
-    bool flashDevelopmentCard(string name="");
+    string flashDevelopmentCard(int index);
 
-    bool getResources();
+    bool getResources(Set<ResourceCard>& cardset);
 
-    bool giveResources();
+    bool giveResources(Set<ResourceCard>& set);
 
-//    void print();
+    int getArmySize(){
+        int card = _developmentCard.search("Knight");
+        if(card == -1){return 0;}
+        return 0;
+    }
+
+    void print();
 };

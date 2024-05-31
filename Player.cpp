@@ -1,81 +1,62 @@
 #include "Player.hpp"
+#include "Set.hpp"
 #include <iostream>
 
-Player::Player(std::string name,int id): _name(name), _winPoints(2),_id(id){
-    _resourceCards.add("Resource","Wood",0);
-    _resourceCards.add("Resource","Wheat",0);
-    _resourceCards.add("Resource","Wool",0);
-    _resourceCards.add("Resource","Brick",0);
-    _resourceCards.add("Resource","Iron",0);
+Player::Player(string name,int id): _name(name), _winPoints(0),_id(id){
+    _resourceCards.add("Wood",0);
+    _resourceCards.add("Wheat",0);
+    _resourceCards.add("Wool",0);
+    _resourceCards.add("Brick",0);
+    _resourceCards.add("Iron",0);
     _properties.add("Road",13);
     _properties.add("Village",3);
     _properties.add("City",4);
 };
 
-bool Player::payToBuild(std::string property, bool firstTurn) {
-    Property* result = _properties.search(property);
-    if(!firstTurn){
-        _resourceCards -= result->getCost();
+bool Player::payToBuild(string property) {
+    int result = _properties.search(property);
+    if(result == -1){return false;}
+    _winPoints += _properties.getAt(result).getWinPoints();
+    if(!_firstTurn){
+        _resourceCards -= _properties.getAt(result).getCost();
     }
-    _properties -= *result;
+    _properties.getAt(result).remove(1);
+    return true;
 }
 
-bool Player::buyDevelopmentCard(string type,string name){
-    _developmentCard.add(type,name,1);
-    Card* card = _developmentCard.search(name);
-    CardSet cardset = static_cast <DevelopmentCard*>(card)->getCost();
-    _resourceCards -= cardset;
+bool Player::buyDevelopmentCard(string type){
+    int result = _developmentCard.search(type);
+    if(result == -1){return false;}
+    _resourceCards -= _developmentCard.getAt(result).getCost();
+    _developmentCard.getAt(result).add(1);
+    return true;
 }
 
-bool Player::flashDevelopmentCard(string name){
-    Card* card = _developmentCard.search(name);
-    static_cast <DevelopmentCard*>(card)->flashCard();
+string Player::flashDevelopmentCard(int index){
+    DevelopmentCard& result = _developmentCard.getAt(index);
+    result.flashCard();
+    if(result.getType() == "")
+    return result.getType();
 }
 
-bool Player::getResources(CardSet& cardset) {
-    _resourceCards += cardset;
+bool Player::getResources(Set<ResourceCard>& set) {
+    _resourceCards += set;
+    return true;
 }
 
-bool Player::giveResources(CardSet& cardset) {
-    _resourceCards -= cardset;
+bool Player::giveResources(Set<ResourceCard>& set) {
+    _resourceCards -= set;
+    return true;
 }
 
-//void Player::print(){
-//    cout<<endl;
-//    cout << "Name: " << _name << endl;
-//    cout << "Winning Points: " << _winPoints<<endl;
-//    cout<<"Resource Cards: ";
-//    for (int i = 0; i < _resourceCards.size(); i++) {
-//        cout << "[" << _resourceCards[i].getResource() << " : " << _resourceCards[i].getAmount()<<"], ";
-//
-//    }
-//    cout<<endl;
-//    cout<<"Development Cards: ";
-//    for (int i = 0; i < _developmentCard.size(); i++) {
-//        if(_developmentCard[i]->getFeature() == "Promotion"){
-//            PromotionCard* castPromotion = static_cast<PromotionCard*>(_developmentCard[i]);
-//            cout << "[" << castPromotion->getBenefit() << " : " << castPromotion->getAmount()<<"], ";
-//        }
-//        else {
-//            cout << "[" << _developmentCard[i]->getFeature() << " : " << _developmentCard[i]->getAmount() << "], ";
-//        }
-//    }
-//    cout<<endl;
-//}
-//
-//void Player::addDevelopmentCard(string type) {
-//    for(int i=0;i<_developmentCard.size();i++){
-//        if(_developmentCard[i]->getFeature() == type){
-//            _developmentCard[i]->addAmount(1);
-//            return;
-//        }
-//        if(_developmentCard[i]->getFeature() == "Promotion"){
-//            if(static_cast<PromotionCard*>(_developmentCard[i]) ->getBenefit() == type){
-//                _developmentCard[i]->addAmount(1);
-//                return;
-//            }
-//        }
-//    }
-//    _developmentCard.push_back(new DevelopmentCard(type));
-//    return;
-//}
+void Player::print() {
+    cout << "----------------------------------------------------"<<endl;
+    cout<< "name: " <<_name<<endl;
+    cout<<"Winning Points: "<<_winPoints<<endl;
+    cout<< "ResourceCards: " << _resourceCards << endl;
+    cout<< "DevelopmentCards: " << _developmentCard << endl;
+    cout << "Properties Left: " << _properties<< endl;
+    cout << "----------------------------------------------------"<<endl;
+
+}
+

@@ -7,9 +7,11 @@ class Catan {
     Board _board;
     Player* _turnsOrder[3] = {};
     int _turnCounter = -1;
-    CardSet _developmentCards;
+
+    Set<DevelopmentCard> _developmentCards;
+
     Player* biggestArmy = nullptr;
-    int maxArmySize = 0;
+    Player* logestPath = nullptr;
 
 public:
     Catan(Player* p1,Player* p2,Player* p3);

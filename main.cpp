@@ -7,10 +7,12 @@
 int main() {
 
     // Initial Game
-    Player *p1 = new Player("amit", 10);
-    Player *p2 = new Player("Yossi", 20);
-    Player *p3 = new Player("Dana", 30);
-    Catan catan = Catan(p1, p2, p3);
+//    Player *p1 = new Player("amit", 10);
+//    Player *p2 = new Player("Yossi", 20);
+//    Player *p3 = new Player("Dana", 30);
+    Catan catan = Catan(new Player("amit", 10),
+                        new Player("Yossi", 20),
+                        new Player("Dana", 30));
     bool isValid;
 
     // each player places two Villages and two Roads and get Resources
@@ -51,6 +53,7 @@ int main() {
     while (1) {
         // Next player
         Player *p = catan.nextPlayer();
+        p->print();
 
         // Choose to roll a dice or use Development Card
         int chooseA;
@@ -97,10 +100,12 @@ int main() {
                 // if not gain resources
                 for (int i = 0; i < 3; i++) {
                     catan.getResources(rand);
-                    p->print();
+//                    p->print();
                     p = catan.nextPlayer();
                 }
             }
+
+            p->print();
 
             int chooseB;
             bool onGoing = true;
