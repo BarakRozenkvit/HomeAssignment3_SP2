@@ -8,8 +8,8 @@ Player::Player(string name,int id): _name(name), _winPoints(0),_id(id){
     _resourceCards.add("Wool",0);
     _resourceCards.add("Brick",0);
     _resourceCards.add("Iron",0);
-    _properties.add("Road",13);
-    _properties.add("Village",3);
+    _properties.add("Road",15);
+    _properties.add("Village",5);
     _properties.add("City",4);
 };
 
@@ -49,14 +49,4 @@ bool Player::giveResources(Set<ResourceCard>& set) {
     return true;
 }
 
-void Player::print() {
-    cout << "----------------------------------------------------"<<endl;
-    cout<< "name: " <<_name<<endl;
-    cout<<"Winning Points: "<<_winPoints<<endl;
-    cout<< "ResourceCards: " << _resourceCards << endl;
-    cout<< "DevelopmentCards: " << _developmentCard << endl;
-    cout << "Properties Left: " << _properties<< endl;
-    cout << "----------------------------------------------------"<<endl;
-
-}
 

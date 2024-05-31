@@ -45,5 +45,12 @@ public:
         return 0;
     }
 
-    void print();
+    friend ostream& operator<<(ostream& out,Player* p){
+        out<< "name: " <<p->_name<<endl;
+        out<<"Winning Points: "<<p->_winPoints<<endl;
+        out<< "ResourceCards: " << p->_resourceCards << endl;
+        out<< "DevelopmentCards: " << p->_developmentCard << endl;
+        out << "Properties Left: " << p->_properties<< endl;
+        return out;
+    }
 };

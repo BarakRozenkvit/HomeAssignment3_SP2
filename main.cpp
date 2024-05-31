@@ -13,6 +13,7 @@ int main() {
     Catan catan = Catan(new Player("amit", 10),
                         new Player("Yossi", 20),
                         new Player("Dana", 30));
+    catan.printGame();
     bool isValid;
 
     // each player places two Villages and two Roads and get Resources
@@ -47,14 +48,11 @@ int main() {
             isValid = catan.placeProperty("Road", x, y);
         }
         catan.getResources();
-        p->print();
     }
-
+    catan.printGame();
     while (1) {
         // Next player
         Player *p = catan.nextPlayer();
-        p->print();
-
         // Choose to roll a dice or use Development Card
         int chooseA;
         cout << "Hi " << p->getName()
@@ -104,8 +102,6 @@ int main() {
                     p = catan.nextPlayer();
                 }
             }
-
-            p->print();
 
             int chooseB;
             bool onGoing = true;

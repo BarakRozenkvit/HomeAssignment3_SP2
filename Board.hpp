@@ -22,4 +22,9 @@ public:
 
     void moveGambit();
 
+    friend ostream& operator<<(ostream& out,Board& b){
+        out << b._graph <<endl;
+        return out;
+    }
+
 };

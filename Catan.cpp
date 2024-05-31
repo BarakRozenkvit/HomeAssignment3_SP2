@@ -5,10 +5,10 @@
 Catan::Catan(Player* p1, Player* p2, Player* p3) {
     _board = Board();
     _turnsOrder[0] = p1;_turnsOrder[1] = p2;_turnsOrder[2] = p3;
-    _developmentCards.add("Knight",4);
-    _developmentCards.add("WinningPoints",4);
-    _developmentCards.add("Monopoly",1);
-    _developmentCards.add("Builder",1);
+    _developmentCards.add("Knight",14);
+    _developmentCards.add("WinningPoints",5);
+    _developmentCards.add("Monopoly",2);
+    _developmentCards.add("Builder",2);
     _developmentCards.add("WealthyYear",1);
 }
 
@@ -57,13 +57,13 @@ bool Catan::drawDevelopmentCard(){
 }
 
 bool Catan::flashKnight(){
-    if(biggestArmy == nullptr && currentPlayer()->getArmySize() == 3){
-        biggestArmy = currentPlayer();
+    if(largestArmy == nullptr && currentPlayer()->getArmySize() == 3){
+        largestArmy = currentPlayer();
         currentPlayer()->addWinningPoints(2);
     }
-    else if(biggestArmy != nullptr && biggestArmy->getArmySize() < currentPlayer()->getArmySize()){
-        biggestArmy->removeWinningPoints(2);
-        biggestArmy = currentPlayer();
+    else if(largestArmy != nullptr && largestArmy->getArmySize() < currentPlayer()->getArmySize()){
+        largestArmy->removeWinningPoints(2);
+        largestArmy = currentPlayer();
         currentPlayer()->addWinningPoints(2);
     }
     return true;

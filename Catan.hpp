@@ -10,8 +10,8 @@ class Catan {
 
     Set<DevelopmentCard> _developmentCards;
 
-    Player* biggestArmy = nullptr;
-    Player* logestPath = nullptr;
+    Player* largestArmy = nullptr;
+    Player* longestRoad = nullptr;
 
 public:
     Catan(Player* p1,Player* p2,Player* p3);
@@ -38,5 +38,17 @@ public:
 
     bool trade(int id);
 
-    void printGame();
+    void printGame(){
+        cout << _board << endl;
+        cout << "Players: " <<endl;
+        for(int i=0;i<3;i++){
+            cout << _turnsOrder[i] <<endl;
+        }
+
+        cout << "Development Cards Bank: "<<endl;
+        cout << _developmentCards << endl;
+        cout<<endl<<endl;
+//        cout << "Largest Army: " << largestArmy<<endl;
+//        cout << "Longest Road: "<<longestRoad<<endl;
+    }
 };
