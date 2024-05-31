@@ -102,7 +102,7 @@ int main() {
                     p = catan.nextPlayer();
                 }
             }
-
+            catan.printGame();
             int chooseB;
             bool onGoing = true;
             cout << "Hi " << p->getName()
