@@ -60,6 +60,20 @@ public:
         }
         return *this;
     }
+
+    bool operator>(Set<T>& set){
+        for(int i=0;i<this->size();i++){
+            T& inThis = this->getAt(i);
+            int res = set.search(inThis.getType());
+            T& inSet = set.getAt(res);
+            if(inThis.size() < inSet.size()){
+                return false;
+            }
+
+        }
+        return true;
+    }
+
     friend ostream& operator<<(ostream& out,Set<T>& set){
         string res ="";
         for(int i=0;i<set.size();i++){

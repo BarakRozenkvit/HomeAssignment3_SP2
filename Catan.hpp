@@ -2,6 +2,7 @@
 #include "Board.hpp"
 #include "Property.hpp"
 #include <iostream>
+#include <unistd.h>
 
 class Catan {
     Board _board;
@@ -34,11 +35,11 @@ public:
 
     void flashWealthyYear(string resource1,string resource2);
 
-    string flashDevelopmentCard(int idx);
+    bool useDevelopmentCard(int idx);
 
     bool trade(int id);
 
-    void printGame(){
+    void printGame(string option){
         system("clear");
         cout<< "The Board: " << endl;
         cout << _board << endl;
@@ -48,5 +49,7 @@ public:
         cout << "Players: " <<endl;
         cout << _turnsOrder[_turnCounter] <<endl;
         cout <<endl;
+        cout << option <<endl;
+        sleep(0);
     }
 };

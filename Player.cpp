@@ -18,24 +18,31 @@ bool Player::payToBuild(string property) {
     if(result == -1){return false;}
     _winPoints += _properties.getAt(result).getWinPoints();
     if(!_firstTurn){
+        if(_properties.getAt(result).getCost() > _resourceCards){
+            cout << "Not enoght funds!" << endl;
+            return false;
+        }
         _resourceCards -= _properties.getAt(result).getCost();
     }
     _properties.getAt(result).remove(1);
     return true;
 }
 
-bool Player::buyDevelopmentCard(string type){
-    int result = _developmentCard.search(type);
-    if(result == -1){return false;}
-    _resourceCards -= _developmentCard.getAt(result).getCost();
-    _developmentCard.getAt(result).add(1);
+bool Player::buyDevelopmentCard(string type,Set<ResourceCard>& cost){
+    if(cost > _resourceCards){return false;}
+    _resourceCards -= cost;
+    _developmentCard.add(type,1);
     return true;
 }
 
-string Player::flashDevelopmentCard(int index){
+string Player::useDevelopmentCard(int index){
+    if(_developmentCard.size() == 0){
+        cout << "Development Cards are empty!" << endl;
+        return "empty";
+    }
     DevelopmentCard& result = _developmentCard.getAt(index);
+    cout << "Requested " << result.getType() << endl;
     result.flashCard();
-    if(result.getType() == "")
     return result.getType();
 }
 

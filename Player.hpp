@@ -31,9 +31,9 @@ public:
 
     bool payToBuild(string property);
 
-    bool buyDevelopmentCard(string type);
+    bool buyDevelopmentCard(string type,Set<ResourceCard>& cost);
 
-    string flashDevelopmentCard(int index);
+    string useDevelopmentCard(int index);
 
     bool getResources(Set<ResourceCard>& cardset);
 

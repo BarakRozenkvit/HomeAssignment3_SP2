@@ -17,178 +17,182 @@ int main() {
     bool isValid;
 
     // each player places two Villages and two Roads and get Resources
-    for (int i = 0; i < 3; i++) {
         Player *p = catan.nextPlayer();
-        catan.printGame();
-        int x;
-        int y;
-        std::cout <<"It's Player No. "<<i<< " -> "<<p->getName() << "'s Turn!" << endl;
+        catan.printGame("Welcome to Catan");
+//        int x;
+//        int y;
+        std::cout <<"It's Player No. "<< " -> "<<p->getName() << "'s Turn!" << endl;
         isValid = false;
         while (!isValid) {
-            std::cout << "Choose Where to place the 1st Village" << endl;
-            std::cin >> x;
-            isValid = catan.placeProperty("Village", x, x);
-            catan.printGame();
+            catan.printGame("Choose Where to place the 1st Village");
+//            std::cin >> x;
+            isValid = catan.placeProperty("Village", 48, 48);
         }
         isValid = false;
         while (!isValid) {
-            std::cout << "Choose Where to place the 1st Road" << endl;
-            std::cin >> x >> y;
-            isValid = catan.placeProperty("Road", x, y);
-            catan.printGame();
+            catan.printGame("Choose Where to place the 1st Road");
+//            std::cin >> x >> y;
+            isValid = catan.placeProperty("Road", 48, 44);
         }
         isValid = false;
         while (!isValid) {
-            std::cout << "Choose Where to place the 2nd Village" << endl;
-            std::cin >> x;
+            catan.printGame("Choose Where to place the 2nd Village");
+//            std::cin >> x;
 
-            isValid = catan.placeProperty("Village", x, x);
-            catan.printGame();
+            isValid = catan.placeProperty("Village", 30, 30);
         }
         isValid = false;
         while (!isValid) {
-            std::cout << "Choose Where to place the 2nd Road" << endl;
-            std::cin >> x >> y;
-            isValid = catan.placeProperty("Road", x, y);
-            catan.printGame();
+            catan.printGame("Choose Where to place the 2nd Road");
+//            std::cin >> x >> y;
+            isValid = catan.placeProperty("Road", 30, 36);
         }
         catan.getResources();
-        catan.printGame();
+    p = catan.nextPlayer();
+//    int x;
+//    int y;
+    std::cout <<"It's Player No. "<< " -> "<<p->getName() << "'s Turn!" << endl;
+    isValid = false;
+    while (!isValid) {
+        catan.printGame("Choose Where to place the 1st Village");
+//        std::cin >> x;
+        isValid = catan.placeProperty("Village", 14, 14);
     }
+    isValid = false;
+    while (!isValid) {
+        catan.printGame("Choose Where to place the 1st Road");
+//        std::cin >> x >> y;
+        isValid = catan.placeProperty("Road", 14, 10);
+    }
+    isValid = false;
+    while (!isValid) {
+        catan.printGame("Choose Where to place the 2nd Village");
+//        std::cin >> x;
+        isValid = catan.placeProperty("Village", 13, 13);
+    }
+    isValid = false;
+    while (!isValid) {
+        catan.printGame("Choose Where to place the 2nd Road");
+//        std::cin >> x >> y;
+        isValid = catan.placeProperty("Road", 13, 8);
+    }
+    catan.getResources();
+    p = catan.nextPlayer();
+//    int y;
+    std::cout <<"It's Player No. "<< " -> "<<p->getName() << "'s Turn!" << endl;
+    isValid = false;
+    while (!isValid) {
+        catan.printGame("Choose Where to place the 1st Village");
+//        std::cin >> x;
+        isValid = catan.placeProperty("Village", 5, 5);
+    }
+    isValid = false;
+    while (!isValid) {
+        catan.printGame("Choose Where to place the 1st Road");
+//        std::cin >> x >> y;
+        isValid = catan.placeProperty("Road", 5, 2);
+    }
+    isValid = false;
+    while (!isValid) {
+        catan.printGame("Choose Where to place the 2nd Village");
+//        std::cin >> x;
+        isValid = catan.placeProperty("Village", 6, 6);
+    }
+    isValid = false;
+    while (!isValid) {
+        catan.printGame("Choose Where to place the 2nd Road");
+//        std::cin >> x >> y;
+        isValid = catan.placeProperty("Road", 6, 2);
+        catan.printGame("");
+    }
+    catan.getResources();
+    catan.printGame("");
+
     while (1) {
         // Next player
         Player *p = catan.nextPlayer();
-        catan.printGame();
         // Choose to roll a dice or use Development Card
-        int chooseA;
-        cout << "Hi " << p->getName() << " it's your Turn! -> Choose an Action:\n\t0 - Roll Dice\n\t1 - Use a Development Card" << endl << "Your'e Choice: ";
-        cin >> chooseA;
-        if (chooseA) {
-            int idx;
-            cout << "Choose idx of which number from development: " << endl;
-            while (1) {
-                cin >> idx;
-                string card = catan.flashDevelopmentCard(idx);
-                if (card == "Knight") {
-                    catan.flashKnight();
-                } else if (card == "Monopoly") {
-                    string desired_resource;
-                    cout << "Choose desired resource which you take from others: " << endl;
-                    cin >> desired_resource;
-                    catan.flashMonopoly(desired_resource);
-                } else if (card == "Builder") {
-                    int x1, x2, y1, y2;
-                    std::cout << "Choose Where to place the 1st Road" << endl;
-                    std::cin >> x1 >> y1;
-                    std::cout << "Choose Where to place the 2st Road" << endl;
-                    std::cin >> x2 >> y2;
-                    catan.flashBuilder(x1, y1, x2, y2);
-                } else if (card == "WealthyYear") {
-                    string resource1, resource2;
-                    std::cout << "Choose 2 Resource to take from Bank (can be the same)" << endl;
-                    cin >> resource1 >> resource2;
-                    catan.flashWealthyYear(resource1, resource2);
+        int useDevelopmentCard;
+        int continueTurn = 1;
+
+        catan.printGame("Hi " + p->getName() + " it's your Turn! -> Choose an Action:\n\t0 - Roll Dice\n\t1 - Use a Development Card\nYour'e Choice: ");
+        cin >> useDevelopmentCard;
+        if (useDevelopmentCard) {
+            int index;
+            catan.printGame("Choose a Development Card to Use:\nYour'e Choice: ");
+            cin >> index;
+            bool res = catan.useDevelopmentCard(index);
+            if(res){
+                continueTurn = 0;
                 }
             }
-        }
-            // roll a dice
-        else {
+
+        if(continueTurn) {
             int rand = Dice::roll();
-            catan.printGame();
-            cout << "The random number is: " << rand << endl;
-            // if 7 any players with more then 7 card need to dump half of them
+            catan.printGame("The random number is: " + to_string(rand));
+
             if (rand == 7) {
-                cout << "Time for player to take your staff" << endl;
-            } else {
-                // if not gain resources
+                catan.printGame("Time for player to take your staff");
+            }
+            else {
                 for (int i = 0; i < 3; i++) {
                     catan.getResources(rand);
-//                    p->print();
                     p = catan.nextPlayer();
                 }
             }
-            catan.printGame();
+
             int chooseB;
             bool onGoing = true;
-            cout << "Hi " << p->getName()
-                 << " it's your Turn! -> Choose an Action:\n\t1 - Trade\n\t2 - Draw a Development Card\n\t3 - Place Property\n"
-                 << "\t4 - Use a Development Card\n\t5 - Exit" << endl;
             while (onGoing) {
-                cout << "Your'e Choice: ";
+                catan.printGame("Hi " + p->getName() + " it's your Turn! -> Choose an Action:\n\t1 - Trade\n\t2 - Draw a Development Card\n\t3 - Place Property\n\t4 - Use a Development Card\n\t5 - Exit\nYour'e Choice: ");
                 cin >> chooseB;
-                cout << endl;
-
                 switch (chooseB) {
                     // Trade
                     case 1:
-                        cout << "-- Trade Center --" << endl;
+                        catan.printGame("Trade Center");
                         break;
-                        // Buy a development card
+                    // Buy a development card
                     case 2:
+                        catan.printGame("Draw Development Card");
                         catan.drawDevelopmentCard();
                         break;
-                        // Place a property
+                    // Place a property
                     case 3:
                         int property;
                         int x;
                         int y;
                         bool isValid;
-                        cout << "--- The Property Store ---" << endl;
-                        std::cout
-                                << "Choose What do you want place: \\n\\t1 - Road\\n\\t2 - Village\\n\\t3 - City\\n\"<<\"\\t4 - Exit"
-                                << endl;
-                        cout << "Your'e Choice: ";
-                        std::cin >> property;
+                        catan.printGame("--- The Property Store ---\nChoose What do you want place: \\n\\t1 - Road\\n\\t2 - Village\\n\\t3 - City\\n\"<<\"\\t4 - Exit\nYour'e Choice: ");
+                        cin >> property;
                         switch (property) {
+                                cout << "Where? ";
                             case 1:
-                                std::cout << "Where? ";
-                                std::cin >> x >> y;
-                                isValid = catan.placeProperty("Road", x, y);
+                                cin >> x >> y;
+                                catan.placeProperty("Road", x, y);
                                 break;
                             case 2:
-                                std::cout << "Where? ";
-                                std::cin >> x >> x;
-                                isValid = catan.placeProperty("Village", x, x);
+                                std::cin >> x;
+                                catan.placeProperty("Village", x, x);
                                 break;
                             case 3:
-                                std::cout << "Where? ";
                                 std::cin >> x;
-                                isValid = catan.placeProperty("City", x, x);
+                                catan.placeProperty("City", x, x);
                                 break;
                         }
                         break;
-                        // use development card and finish turn
+                    // use development card and finish turn
                     case 4:
                         int idx;
                         cout << "Choose idx of which number from development: " << endl;
                         while (1) {
                             cin >> idx;
-                            string card = catan.flashDevelopmentCard(idx);
-                            if (card == "Knight") {
-                                catan.flashKnight();
-                            } else if (card == "Monopoly") {
-                                string desired_resource;
-                                cout << "Choose desired resource which you take from others: " << endl;
-                                cin >> desired_resource;
-                                catan.flashMonopoly(desired_resource);
-                            } else if (card == "Builder") {
-                                int x1, x2, y1, y2;
-                                std::cout << "Choose Where to place the 1st Road" << endl;
-                                std::cin >> x1 >> y1;
-                                std::cout << "Choose Where to place the 2st Road" << endl;
-                                std::cin >> x2 >> y2;
-                                catan.flashBuilder(x1, y1, x2, y2);
-                            } else if (card == "WealthyYear") {
-                                string resource1, resource2;
-                                std::cout << "Choose 2 Resource to take from Bank (can be the same)" << endl;
-                                cin >> resource1 >> resource2;
-                                catan.flashWealthyYear(resource1, resource2);
-                            }
+                            bool res = catan.useDevelopmentCard(idx);
+                            if (res) { break; }
                             break;
                         }
                         onGoing = false;
                         break;
-                        //exit
+                    //Exit
                     case 5:
                         onGoing = false;
                         break;
