@@ -29,13 +29,13 @@ public:
     void addWinningPoints(int amount){_winPoints += amount;}
     void removeWinningPoints(int amount){_winPoints -= amount;}
 
-    bool payToBuild(string property);
-
-    bool buyDevelopmentCard(string type,Set<ResourceCard>& cost);
+    bool canPay(Set<ResourceCard>& resources);
+    void build(Property& property);
+    void buyDevelopmentCard(DevelopmentCard& card);
+    bool getResources(Set<ResourceCard>& cardset);
 
     string useDevelopmentCard(int index);
 
-    bool getResources(Set<ResourceCard>& cardset);
 
     bool giveResources(Set<ResourceCard>& set);
 

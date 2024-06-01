@@ -13,26 +13,20 @@ Player::Player(string name,int id): _name(name), _winPoints(0),_id(id){
     _properties.add("City",4);
 };
 
-bool Player::payToBuild(string property) {
-    int result = _properties.search(property);
-    if(result == -1){return false;}
-    _winPoints += _properties.getAt(result).getWinPoints();
-    if(!_firstTurn){
-        if(_properties.getAt(result).getCost() > _resourceCards){
-            cout << "Not enoght funds!" << endl;
-            return false;
-        }
-        _resourceCards -= _properties.getAt(result).getCost();
-    }
-    _properties.getAt(result).remove(1);
-    return true;
+bool Player::canPay(Set<ResourceCard> &resources) {
+    if(_firstTurn){return true;}
+    return _resourceCards > resources;
 }
 
-bool Player::buyDevelopmentCard(string type,Set<ResourceCard>& cost){
-    if(cost > _resourceCards){return false;}
-    _resourceCards -= cost;
-    _developmentCard.add(type,1);
-    return true;
+void Player::build(Property &property) {
+    _properties.remove(property.getType(),property.size());
+    _resourceCards -= property.getCost();
+    _winPoints += property.getWinPoints();
+}
+
+void Player::buyDevelopmentCard(DevelopmentCard& card){
+    _resourceCards -= card.getCost();
+    _developmentCard.add(card.getType(),card.size());
 }
 
 string Player::useDevelopmentCard(int index){

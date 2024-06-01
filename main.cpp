@@ -19,20 +19,20 @@ int main() {
     // each player places two Villages and two Roads and get Resources
         Player *p = catan.nextPlayer();
         catan.printGame("Welcome to Catan");
-//        int x;
-//        int y;
+        int x;
+        int y;
         std::cout <<"It's Player No. "<< " -> "<<p->getName() << "'s Turn!" << endl;
         isValid = false;
         while (!isValid) {
             catan.printGame("Choose Where to place the 1st Village");
-//            std::cin >> x;
-            isValid = catan.placeProperty("Village", 48, 48);
+            std::cin >> x;
+            isValid = catan.placeProperty("Village", x, x);
         }
         isValid = false;
         while (!isValid) {
             catan.printGame("Choose Where to place the 1st Road");
-//            std::cin >> x >> y;
-            isValid = catan.placeProperty("Road", 48, 44);
+            std::cin >> x >> y;
+            isValid = catan.placeProperty("Road", x, y);
         }
         isValid = false;
         while (!isValid) {

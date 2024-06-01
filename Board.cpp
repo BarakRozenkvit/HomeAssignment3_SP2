@@ -37,15 +37,15 @@ void Board::init() {
     _lands[18] = Land("Hills", "Brick",hexagons[13], landNumbers[10]);
 }
 
-bool Board::placeProperty(string property,char id,bool isFirstTurn,int i,int j) {
+bool Board::canPlaceProperty(string property,char id,bool isFirstTurn,int i,int j) {
     if (property == "Road") {
         if (_graph.getValue(i,i) == id + 1 || _graph.getValue(i,i) == id + 2 ||
             _graph.getValue(j,j) == id + 1 || _graph.getValue(j,j) == id + 2) {
-            return _graph.setValue(id + 0, i, j);
+            return true;
         }
         for (int k = 0; k < _graph.size(); k++) {
             if (_graph.getValue(i,k) == id || _graph.getValue(j,k) == id) {
-                return _graph.setValue(id + 0, i, j);
+                return true;
             }
         }
     } else if (property == "Village") {
@@ -57,17 +57,29 @@ bool Board::placeProperty(string property,char id,bool isFirstTurn,int i,int j) 
             if (_graph.getValue(i,k) >= 1 && _graph.getValue(k,k) == 0) { noAdj = true; }
         }
 
-        if(noAdj && isFirstTurn) {return _graph.setValue(id + 1, i, j);}
-        if (noAdj && isPath) { return _graph.setValue(id + 1, i, j); }
+        if(noAdj && isFirstTurn) {return true;}
+        if (noAdj && isPath) { return true; }
         return false;
 
     }
     else if(property == "City") {
         if (_graph.getValue(i,j) == id + 2 - 1) {
-            return _graph.setValue(id + 2, i, j);
+            return true;
         }
     }
     return false;
+}
+
+void Board::placeProperty(string property, char id, int x, int y) {
+    if (property == "Road") {
+        _graph.setValue(id+0,x,y);
+    }
+    else if (property == "Village") {
+        _graph.setValue(id+1,x,y);
+    }
+    else if(property == "City") {
+        _graph.setValue(id+2,x,y);
+    }
 }
 
 Set<ResourceCard> Board::getResources(char id,bool isFirstTurn,int rand){
@@ -85,6 +97,6 @@ Set<ResourceCard> Board::getResources(char id,bool isFirstTurn,int rand){
     return resources;
 }
 
-void Board::moveGambit(){}
+//void Board::moveGambit(){}
 
 

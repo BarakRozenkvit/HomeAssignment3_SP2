@@ -23,9 +23,21 @@ Player* Catan::currentPlayer() {
 }
 
 bool Catan::placeProperty(string property,int x,int y){
-    bool res = currentPlayer()->payToBuild(property);
-    if(res){
-        return _board.placeProperty(property,currentPlayer()->getID(),currentPlayer()->isFirstTurn(), x, y);
+    Property temp = Property(property,1);
+
+    bool affordable = currentPlayer()->canPay(temp.getCost());
+    bool placeValid = _board.canPlaceProperty(temp.getType(),currentPlayer()->getID(),currentPlayer()->isFirstTurn(),x,y);
+
+    if(affordable && placeValid){
+        currentPlayer()->build(temp);
+        _board.placeProperty(temp.getType(),currentPlayer()->getID(),x,y);
+        return true;
+    }
+    if(!affordable){
+        cout << "No Funds" <<endl;
+    }
+    if(!placeValid){
+        cout << "Wrong Place" << endl;
     }
     return false;
 }
@@ -53,16 +65,22 @@ bool Catan::drawDevelopmentCard(){
             break;
         }
     }
-    bool res = currentPlayer()->buyDevelopmentCard(_developmentCards.getAt(index).getType(),_developmentCards.getAt(index).getCost());
-    if(res){
-        cout << "Bought!" <<endl;
+    DevelopmentCard card = _developmentCards.getAt(index);
+    bool affordable = currentPlayer()->canPay(card.getCost());
+    if(affordable){
+        _developmentCards.remove(card.getType(),1);
+        currentPlayer()->buyDevelopmentCard(card);
         return true;
     }
-    else{
-        cout << "Not enogh funds" << endl;
-        return false;
-    }
+    cout << "No Funds availble" <<endl;
+    return false;
 }
+
+
+
+
+
+
 
 bool Catan::flashKnight(){
     if(largestArmy == nullptr && currentPlayer()->getArmySize() == 3){

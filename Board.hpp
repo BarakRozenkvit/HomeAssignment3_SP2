@@ -16,11 +16,13 @@ class Board{
 public:
     Board(){init();}
 
-    bool placeProperty(string property,char id,bool isFirstTurn,int x,int y);
+    bool canPlaceProperty(string property,char id,bool isFirstTurn,int x,int y);
+
+    void placeProperty(string property,char id,int x,int y);
 
     Set<ResourceCard> getResources(char id,bool isFirstTurn,int rand);
 
-    void moveGambit();
+//    void moveGambit();
 
     friend ostream& operator<<(ostream& out,Board& b){
         out << b._graph <<endl;
