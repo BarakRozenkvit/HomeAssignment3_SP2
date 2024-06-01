@@ -13,12 +13,13 @@ int main() {
     Catan catan = Catan(new Player("amit", 10),
                         new Player("Yossi", 20),
                         new Player("Dana", 30));
-    catan.printGame();
+//    catan.printGame();
     bool isValid;
 
     // each player places two Villages and two Roads and get Resources
     for (int i = 0; i < 3; i++) {
         Player *p = catan.nextPlayer();
+        catan.printGame();
         int x;
         int y;
         std::cout <<"It's Player No. "<<i<< " -> "<<p->getName() << "'s Turn!" << endl;
@@ -27,12 +28,14 @@ int main() {
             std::cout << "Choose Where to place the 1st Village" << endl;
             std::cin >> x;
             isValid = catan.placeProperty("Village", x, x);
+            catan.printGame();
         }
         isValid = false;
         while (!isValid) {
             std::cout << "Choose Where to place the 1st Road" << endl;
             std::cin >> x >> y;
             isValid = catan.placeProperty("Road", x, y);
+            catan.printGame();
         }
         isValid = false;
         while (!isValid) {
@@ -40,24 +43,25 @@ int main() {
             std::cin >> x;
 
             isValid = catan.placeProperty("Village", x, x);
+            catan.printGame();
         }
         isValid = false;
         while (!isValid) {
             std::cout << "Choose Where to place the 2nd Road" << endl;
             std::cin >> x >> y;
             isValid = catan.placeProperty("Road", x, y);
+            catan.printGame();
         }
         catan.getResources();
+        catan.printGame();
     }
-    catan.printGame();
     while (1) {
         // Next player
         Player *p = catan.nextPlayer();
+        catan.printGame();
         // Choose to roll a dice or use Development Card
         int chooseA;
-        cout << "Hi " << p->getName()
-             << " it's your Turn! -> Choose an Action:\n\t0 - Roll Dice\n\t1 - Use a Development Card" << endl;
-        cout << "Your'e Choice: ";
+        cout << "Hi " << p->getName() << " it's your Turn! -> Choose an Action:\n\t0 - Roll Dice\n\t1 - Use a Development Card" << endl << "Your'e Choice: ";
         cin >> chooseA;
         if (chooseA) {
             int idx;
@@ -90,6 +94,7 @@ int main() {
             // roll a dice
         else {
             int rand = Dice::roll();
+            catan.printGame();
             cout << "The random number is: " << rand << endl;
             // if 7 any players with more then 7 card need to dump half of them
             if (rand == 7) {

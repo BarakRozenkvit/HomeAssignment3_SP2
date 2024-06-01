@@ -39,16 +39,14 @@ public:
     bool trade(int id);
 
     void printGame(){
+        system("clear");
+        cout<< "The Board: " << endl;
         cout << _board << endl;
-        cout << "Players: " <<endl;
-        for(int i=0;i<3;i++){
-            cout << _turnsOrder[i] <<endl;
-        }
-
-        cout << "Development Cards Bank: "<<endl;
-        cout << _developmentCards << endl;
-        cout<<endl<<endl;
+        cout << "Devolopment Cards Bank: " << _developmentCards << " Cost: " << _developmentCards.getAt(0).getCost() << endl;
 //        cout << "Largest Army: " << largestArmy<<endl;
 //        cout << "Longest Road: "<<longestRoad<<endl;
+        cout << "Players: " <<endl;
+        cout << _turnsOrder[_turnCounter] <<endl;
+        cout <<endl;
     }
 };

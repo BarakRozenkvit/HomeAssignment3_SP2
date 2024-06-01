@@ -65,6 +65,7 @@ public:
         for(int i=0;i<set.size();i++){
             res += "[";
             res += set.getAt(i).getType();
+            res += ": ";
             res += to_string(set.getAt(i).size());
             res += "],";
         }
