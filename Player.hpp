@@ -30,20 +30,14 @@ public:
     void removeWinningPoints(int amount){_winPoints -= amount;}
 
     bool canPay(Set<ResourceCard>& resources);
+    void pay(Set<ResourceCard>& resources);
+    bool receive(Set<ResourceCard>& resources);
     void build(Property& property);
-    void buyDevelopmentCard(DevelopmentCard& card);
-    bool getResources(Set<ResourceCard>& cardset);
-
-    string useDevelopmentCard(int index);
+    void addDevelopmentCard(DevelopmentCard& card);
+    bool useDevelopmentCard(DevelopmentCard& card);
 
 
-    bool giveResources(Set<ResourceCard>& set);
-
-    int getArmySize(){
-        int card = _developmentCard.search("Knight");
-        if(card == -1){return 0;}
-        return 0;
-    }
+    int getArmySize();
 
     friend ostream& operator<<(ostream& out,Player* p){
         out<< "name: " <<p->_name<<endl;

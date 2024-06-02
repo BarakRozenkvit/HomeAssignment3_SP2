@@ -25,14 +25,14 @@ int main() {
         isValid = false;
         while (!isValid) {
             catan.printGame("Choose Where to place the 1st Village");
-            std::cin >> x;
-            isValid = catan.placeProperty("Village", x, x);
+//            std::cin >> x;
+            isValid = catan.placeProperty("Village", 48, 48);
         }
         isValid = false;
         while (!isValid) {
             catan.printGame("Choose Where to place the 1st Road");
-            std::cin >> x >> y;
-            isValid = catan.placeProperty("Road", x, y);
+//            std::cin >> x >> y;
+            isValid = catan.placeProperty("Road", 48, 44);
         }
         isValid = false;
         while (!isValid) {

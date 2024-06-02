@@ -18,36 +18,51 @@ bool Player::canPay(Set<ResourceCard> &resources) {
     return _resourceCards > resources;
 }
 
+void Player::pay(Set<ResourceCard> &resources){
+    _resourceCards -= resources;
+}
+
 void Player::build(Property &property) {
     _properties.remove(property.getType(),property.size());
-    _resourceCards -= property.getCost();
     _winPoints += property.getWinPoints();
 }
 
-void Player::buyDevelopmentCard(DevelopmentCard& card){
-    _resourceCards -= card.getCost();
-    _developmentCard.add(card.getType(),card.size());
+void Player::addDevelopmentCard(DevelopmentCard& card){
+    if(card.getType() == "WinningPoints"){
+        _winPoints++;
+    }
+    _developmentCard.add(card.getType(), card.size());
 }
 
-string Player::useDevelopmentCard(int index){
+bool Player::useDevelopmentCard(DevelopmentCard& card){
     if(_developmentCard.size() == 0){
         cout << "Development Cards are empty!" << endl;
-        return "empty";
+        return false;
     }
-    DevelopmentCard& result = _developmentCard.getAt(index);
-    cout << "Requested " << result.getType() << endl;
+    int res = _developmentCard.search(card.getType());
+    if(res == -1){
+        cout << "Dont have this Card" << endl;
+        return false;
+    }
+
+    DevelopmentCard& result = _developmentCard.getAt(res);
     result.flashCard();
-    return result.getType();
-}
-
-bool Player::getResources(Set<ResourceCard>& set) {
-    _resourceCards += set;
+    if(card.getType() == "Monopoly" || card.getType() == "Builder" || card.getType() == "WealthyYear"){
+        _developmentCard.remove(card.getType(),card.size());
+    }
     return true;
 }
 
-bool Player::giveResources(Set<ResourceCard>& set) {
-    _resourceCards -= set;
+bool Player::receive(Set<ResourceCard>& resources) {
+    _resourceCards += resources;
     return true;
+}
+
+int Player::getArmySize(){
+    int card = _developmentCard.search("Knight");
+    if(card == -1){return 0;}
+    return _developmentCard.getAt(card).getAmountFlashed();
+
 }
 
 

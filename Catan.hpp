@@ -35,7 +35,7 @@ public:
 
     void flashWealthyYear(string resource1,string resource2);
 
-    bool useDevelopmentCard(int idx);
+    bool useDevelopmentCard(string card);
 
     bool trade(int id);
 
