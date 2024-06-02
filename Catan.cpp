@@ -87,64 +87,31 @@ bool Catan::drawDevelopmentCard(){
     return false;
 }
 
-bool Catan::flashKnight(){
-    if(largestArmy == nullptr && currentPlayer()->getArmySize() == 3){
-        largestArmy = currentPlayer();
-        currentPlayer()->addWinningPoints(2);
-    }
-    else if(largestArmy != nullptr && largestArmy->getArmySize() < currentPlayer()->getArmySize()){
-        largestArmy->removeWinningPoints(2);
-        largestArmy = currentPlayer();
-        currentPlayer()->addWinningPoints(2);
-    }
-    return true;
-}
-
-bool Catan::flashMonopoly(string desiredResource){
-//    Set<ResourceCard> resource;
-//    resource.add(desiredResource,1);
-//    bool amount;
-//    nextPlayer();
-//    for (int i = 0; i < 2; i++) {
-//        currentPlayer()->pay(resource);
-//        if(res){resource += resource;}
-//        nextPlayer();
-//    }
-//    currentPlayer()->pay(resource);
-    return true;
-}
-
-bool Catan::flashBuilder(int x1,int y1,int x2, int y2){
-    placeProperty("Road",x1,y1);
-    placeProperty("Road",x2,y2);
-    return true;
-}
-
-void Catan::flashWealthyYear(string resource1,string resource2){
-    Set<ResourceCard> res;
-    res.add(resource1,1);
-    res.add(resource2,1);
-    currentPlayer()->getResources(res);
-}
-
 bool Catan::useDevelopmentCard(string card){
     DevelopmentCard temp = DevelopmentCard(card,1);
-
     bool res = currentPlayer()->useDevelopmentCard(temp);
     // if empty or dont have card return false;
     if(!res){
+        cout<< "You dont have this card!"<<endl;
         return false;
     }
 
     if (card == "Knight") {
-        flashKnight();
+        if(largestArmy == nullptr && currentPlayer()->getArmySize() == 3){
+            largestArmy = currentPlayer();
+            currentPlayer()->addWinningPoints(2);
+        }
+        else if(largestArmy != nullptr && largestArmy->getArmySize() < currentPlayer()->getArmySize()){
+            largestArmy->removeWinningPoints(2);
+            largestArmy = currentPlayer();
+            currentPlayer()->addWinningPoints(2);
+        }
         return true;
     }
     else if (card == "Monopoly") {
         string desired_resource;
         cout << "Choose desired resource which you take from others: " << endl;
         cin >> desired_resource;
-        flashMonopoly(desired_resource);
         return true;
     }
     else if (card == "Builder") {
@@ -153,14 +120,18 @@ bool Catan::useDevelopmentCard(string card){
         std::cin >> x1 >> y1;
         std::cout << "Choose Where to place the 2st Road" << endl;
         std::cin >> x2 >> y2;
-        flashBuilder(x1, y1, x2, y2);
+        placeProperty("Road",x1,y1);
+        placeProperty("Road",x2,y2);
         return true;
     }
     else if (card == "WealthyYear") {
         string resource1, resource2;
         std::cout << "Choose 2 Resource to take from Bank (can be the same)" << endl;
         cin >> resource1 >> resource2;
-        flashWealthyYear(resource1, resource2);
+        Set<ResourceCard> res;
+        res.add(resource1,1);
+        res.add(resource2,1);
+        currentPlayer()->receive(res);
         return true;
     }
     else{

@@ -19,7 +19,9 @@ bool Player::canPay(Set<ResourceCard> &resources) {
 }
 
 void Player::pay(Set<ResourceCard> &resources){
-    _resourceCards -= resources;
+    if(!_firstTurn) {
+        _resourceCards -= resources;
+    }
 }
 
 void Player::build(Property &property) {

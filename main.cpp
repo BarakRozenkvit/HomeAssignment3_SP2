@@ -118,10 +118,10 @@ int main() {
         catan.printGame("Hi " + p->getName() + " it's your Turn! -> Choose an Action:\n\t0 - Roll Dice\n\t1 - Use a Development Card\nYour'e Choice: ");
         cin >> useDevelopmentCard;
         if (useDevelopmentCard) {
-            int index;
+            string type;
             catan.printGame("Choose a Development Card to Use:\nYour'e Choice: ");
-            cin >> index;
-            bool res = catan.useDevelopmentCard(index);
+            cin >> type;
+            bool res = catan.useDevelopmentCard(type);
             if(res){
                 continueTurn = 0;
                 }
@@ -129,7 +129,6 @@ int main() {
 
         if(continueTurn) {
             int rand = Dice::roll();
-            catan.printGame("The random number is: " + to_string(rand));
 
             if (rand == 7) {
                 catan.printGame("Time for player to take your staff");
@@ -141,62 +140,78 @@ int main() {
                 }
             }
 
+            int i =0;
             int chooseB;
-            bool onGoing = true;
-            while (onGoing) {
-                catan.printGame("Hi " + p->getName() + " it's your Turn! -> Choose an Action:\n\t1 - Trade\n\t2 - Draw a Development Card\n\t3 - Place Property\n\t4 - Use a Development Card\n\t5 - Exit\nYour'e Choice: ");
+            bool mainLoop = true;
+            catan.printGame("Home Menu");
+            cout<<"The random number is: " + to_string(rand) +"\nChoose an Action:\n\t1 - Trade\n\t2 - Draw a Development Card\n\t3 - Place Property\n\t4 - Use a Development Card\n\t5 - Exit";
+            while (mainLoop) {
+                if(i>0){
+                    catan.printGame("Home Menu");
+                    cout<<"Choose an Action:\n\t1 - Trade\n\t2 - Draw a Development Card\n\t3 - Place Property\n\t4 - Use a Development Card\n\t5 - Exit";
+                }
                 cin >> chooseB;
                 switch (chooseB) {
                     // Trade
-                    case 1:
-                        catan.printGame("Trade Center");
+                    case 1: {
+                        catan.printGame("Home Menu > Trade");
                         break;
+                    }
                     // Buy a development card
-                    case 2:
-                        catan.printGame("Draw Development Card");
+                    case 2: {
+                        catan.printGame("Home Menu > Draw Development Card");
                         catan.drawDevelopmentCard();
                         break;
+                    }
                     // Place a property
-                    case 3:
-                        int property;
+                    case 3: {
+                        catan.printGame("Home Menu > Place Property");
+                        cout << "\t1 - Road\n\t2 - Village\n\t3 - City\n\t4 - Exit\n";
                         int x;
                         int y;
-                        bool isValid;
-                        catan.printGame("--- The Property Store ---\nChoose What do you want place: \\n\\t1 - Road\\n\\t2 - Village\\n\\t3 - City\\n\"<<\"\\t4 - Exit\nYour'e Choice: ");
+                        int property;
                         cin >> property;
                         switch (property) {
-                                cout << "Where? ";
                             case 1:
+                                catan.printGame("Home Menu > Place Property > Road");
+                                cout << "Where?\n";
                                 cin >> x >> y;
                                 catan.placeProperty("Road", x, y);
                                 break;
                             case 2:
+                                catan.printGame("Home Menu > Place Property > Village");
+                                cout << "Where?\n";
                                 std::cin >> x;
                                 catan.placeProperty("Village", x, x);
                                 break;
                             case 3:
+                                catan.printGame("Home Menu > Place Property > City");
+                                cout << "Where?\n";
                                 std::cin >> x;
                                 catan.placeProperty("City", x, x);
                                 break;
                         }
                         break;
+                    }
                     // use development card and finish turn
-                    case 4:
-                        int idx;
-                        cout << "Choose idx of which number from development: " << endl;
-                        while (1) {
-                            cin >> idx;
-                            bool res = catan.useDevelopmentCard(idx);
-                            if (res) { break; }
-                            break;
+                    case 4: {
+                        string card;
+                        bool res;
+                        catan.printGame("Home Menu > Use Development Card");
+                        cout << "Card Name:" << endl;
+                        cin >> card;
+                        res = catan.useDevelopmentCard(card);
+                        if (res) {
+                            mainLoop = false;
                         }
-                        onGoing = false;
                         break;
-                    //Exit
-                    case 5:
-                        onGoing = false;
+                    }
+                    case 5: {
+                        mainLoop = false;
                         break;
+                    }
                 }
+                i++;
             }
         }
     }    // check win

@@ -48,8 +48,6 @@ public:
 //        cout << "Longest Road: "<<longestRoad<<endl;
         cout << "Players: " <<endl;
         cout << _turnsOrder[_turnCounter] <<endl;
-        cout <<endl;
         cout << option <<endl;
-        sleep(0);
     }
 };
