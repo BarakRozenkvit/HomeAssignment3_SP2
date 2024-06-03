@@ -12,6 +12,7 @@ public:
         _cost.add("Iron",1);
         _cost.add("Wool",1);
         _cost.add("Wheat",1);
+        _flashedAmount = 0;
     };
     Set<ResourceCard>& getCost(){return _cost;}
     void flashCard(){_flashedAmount++;}

@@ -42,10 +42,22 @@ public:
     void clear(){
         _set.clear();
     }
+
+    int total(){
+        int res = 0;
+        for(int i=0;i<size();i++){
+            res += getAt(i).size();
+        }
+        return res;
+    }
+
     Set<T>& operator-=(Set<T>& set){
         for(int i=0;i<set.size();i++){
             T& inSet = set.getAt(i);
             int res = this->search(inSet.getType());
+            if(res == -1){
+                return *this;
+            }
             T& inThis = this->getAt(res);
             inThis.remove(inSet.size());
         }
@@ -55,8 +67,13 @@ public:
         for(int i=0;i<set.size();i++){
             T& inSet = set.getAt(i);
             int res = this->search(inSet.getType());
-            T& inThis = this->getAt(res);
-            inThis.add(inSet.size());
+            if(res == -1){
+                this->add(inSet.getType(),inSet.size());
+            }
+            else {
+                T &inThis = this->getAt(res);
+                inThis.add(inSet.size());
+            }
         }
         return *this;
     }
@@ -74,7 +91,7 @@ public:
         return true;
     }
 
-    friend ostream& operator<<(ostream& out,Set<T>& set){
+    friend ostream& operator<<(ostream& out,Set<T> set){
         string res ="";
         for(int i=0;i<set.size();i++){
             res += "[";

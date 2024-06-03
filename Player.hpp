@@ -28,6 +28,8 @@ public:
     void setFirstTurn(bool boolean){_firstTurn = boolean;}
     void addWinningPoints(int amount){_winPoints += amount;}
     void removeWinningPoints(int amount){_winPoints -= amount;}
+    int getWinPoints(){return _winPoints;}
+    int getAmountResources(){ return _resourceCards.total();}
 
     bool canPay(Set<ResourceCard>& resources);
     void pay(Set<ResourceCard>& resources);
@@ -35,7 +37,6 @@ public:
     void build(Property& property);
     void addDevelopmentCard(DevelopmentCard& card);
     bool useDevelopmentCard(DevelopmentCard& card);
-
 
     int getArmySize();
 

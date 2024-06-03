@@ -3,11 +3,6 @@
 #include <iostream>
 
 Player::Player(string name,int id): _name(name), _winPoints(0),_id(id){
-    _resourceCards.add("Wood",0);
-    _resourceCards.add("Wheat",0);
-    _resourceCards.add("Wool",0);
-    _resourceCards.add("Brick",0);
-    _resourceCards.add("Iron",0);
     _properties.add("Road",15);
     _properties.add("Village",5);
     _properties.add("City",4);
@@ -38,12 +33,10 @@ void Player::addDevelopmentCard(DevelopmentCard& card){
 
 bool Player::useDevelopmentCard(DevelopmentCard& card){
     if(_developmentCard.size() == 0){
-        cout << "Development Cards are empty!" << endl;
         return false;
     }
     int res = _developmentCard.search(card.getType());
     if(res == -1){
-        cout << "Dont have this Card" << endl;
         return false;
     }
 

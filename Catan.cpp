@@ -44,33 +44,32 @@ bool Catan::placeProperty(string property,int x,int y){
     if(!placeValid){
         cout << "Wrong Place" << endl;
     }
+    sleep(2);
     return false;
 }
 
-void Catan::getResources(int rand) {
+Set<ResourceCard> Catan::getResources(int rand) {
     Set<ResourceCard> resources;
     resources = _board.getResources(currentPlayer()->getID(),currentPlayer()->isFirstTurn(),rand);
     currentPlayer()->setFirstTurn(false);
     currentPlayer()->receive(resources);
+    return resources;
 }
 
 bool Catan::drawDevelopmentCard(){
-    int cardAmount=0;
-    for(int i=0;i<_developmentCards.size();i++){
-        cardAmount += _developmentCards.getAt(i).size();
-    }
-    int index;
+    int cardAmount=_developmentCards.total();
     srand(time(0));
-    int card_number = (rand() % cardAmount) - 1;
-    int counter = 0;
+    int card_number = (rand() % cardAmount);
+    // get Card
+    int j=0;
+    int index;
     for(int i=0;i<_developmentCards.size();i++){
-        counter += _developmentCards.getAt(i).size();
-        if(card_number <= counter) {
-            int index = i;
+        j += _developmentCards.getAt(i).size();
+        if(j >= card_number){
+            index = i;
             break;
         }
     }
-    // get Card
     DevelopmentCard card = _developmentCards.getAt(index);
     // Check if Player can Pay
     bool affordable = currentPlayer()->canPay(card.getCost());
@@ -83,59 +82,82 @@ bool Catan::drawDevelopmentCard(){
         currentPlayer()->addDevelopmentCard(card);
         return true;
     }
-    cout << "No Funds availble" <<endl;
     return false;
 }
 
-bool Catan::useDevelopmentCard(string card){
-    DevelopmentCard temp = DevelopmentCard(card,1);
+bool Catan::useKnightCard() {
+    DevelopmentCard temp = DevelopmentCard("Knight", 1);
     bool res = currentPlayer()->useDevelopmentCard(temp);
-    // if empty or dont have card return false;
-    if(!res){
-        cout<< "You dont have this card!"<<endl;
-        return false;
-    }
-
-    if (card == "Knight") {
-        if(largestArmy == nullptr && currentPlayer()->getArmySize() == 3){
+    if (res) {
+        if (largestArmy == nullptr && currentPlayer()->getArmySize() == 3) {
             largestArmy = currentPlayer();
             currentPlayer()->addWinningPoints(2);
-        }
-        else if(largestArmy != nullptr && largestArmy->getArmySize() < currentPlayer()->getArmySize()){
+        } else if (largestArmy != nullptr && largestArmy->getArmySize() < currentPlayer()->getArmySize()) {
             largestArmy->removeWinningPoints(2);
             largestArmy = currentPlayer();
             currentPlayer()->addWinningPoints(2);
         }
-        return true;
     }
-    else if (card == "Monopoly") {
-        string desired_resource;
-        cout << "Choose desired resource which you take from others: " << endl;
-        cin >> desired_resource;
-        return true;
+    return res;
+}
+
+bool Catan::useMonopolyCard(string desiredResource) {
+    DevelopmentCard temp = DevelopmentCard("Monopoly",1);
+    bool res = currentPlayer()->useDevelopmentCard(temp);
+    if(res) {
+        Set<ResourceCard> wallet;
+        Set<ResourceCard> desired;
+        desired.add(desiredResource, 1);
+        nextPlayer();
+        for (int i = 0; i < 2; i++) {
+            if (currentPlayer()->canPay(desired)) {
+                currentPlayer()->pay(desired);
+                wallet += desired;
+            }
+            nextPlayer();
+        }
+        currentPlayer()->receive(wallet);
     }
-    else if (card == "Builder") {
-        int x1, x2, y1, y2;
-        std::cout << "Choose Where to place the 1st Road" << endl;
-        std::cin >> x1 >> y1;
-        std::cout << "Choose Where to place the 2st Road" << endl;
-        std::cin >> x2 >> y2;
-        placeProperty("Road",x1,y1);
-        placeProperty("Road",x2,y2);
-        return true;
-    }
-    else if (card == "WealthyYear") {
-        string resource1, resource2;
-        std::cout << "Choose 2 Resource to take from Bank (can be the same)" << endl;
-        cin >> resource1 >> resource2;
-        Set<ResourceCard> res;
-        res.add(resource1,1);
-        res.add(resource2,1);
-        currentPlayer()->receive(res);
-        return true;
-    }
-    else{
+    return res;
+}
+
+bool Catan::useBuilderCard(int x1, int y1, int x2, int y2) {
+    DevelopmentCard temp = DevelopmentCard("Builder",1);
+    bool placeValid1 = _board.canPlaceProperty(temp.getType(), currentPlayer()->getID(),
+                                               currentPlayer()->isFirstTurn(), x1, y1);
+    bool placeValid2 = _board.canPlaceProperty(temp.getType(), currentPlayer()->getID(),
+                                               currentPlayer()->isFirstTurn(), x2, y2);
+    if (placeValid1 && placeValid2) {
+    bool res = currentPlayer()->useDevelopmentCard(temp);
+    if(res) {
+        Property temp = Property("Road", 1);
+        // check if place is valid
+            _board.placeProperty(temp.getType(), currentPlayer()->getID(), x1, y1);
+            _board.placeProperty(temp.getType(), currentPlayer()->getID(), x2, y2);
+            return true;
+        }
         return false;
     }
+    return false;
 }
+
+bool Catan::useWealthyYearCard(string resource1, string resource2) {
+    DevelopmentCard temp = DevelopmentCard("WealthyYear",1);
+    bool res = currentPlayer()->useDevelopmentCard(temp);
+    if(res) {
+        Set<ResourceCard> resources;
+        resources.add(resource1,1);
+        resources.add(resource2,1);
+        currentPlayer()->receive(resources);
+    }
+    return res;
+}
+
+bool Catan::checkWin() {
+    if(_turnsOrder[0]->getWinPoints() == 10 ||_turnsOrder[1]->getWinPoints() == 10|| _turnsOrder[2]->getWinPoints() == 10){
+        return true;
+    }
+    return false;
+}
+
 

@@ -6,7 +6,7 @@ void Board::init() {
                             Hexagon(2, 5, 6, 9, 10, 14),Hexagon(7, 11, 12, 16, 17, 22),
                             Hexagon(8, 12, 13, 17, 18, 23),Hexagon(9, 13, 14, 18, 19, 24),
                             Hexagon(10, 14, 15, 19, 20, 25),Hexagon(16, 21, 22, 27, 28, 33),
-                            Hexagon(17, 22, 23, 28, 29, 34),Hexagon(18, 29, 24, 29, 30, 35),
+                            Hexagon(17, 22, 23, 28, 29, 34),Hexagon(18, 23, 24, 29, 30, 35),
                             Hexagon(19, 24, 25, 30, 31, 36),Hexagon(20, 25, 26, 31, 32, 37),
                             Hexagon(28, 33, 34, 38, 39, 43),Hexagon(29, 34, 35, 39, 40, 44),
                             Hexagon(30, 35, 36, 40, 41, 45),Hexagon(31, 36, 37, 41, 42, 46),
@@ -39,6 +39,7 @@ void Board::init() {
 
 bool Board::canPlaceProperty(string property,char id,bool isFirstTurn,int i,int j) {
     if (property == "Road") {
+        if(_graph.getValue(i,j) != 1){return false;}
         if (_graph.getValue(i,i) == id + 1 || _graph.getValue(i,i) == id + 2 ||
             _graph.getValue(j,j) == id + 1 || _graph.getValue(j,j) == id + 2) {
             return true;
@@ -52,6 +53,7 @@ bool Board::canPlaceProperty(string property,char id,bool isFirstTurn,int i,int 
         bool noAdj = false, isPath = false;
         // scan for neighbors
         for (int k = 0; k < _graph.size(); k++) {
+            if(_graph.getValue(i,j) !=0){break;}
             if (_graph.getValue(i,k) == id) { isPath = true; }
             // what is neighbors and check if no village there
             if (_graph.getValue(i,k) >= 1 && _graph.getValue(k,k) == 0) { noAdj = true; }
@@ -63,6 +65,7 @@ bool Board::canPlaceProperty(string property,char id,bool isFirstTurn,int i,int 
 
     }
     else if(property == "City") {
+        if(_graph.getValue(i,j) !=0){return false;}
         if (_graph.getValue(i,j) == id + 2 - 1) {
             return true;
         }

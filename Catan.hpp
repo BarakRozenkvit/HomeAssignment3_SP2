@@ -23,31 +23,37 @@ public:
 
     bool placeProperty(string property,int x,int y);
 
-    void getResources(int rand=0);
+    Set<ResourceCard> getResources(int rand=0);
 
     bool drawDevelopmentCard();
 
-    bool flashKnight();
+    bool useKnightCard();
 
-    bool flashMonopoly(string desiredResource);
+    bool useMonopolyCard(string desiredResource);
 
-    bool flashBuilder(int x1,int y1,int x2, int y2);
+    bool useBuilderCard(int x1,int y1,int x2, int y2);
 
-    void flashWealthyYear(string resource1,string resource2);
+    bool useWealthyYearCard(string resource1,string resource2);
 
-    bool useDevelopmentCard(string card);
-
-    bool trade(int id);
-
-    void printGame(string option){
+    void printGame(string option,Player* p=nullptr){
         system("clear");
-        cout<< "The Board: " << endl;
         cout << _board << endl;
-        cout << "Devolopment Cards Bank: " << _developmentCards << " Cost: " << _developmentCards.getAt(0).getCost() << endl;
+        cout << "Devolopment Cards Cost: " << _developmentCards.getAt(0).getCost() << endl;
+        cout << "Road Cost: " <<Property("Road",1).getCost() << endl;
+        cout << "Village Cost: " <<Property("Village",1).getCost() << endl;
+        cout << "City Cost: " <<Property("City",1).getCost() << endl;
 //        cout << "Largest Army: " << largestArmy<<endl;
 //        cout << "Longest Road: "<<longestRoad<<endl;
-        cout << "Players: " <<endl;
-        cout << _turnsOrder[_turnCounter] <<endl;
+        cout << "-------------------------------------------------" <<endl;
+        if(p== nullptr){
+            cout << currentPlayer() <<endl;
+        }
+        else{
+            cout << p <<endl;
+        }
         cout << option <<endl;
+//        sleep(2);
     }
+
+    bool checkWin();
 };
