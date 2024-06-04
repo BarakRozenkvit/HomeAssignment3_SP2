@@ -21,9 +21,9 @@ Property::Property(string type,int amount): Countable(amount), Identifiable(type
     }
 }
 
-bool Property::operator==(Property property){
-    if(property.getType() == this->getType() && property.size() == this->size()){
-        return true;
-    }
-    return false;
-}
+//bool Property::operator==(Property property){
+//    if(property.getType() == this->getType() && property.size() == this->size()){
+//        return true;
+//    }
+//    return false;
+//}

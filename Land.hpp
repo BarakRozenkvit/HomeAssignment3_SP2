@@ -18,13 +18,7 @@ class Land{
             return _hexagon.contains(n);
         }
 
-       ResourceCard getResources(int amount){
-           return ResourceCard(_resource,amount);
-        }
+        string getResourceType(){return _resource;}
 
-    string getLandType(){return _landType;}
-
-    string getResourceType(){return _resource;}
-
-    int getValue(){return _value;}
+        int getValue(){return _value;}
 };

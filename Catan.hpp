@@ -3,10 +3,11 @@
 #include "Property.hpp"
 #include <iostream>
 #include <unistd.h>
+#define NUM_OF_PLAYERS 3
 
 class Catan {
     Board _board;
-    Player* _turnsOrder[3] = {};
+    Player* _turnsOrder[NUM_OF_PLAYERS] = {};
     int _turnCounter = -1;
 
     Set<DevelopmentCard> _developmentCards;
@@ -25,7 +26,7 @@ public:
 
     Set<ResourceCard> getResources(int rand=0);
 
-    bool drawDevelopmentCard();
+    bool drawDevelopmentCard(string type);
 
     bool useKnightCard();
 
@@ -42,8 +43,12 @@ public:
         cout << "Road Cost: " <<Property("Road",1).getCost() << endl;
         cout << "Village Cost: " <<Property("Village",1).getCost() << endl;
         cout << "City Cost: " <<Property("City",1).getCost() << endl;
-//        cout << "Largest Army: " << largestArmy<<endl;
-//        cout << "Longest Road: "<<longestRoad<<endl;
+        if(largestArmy == nullptr){
+            cout << "Largest Army: None"<<endl;
+        } else{ cout << "Largest Army: " << largestArmy<<endl;}
+        if(longestRoad == nullptr){
+            cout << "Longest Road: None"<<endl;
+        } else{ cout << "Longest Road: " << longestRoad<<endl;}
         cout << "-------------------------------------------------" <<endl;
         if(p== nullptr){
             cout << currentPlayer() <<endl;
@@ -52,7 +57,6 @@ public:
             cout << p <<endl;
         }
         cout << option <<endl;
-//        sleep(2);
     }
 
     bool checkWin();

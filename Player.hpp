@@ -29,15 +29,17 @@ public:
     void addWinningPoints(int amount){_winPoints += amount;}
     void removeWinningPoints(int amount){_winPoints -= amount;}
     int getWinPoints(){return _winPoints;}
-    int getAmountResources(){ return _resourceCards.total();}
 
+    // Manage Resources
     bool canPay(Set<ResourceCard>& resources);
     void pay(Set<ResourceCard>& resources);
     bool receive(Set<ResourceCard>& resources);
+    int getAmountResources(){ return _resourceCards.total();}
+    // Manage Properties
     void build(Property& property);
+    // Manage Development Card
     void addDevelopmentCard(DevelopmentCard& card);
     bool useDevelopmentCard(DevelopmentCard& card);
-
     int getArmySize();
 
     friend ostream& operator<<(ostream& out,Player* p){

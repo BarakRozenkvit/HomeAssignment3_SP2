@@ -39,7 +39,7 @@ void Board::init() {
 
 bool Board::canPlaceProperty(string property,char id,bool isFirstTurn,int i,int j) {
     if (property == "Road") {
-        if(_graph.getValue(i,j) != 1){return false;}
+        if(_graph.getValue(i,j) == 0 ){return false;}
         if (_graph.getValue(i,i) == id + 1 || _graph.getValue(i,i) == id + 2 ||
             _graph.getValue(j,j) == id + 1 || _graph.getValue(j,j) == id + 2) {
             return true;
@@ -99,7 +99,4 @@ Set<ResourceCard> Board::getResources(char id,bool isFirstTurn,int rand){
     }
     return resources;
 }
-
-//void Board::moveGambit(){}
-
 

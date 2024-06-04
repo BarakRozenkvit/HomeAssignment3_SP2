@@ -14,7 +14,7 @@ Catan::Catan(Player* p1, Player* p2, Player* p3) {
 
 Player* Catan::nextPlayer(){
     _turnCounter++;
-    if(_turnCounter == 3){_turnCounter=0;}
+    if(_turnCounter == NUM_OF_PLAYERS){_turnCounter=0;}
     return _turnsOrder[_turnCounter];
 }
 
@@ -56,21 +56,21 @@ Set<ResourceCard> Catan::getResources(int rand) {
     return resources;
 }
 
-bool Catan::drawDevelopmentCard(){
-    int cardAmount=_developmentCards.total();
-    srand(time(0));
-    int card_number = (rand() % cardAmount);
-    // get Card
-    int j=0;
-    int index;
-    for(int i=0;i<_developmentCards.size();i++){
-        j += _developmentCards.getAt(i).size();
-        if(j >= card_number){
-            index = i;
-            break;
-        }
-    }
-    DevelopmentCard card = _developmentCards.getAt(index);
+bool Catan::drawDevelopmentCard(string type){
+//    int cardAmount=_developmentCards.total();
+//    srand(time(0));
+//    int card_number = (rand() % cardAmount);
+//    // get Card
+//    int j=0;
+//    int index;
+//    for(int i=0;i<_developmentCards.size();i++){
+//        j += _developmentCards.getAt(i).size();
+//        if(j >= card_number){
+//            index = i;
+//            break;
+//        }
+//    }
+    DevelopmentCard card = DevelopmentCard(type,1);
     // Check if Player can Pay
     bool affordable = currentPlayer()->canPay(card.getCost());
     if(affordable){
@@ -109,7 +109,7 @@ bool Catan::useMonopolyCard(string desiredResource) {
         Set<ResourceCard> desired;
         desired.add(desiredResource, 1);
         nextPlayer();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < NUM_OF_PLAYERS; i++) {
             if (currentPlayer()->canPay(desired)) {
                 currentPlayer()->pay(desired);
                 wallet += desired;
@@ -154,7 +154,7 @@ bool Catan::useWealthyYearCard(string resource1, string resource2) {
 }
 
 bool Catan::checkWin() {
-    if(_turnsOrder[0]->getWinPoints() == 10 ||_turnsOrder[1]->getWinPoints() == 10|| _turnsOrder[2]->getWinPoints() == 10){
+    if(_turnsOrder[0]->getWinPoints() == 10 ||_turnsOrder[1]->getWinPoints() == 10){//|| _turnsOrder[2]->getWinPoints() == 10){
         return true;
     }
     return false;

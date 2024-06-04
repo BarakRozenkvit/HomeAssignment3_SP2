@@ -4,19 +4,18 @@
 #include "Set.hpp"
 #include <iostream>
 
-
 int main() {
 
     // Initial Game
-    Player *p1 = new Player("Yellow", 10);
-    Player *p2 = new Player("Pink", 20);
-    Player *p3 = new Player("Orange", 30);
+    Player *p1 = new Player("Omriki", 10);
+    Player *p2 = new Player("Momo", 20);
+    Player *p3 = new Player("Omriki2", 30);
     Catan catan = Catan(p1,p2,p3);
 //    catan.printGame();
     bool isValid;
     // each player places two Villages and two Roads and get Resources
     cout << "Welcome to Catan!!" << endl;
-    for(int i=0;i<3;i++){
+    for(int i=0;i<NUM_OF_PLAYERS;i++){
         catan.nextPlayer();
         int x;
         int y;
@@ -149,6 +148,7 @@ int main() {
                 // Roll Dice
                 case 0: {
                     int rand = Dice::roll();
+                    rand = 4;
                     catan.printGame("Start Turn > Dice Roll");
                     cout << "The Dice rolled: " << to_string(rand) << endl;
 
@@ -211,7 +211,7 @@ int main() {
                         }
                     }
                     else {
-                        for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < NUM_OF_PLAYERS; i++) {
                             cout << catan.currentPlayer()->getName() << " Received: " << catan.getResources() <<endl;
                             sleep(2);
                             catan.nextPlayer();

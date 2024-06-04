@@ -7,5 +7,5 @@ class ResourceCard  : public Identifiable, public Countable{
 public:
     ResourceCard(): Identifiable(), Countable(){};
     ResourceCard(string type,int amount): Identifiable(type), Countable(amount){};
-    bool operator==(ResourceCard card);
+//    bool operator==(ResourceCard card);
 };
