@@ -35,45 +35,60 @@ void Board::init() {
     _lands[16] = Land("Hills","Brick", hexagons[14], landNumbers[1]);
     _lands[17] = Land("Hills","Brick", hexagons[1], landNumbers[13]);
     _lands[18] = Land("Hills", "Brick",hexagons[13], landNumbers[10]);
+
+    _developmentCards.add("Knight",14);
+    _developmentCards.add("WinningPoints",5);
+    _developmentCards.add("Monopoly",2);
+    _developmentCards.add("Builder",2);
+    _developmentCards.add("WealthyYear",1);
+
 }
 
-bool Board::canPlaceProperty(string property,char id,bool isFirstTurn,int i,int j) {
+bool Board::canBuild(string property, char id, int turnCounter, int x, int y) {
+    if(x >= _graph.size() || y>= _graph.size() || x < 0 || y<0){return false;}
     if (property == "Road") {
-        if(_graph.getValue(i,j) == 0 ){return false;}
-        if (_graph.getValue(i,i) == id + 1 || _graph.getValue(i,i) == id + 2 ||
-            _graph.getValue(j,j) == id + 1 || _graph.getValue(j,j) == id + 2) {
+        if(_graph.getValue(x, y) != 1 ){return false;}
+        if (_graph.getValue(x, x) == id + 1 || _graph.getValue(x, x) == id + 2 ||
+            _graph.getValue(y, y) == id + 1 || _graph.getValue(y, y) == id + 2) {
             return true;
         }
         for (int k = 0; k < _graph.size(); k++) {
-            if (_graph.getValue(i,k) == id || _graph.getValue(j,k) == id) {
+            if (_graph.getValue(x, k) == id || _graph.getValue(y, k) == id) {
                 return true;
             }
         }
     } else if (property == "Village") {
-        bool noAdj = false, isPath = false;
+        if(x!=y){return false;}
+        if(_graph.getValue(x, y) != 0){return false;}
+        bool noAdj = true, isPath = false;
         // scan for neighbors
         for (int k = 0; k < _graph.size(); k++) {
-            if(_graph.getValue(i,j) !=0){break;}
-            if (_graph.getValue(i,k) == id) { isPath = true; }
+            if (_graph.getValue(x, k) == id) { isPath = true; }
             // what is neighbors and check if no village there
-            if (_graph.getValue(i,k) >= 1 && _graph.getValue(k,k) == 0) { noAdj = true; }
+            if (_graph.getValue(x, k) >= 1 && _graph.getValue(k, k) > 0) {
+                return false;
+                noAdj = true;
+            }
         }
 
-        if(noAdj && isFirstTurn) {return true;}
+        if(noAdj && !turnCounter) {return true;}
         if (noAdj && isPath) { return true; }
         return false;
 
     }
     else if(property == "City") {
-        if(_graph.getValue(i,j) !=0){return false;}
-        if (_graph.getValue(i,j) == id + 2 - 1) {
+        // if first turn -> not allowed
+        if(!turnCounter){return false;}
+        // if no settelment -> not allowed
+        if(_graph.getValue(x, y) == 0){return false;}
+        if (_graph.getValue(x, y) == id + 2 - 1) {
             return true;
         }
     }
     return false;
 }
 
-void Board::placeProperty(string property, char id, int x, int y) {
+void Board::build(string property, char id, int x, int y) {
     if (property == "Road") {
         _graph.setValue(id+0,x,y);
     }
@@ -85,13 +100,13 @@ void Board::placeProperty(string property, char id, int x, int y) {
     }
 }
 
-Set<ResourceCard> Board::getResources(char id,bool isFirstTurn,int rand){
+Set<ResourceCard> Board::getResources(char id,int turnCounter,int rand){
     Set<ResourceCard> resources;
     for(int i=0;i<_graph.size();i++){
         int amount = _graph.getValue(i,i) - id;
         if (amount < 0 || amount > 2){ continue;}
         for(int j=0;j<19;j++){
-            if(_lands[j].sitOn(i) && (_lands[j].getValue() == rand|| isFirstTurn)){
+            if(_lands[j].sitOn(i) && (_lands[j].getValue() == rand|| !turnCounter)){
                 if(_lands[j].getResourceType() == ""){ continue;}
                 resources.add(_lands[j].getResourceType(),amount);
             }
@@ -99,4 +114,5 @@ Set<ResourceCard> Board::getResources(char id,bool isFirstTurn,int rand){
     }
     return resources;
 }
+
 
