@@ -62,11 +62,11 @@ int main() {
     Haim->getResources(board,rand);
     // Haim got nothing: Brick 2 Wheat 1 Wood 2
 
-    Barak->build("Road", board, 22, 22);
+    Barak->build("Road", board, 22, 28);
     // Barak: Iron 1 Wheat 2 Wool 2
-    Set<ResourceCard> barakTrade;
+    Set<Card> barakTrade;
     barakTrade.add("Iron", 1);
-    Set<ResourceCard> omriSet;
+    Set<Card> omriSet;
     omriSet.add("Wool", 1);
     Barak->trade(barakTrade, Omri, omriSet);
     // Barak: Wheat 2 Wool 3
@@ -77,7 +77,7 @@ int main() {
     rand = 7;
     // Omri, Haim and Barak don't have more than 7 cards
 
-    Set<ResourceCard> haimSet;
+    Set<Card> haimSet;
     haimSet.add("Wood", 2);
     omriSet.clear();
     omriSet.add("Iron", 1);
@@ -94,8 +94,8 @@ int main() {
     // Barak got Wood 1: Wood 1 Wheat 2 Wool 3
     Haim->getResources(board,rand);
     // Haim got nothing: Brick 2 Wheat 1 Iron 1
-    Set<ResourceCard> omriTrade;omriTrade.add("Wood",1);
-    Set<ResourceCard> haimTrade;haimTrade.add("Wheat",1);haimTrade.add("Brick",1);
+    Set<Card> omriTrade;omriTrade.add("Wood",1);
+    Set<Card> haimTrade;haimTrade.add("Wheat",1);haimTrade.add("Brick",1);
     Omri->trade(omriTrade,Haim,haimTrade);
     // Omri: Wood 3 Wool 1 Iron 1 Wheat 1 Brick 1
     // Hami: Brick 1 Iron 1 Wood 1
@@ -171,6 +171,8 @@ int main() {
     Haim->getResources(board,rand);
     // Haim got nothing: Brick 1 Iron 1
     Omri->useBuilderCard(9,13,35,40,board);
+
+
 
 
 

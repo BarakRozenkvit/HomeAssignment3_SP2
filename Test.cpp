@@ -11,9 +11,10 @@ Catan catan = Catan(p1, p2, p3);
 TEST_CASE("Check Resources pay"){
     SUBCASE("Check Pay"){}
     SUBCASE("Check invalid pay attempt"){
-        Set<ResourceCard> receive;receive.add("Wool",1);receive.add("Wood",3);
+        p1->startTurn();
+        Set<Card> receive;receive.add("Wool",1);receive.add("Wood",3);
         p1->receive(receive);
-        Set<ResourceCard> pay;pay.add("Wool",1);pay.add("Wood",3);pay.add("Iron",1);
+        Set<Card> pay;pay.add("Wool",1);pay.add("Wood",3);pay.add("Iron",1);
         CHECK_THROWS(p1->pay(pay));
     }
 }
@@ -22,7 +23,7 @@ TEST_CASE("Check Resources pay"){
 TEST_CASE("Check Resources receive"){
 //    SUBCASE("Check receive"){}
     SUBCASE("Check receive resource not exist in game"){
-        Set<ResourceCard> receive;receive.add("Crystal",1);
+        Set<Card> receive;receive.add("Crystal",1);
         CHECK_THROWS(p1->receive(receive));
     }
 }
@@ -48,13 +49,14 @@ TEST_CASE("Check Development Card"){
         SUBCASE("Check has no specific Development Card") {
             p1->startTurn();
             DevelopmentCard KnightCard = DevelopmentCard("Knight",1);
-            Set<ResourceCard> receove = KnightCard.getCost();
+            Set<Card> receove = reinterpret_cast<Set<Card>&>(KnightCard.getCost());
             p1->receive(receove);
             p1->buyDevelopmentCard("Knight",catan.getBoard());
             DevelopmentCard monopolyCard = DevelopmentCard("Monopoly",1);
             CHECK_THROWS(p1->useMonopolyCard("Wool",p2,p3));
         }
         SUBCASE("Check continues turn after use Development Card") {
+            p1->startTurn();
             DevelopmentCard KnightCard = DevelopmentCard("Knight",1);
             p1->useKnightCard();
             CHECK_THROWS(p1->build("Road", catan.getBoard(), 48, 44));
@@ -67,9 +69,9 @@ TEST_CASE("Check Development Card"){
         SUBCASE("Check if bank of Development Card is empty"){}
         SUBCASE("Check if Development Card is not in Bank"){
             DevelopmentCard card = DevelopmentCard("WealthyYear",1);
-            p1->receive(card.getCost());
+            p1->receive(reinterpret_cast<Set<Card>&>(card.getCost()));
             p1->buyDevelopmentCard("WealthyYear",catan.getBoard());
-            p1->receive(card.getCost());
+            p1->receive(reinterpret_cast<Set<Card>&>(card.getCost()));
             p1->buyDevelopmentCard("WealthyYear",catan.getBoard());
         }
     }
@@ -125,7 +127,7 @@ TEST_CASE("Check Place Property"){
             p1->build("Road",catan.getBoard(),2,6);
             p1->endTurn();
             p1->startTurn();
-            Set<ResourceCard> set = Property("Village",1).getCost();
+            Set<Card> set = reinterpret_cast<Set<Card>&>(Property("Village",1).getCost());
             p1->receive(set);
             CHECK_THROWS(p1->build("Village",catan.getBoard(),10,10));
         }
@@ -157,8 +159,8 @@ TEST_CASE("Check Place Property"){
 
 TEST_CASE("Check Trade with yourself"){
     p1->startTurn();
-    Set<ResourceCard> set;
-    Set<ResourceCard> set2;
+    Set<Card> set;
+    Set<Card> set2;
     CHECK_THROWS(p1->trade(set,p1,set2));
 }
 
@@ -168,7 +170,7 @@ TEST_CASE("Check Dice is 7 remove resources from player with under 7 cards"){
     Player *p3 = new Player("P3", 30);
     Catan catan = Catan(p1, p2, p3);
     p1->startTurn();
-    Set<ResourceCard> set;set.add("Wool",6);
+    Set<Card> set;set.add("Wool",6);
     Set<ResourceCard> remove;remove.add("Wool",2);
     p1->receive(set);
     CHECK_THROWS(p1->removeHalf(remove));

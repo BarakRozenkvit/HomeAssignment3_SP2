@@ -42,6 +42,7 @@ public:
     void clear(){
         _set.clear();
     }
+
     int total(){
         int res = 0;
         for(int i=0;i<size();i++){
@@ -76,10 +77,12 @@ public:
         }
         return *this;
     }
+
     bool operator>(Set<T>& set){
         for(int i=0;i<this->size();i++){
             T& inThis = this->getAt(i);
             int res = set.search(inThis.getType());
+            if(res == -1){ continue;}
             T& inSet = set.getAt(res);
             if(inThis.size() < inSet.size()){
                 return false;
@@ -88,6 +91,7 @@ public:
         }
         return true;
     }
+
     friend ostream& operator<<(ostream& out,Set<T> set){
         string res ="";
         for(int i=0;i<set.size();i++){

@@ -1,7 +1,4 @@
 #include "Player.hpp"
-#include "Set.hpp"
-#include "Board.hpp"
-#include <iostream>
 
 Player::Player(string name,int id): _name(name), _winPoints(0),_id(id){
     _properties.add("Road",15);
@@ -9,17 +6,18 @@ Player::Player(string name,int id): _name(name), _winPoints(0),_id(id){
     _properties.add("City",4);
 };
 
-bool Player::canPay(Set<ResourceCard> &resources) {
-    if(_firstTurn){return true;}
-    return _resourceCards > resources;
+bool Player::canPay(Set<Card> &toPay) {
+    if(!_turnCounter){return true;}
+    return _cards > toPay;
 }
 
-void Player::pay(Set<ResourceCard> &resources){
-    if(_turnCounter > 0) {
-        if(!canPay(resources)){
+void Player::pay(Set<Card> &toPay) {
+    if (_turnCounter > 0) {
+        if (!canPay(toPay)) {
             throw invalid_argument("Not Enough Funds");
         }
-        _resourceCards -= resources;
+        _cards -= toPay;
+        cout << _name + ": " << _cards << endl;
     }
 }
 
@@ -34,7 +32,8 @@ void Player::build(string type, Board& board, int x, int y) {
         throw invalid_argument("Invalid Place to build");
     }
     Property property = Property(type,1);
-    pay(property.getCost());
+    Set<Card> set = reinterpret_cast<Set<Card>&>(property.getCost());
+    pay(set);
     board.build(type, _id, x, y);
     _properties.remove(type,1);
     _winPoints += property.getWinPoints();
@@ -49,17 +48,15 @@ void Player::useDevelopmentCard(string type){
     if(!_isTurn){
         throw invalid_argument("Not his turn!");
     }
-    if(_developmentCard.size() == 0){
-        throw invalid_argument("Empty Development Cards");
-    }
-    int res = _developmentCard.search(card.getType());
+    int res = _cards.search(card.getType());
     if(res == -1){
         throw invalid_argument("Development Card not found");
     }
-    DevelopmentCard& result = _developmentCard.getAt(res);
+    Card& devCard = _cards.getAt(res);
+    DevelopmentCard& result = static_cast<DevelopmentCard&>(devCard);
     result.flashCard();
     if(card.getType() == "Monopoly" || card.getType() == "Builder" || card.getType() == "WealthyYear"){
-        _developmentCard.remove(card.getType(),card.size());
+        _cards.remove(card.getType(),card.size());
     }
 }
 
@@ -68,21 +65,24 @@ void Player::buyDevelopmentCard(string type, Board &board){
     if (!_isTurn) {
         throw invalid_argument("Not your Turn");
     }
-    if (!canPay(temp.getCost())) {
+    Set<Card>& resource = reinterpret_cast<Set<Card>&>(temp.getCost());
+    if (!canPay(resource)) {
         throw invalid_argument("Not Funds ");
     }
     if (type == "WinningPoints") {
         _winPoints++;
     }
 
+
     DevelopmentCard card = board.getDevelopmentCard(temp.getType());
-    _developmentCard.add(card.getType(), card.size());
+    _cards.add(card.getType(), 1);
+    pay(resource);
 }
 
 void Player::useWealthyYearCard(string resource1, string resource2){
     useDevelopmentCard("WhealthyYear");
-    _resourceCards.add(resource1, 1);
-    _resourceCards.add(resource2, 1);
+    _cards.add(resource1, 1);
+    _cards.add(resource2, 1);
     endTurn();
 }
 
@@ -91,8 +91,11 @@ void Player::useBuilderCard(int x1, int y1, int x2, int y2, Board board){
     bool placeValid2 = board.canBuild("Road", getID(), _turnCounter, x2, y2);
     if (placeValid1 && placeValid2) {
         useDevelopmentCard("Builder");
+        int temp = _turnCounter;
+        _turnCounter = 0;
         build("Road", board, x1, y1);
         build("Road", board, x2, y2);
+        _turnCounter = temp;
     }
 }
 
@@ -101,8 +104,8 @@ void Player::useMonopolyCard(string desiredResource, Player *p, Player *m){
         throw invalid_argument("must include all participants");
     }
     useDevelopmentCard("Monopoly");
-    Set<ResourceCard> wallet;
-    Set<ResourceCard> desired;
+    Set<Card> wallet;
+    Set<Card> desired;
     desired.add(desiredResource, 1);
     if (p->canPay(desired)) {
         p->pay(desired);
@@ -112,41 +115,57 @@ void Player::useMonopolyCard(string desiredResource, Player *p, Player *m){
         m->pay(desired);
         wallet += desired;
     }
+    receive(wallet);
+    endTurn();
 }
 
 int Player::useKnightCard(){
     useDevelopmentCard("Knight");
-    int i = _developmentCard.search("Knight");
-    return _developmentCard.getAt(i).getAmountFlashed();
+    int i = _cards.search("Knight");
+    DevelopmentCard& res = reinterpret_cast<DevelopmentCard&>(_cards.getAt(i));
+    return res.getAmountFlashed();
 }
 
 void Player::getResources(Board& board,int rand){
     Set<ResourceCard> res = board.getResources(_id,_turnCounter,rand);
-    receive(res);
+    Set<Card> resToCard = reinterpret_cast<Set<Card>&>(res);
+    cout << resToCard << endl;
+    if(_turnCounter == 0){_turnCounter++;}
+    receive(resToCard);
 }
 
-bool Player::receive(Set<ResourceCard>& resources) {
-    _resourceCards += resources;
+bool Player::receive(Set<Card>& resources){
+    _cards += resources;
+    cout << _name + ": " << _cards << endl;
     return true;
 }
 
 void Player::removeHalf(Set<ResourceCard> set) {
-    if (_resourceCards.total() < 7) {
+    int size = 0;
+    for(int i=0;i<_cards.size();i++){
+        if(typeid(_cards.getAt(i)) == typeid(ResourceCard)){
+            size++;
+        }
+    }
+    if (size < 7) {
         throw invalid_argument("Cant reduce resources");
     }
-    if (!canPay(set)) {
+    Set<Card> set2 = reinterpret_cast<Set<Card>&>(set);
+    if (!canPay(set2)) {
         throw invalid_argument("Cant Pay resources");
     }
-    pay(set);
+    pay(set2);
 }
 
-void Player::trade(Set<ResourceCard> mySet, Player *player, Set<ResourceCard> playerSet) {
+void Player::trade(Set<Card> mySet, Player *player, Set<Card> playerSet) {
     if (player == this) {
         throw invalid_argument("Cant trade with yourself");
     }
     if (!_isTurn) {
         throw invalid_argument("Not my turn");
     }
+    bool d=canPay(mySet);
+    bool f = player->canPay(playerSet);
     if (canPay(mySet) && player->canPay(playerSet)) {
         pay(mySet);
         player->pay(playerSet);

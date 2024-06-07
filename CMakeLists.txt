@@ -26,13 +26,13 @@ set(CMAKE_CXX_STANDARD 11)
 #        Set.hpp
 #)
 
-add_executable(Test TestCounter.cpp Test.cpp doctest.h
+add_executable(Catan
+        Demo.cpp
         Board.hpp
         Board.cpp
         Catan.cpp
         Catan.hpp
         Countable.hpp
-        DevelopmentCard.hpp
         Dice.hpp
         Graph.cpp
         Graph.hpp
@@ -42,18 +42,15 @@ add_executable(Test TestCounter.cpp Test.cpp doctest.h
         Player.hpp
         Property.cpp
         Property.hpp
-        ResourceCard.hpp
-        ResourceCard.cpp
         Set.hpp
-       )
+)
 
-add_executable(Catan Demo.cpp
+add_executable(Test Test.cpp TestCounter.cpp doctest.h
         Board.hpp
         Board.cpp
         Catan.cpp
         Catan.hpp
         Countable.hpp
-        DevelopmentCard.hpp
         Dice.hpp
         Graph.cpp
         Graph.hpp
@@ -63,7 +60,5 @@ add_executable(Catan Demo.cpp
         Player.hpp
         Property.cpp
         Property.hpp
-        ResourceCard.hpp
-        ResourceCard.cpp
         Set.hpp
 )

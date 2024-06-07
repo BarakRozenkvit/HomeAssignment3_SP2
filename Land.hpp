@@ -1,5 +1,5 @@
 #include <string>
-#include "ResourceCard.hpp"
+#include "Card.hpp"
 #include <vector>
 #pragma once
 

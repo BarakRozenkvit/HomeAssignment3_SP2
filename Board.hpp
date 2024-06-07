@@ -1,7 +1,7 @@
 #include "Land.hpp"
 #include "Graph.hpp"
 #include "Property.hpp"
-#include "DevelopmentCard.hpp"
+#include "Card.hpp"
 #pragma once
 
 using namespace std;

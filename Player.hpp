@@ -1,11 +1,9 @@
-#include <string>
-#include <vector>
-#include "Property.hpp"
-#include "ResourceCard.hpp"
-#include "DevelopmentCard.hpp"
 #include <iostream>
+#include "Card.hpp"
+#include "Property.hpp"
 #include "Board.hpp"
 #include "Dice.hpp"
+#include "Set.hpp"
 #pragma once
 
 using namespace std;
@@ -17,9 +15,10 @@ class Player {
     int _turnCounter = 0;
     bool _isTurn;
     string _currentUseDevelopment;
-    bool _firstTurn = true;
-    Set<ResourceCard> _resourceCards;
-    Set<DevelopmentCard> _developmentCard;
+//    bool _firstTurn = true;
+//    Set<ResourceCard> _resourceCards;
+//    Set<DevelopmentCard> _developmentCard;
+    Set<Card> _cards;
     Set<Property> _properties;
     void useDevelopmentCard(string card);
 
@@ -46,21 +45,23 @@ public:
         _isTurn = true;
     }
 
-    void endTurn() { _isTurn = false; }
+    void endTurn() {
+        cout << _name + " : " << this << endl;
+        _isTurn = false; }
 
     int getTurn() { return _turnCounter; }
 
-    bool canPay(Set<ResourceCard> &resources);
+    bool canPay(Set<Card> &resources);
 
-    void pay(Set<ResourceCard> &resources);
+    void pay(Set<Card> &resources);
 
-    bool receive(Set<ResourceCard> &resources);
+    bool receive(Set<Card> &resources);
 
     void removeHalf(Set<ResourceCard> set);
 
     void build(string type, Board &board, int x, int y);
 
-    void trade(Set<ResourceCard> mySet, Player *player, Set<ResourceCard> playerSet);
+    void trade(Set<Card> mySet, Player *player, Set<Card> playerSet);
 
     void buyDevelopmentCard(string type, Board &board);
 
@@ -76,15 +77,13 @@ public:
 
     int useKnightCard();
 
-
     void getResources(Board& board,int rand=0);
 
-    friend ostream &operator<<(ostream &out, Player *p) {
+    friend ostream &operator<<(ostream &out, Player* p) {
         out << "name: " << p->_name << endl;
         out << "Winning Points: " << p->_winPoints << endl;
-        out << "ResourceCards: " << p->_resourceCards << endl;
-        out << "DevelopmentCards: " << p->_developmentCard << endl;
-        out << "Properties Left: " << p->_properties << endl;
+        out << "Cards: " << p->_cards << endl;
+//        out << "Properties Left: " << p->_properties << endl;
         return out;
     }
 };

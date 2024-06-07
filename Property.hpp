@@ -1,7 +1,7 @@
 #include "Identifiable.hpp"
 #include "Countable.hpp"
 #include "Set.hpp"
-#include "ResourceCard.hpp"
+#include "Card.hpp"
 #include <vector>
 #include <iostream>
 #pragma once
