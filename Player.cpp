@@ -10,13 +10,12 @@ Player::Player(string name,int id): _name(name), _winPoints(0),_id(id){
 bool Player::canPay(Set<Card>& toPay) {
     if(!_turnCounter){return true;}
     return _cards.contains(toPay);
-    //return _cards > toPay;
 }
 
 void Player::pay(Set<Card> &toPay) {
     if (_turnCounter > 0) {
         if (!canPay(toPay)) {
-            throw invalid_argument("Not Enough Funds");
+            throw invalid_argument("Not Enough Funds to Pay");
         }
         _cards -= toPay;
     }
@@ -24,7 +23,7 @@ void Player::pay(Set<Card> &toPay) {
 
 void Player::build(string type, Board& board, int x, int y) {
     if(!_isTurn && _turnCounter){
-        throw invalid_argument("Not his turn!");
+        throw invalid_argument("Not" + _name + "Turn");
     }
     if(_properties.search(type) == -1){
         throw invalid_argument("No Property Exist");
@@ -32,9 +31,11 @@ void Player::build(string type, Board& board, int x, int y) {
     if(!board.canBuild(type, _id, _turnCounter, x, y)){
         throw invalid_argument("Invalid Place to build");
     }
+
     Property property = Property(type,1);
     Set<Card> set = reinterpret_cast<Set<Card>&>(property.getCost());
     pay(set);
+
     board.build(type, _id, x, y);
     _properties.remove(type,1);
     _winPoints += property.getWinPoints();

@@ -18,14 +18,19 @@ TEST_CASE("Set Class"){
     Set<Card> set2;
     set1.add("Wood",1);
     CHECK(set1.toString() == "[Wood: 1],");
+
     set1.add("Wood",2);
     CHECK(set1.toString() == "[Wood: 3],");
+
     set1.remove("Wood",2);
     CHECK(set1.toString() == "[Wood: 1],");
+
     set1.remove("Wood",1);
     CHECK(set1.toString() == "");
+
     set1.add("Wood",1);
     CHECK(set1.contains(set2));
+
     CHECK_FALSE(set2.contains(set1));
     set2.add("Wood",3);
     CHECK(set2.contains(set1));
@@ -38,8 +43,8 @@ TEST_CASE("Set Class"){
     CHECK(set1.toString() == "");
     set1.add("Wood",1);
     set2.add("Wool",1);
-    CHECK(set1.contains(set2));
-    CHECK(set2.contains(set1));
+    CHECK_FALSE(set1.contains(set2));
+    CHECK_FALSE(set2.contains(set1));
 }
 
 TEST_CASE("Check Throws when not enough resources to pay"){
@@ -112,7 +117,7 @@ TEST_CASE("build road in place that is taken"){
 }
 TEST_CASE("build road not next to your village"){
     setUP();
-    p2->startTurn();
+//    p2->startTurn();
     CHECK_THROWS(p2->build("Road",catan.getBoard(),5,2));
     p2->build("Village",catan.getBoard(),5,5);
     CHECK_THROWS(p2->build("Road",catan.getBoard(),6,10));
@@ -127,20 +132,15 @@ TEST_CASE("build village in place that is not exist"){
 }
 TEST_CASE("build village in place already been placed"){
     setUP();
-    p1->startTurn();
     p1->build("Village",catan.getBoard(),48,48);
     CHECK_THROWS(p1->build("Village",catan.getBoard(),48,48));
-    p1->endTurn();
-    p2->startTurn();
     CHECK_THROWS(p2->build("Village",catan.getBoard(),48,48));
 }
 TEST_CASE("build village in place not next to your road, not in first turn"){
     setUP();
-    p1->startTurn();
     p1->build("Village",catan.getBoard(),5,5);
     p1->build("Road",catan.getBoard(),5,2);
     p1->build("Road",catan.getBoard(),2,6);
-    p1->endTurn();
     p1->startTurn();
     Set<Card> set = reinterpret_cast<Set<Card>&>(Property("Village",1).getCost());
     p1->receive(set);
@@ -148,26 +148,22 @@ TEST_CASE("build village in place not next to your road, not in first turn"){
 }
 TEST_CASE("build village in place near other Village"){
     setUP();
-    p1->startTurn();
     p1->build("Village",catan.getBoard(),5,5);
-    p1->endTurn();
-    p2->startTurn();
     CHECK_THROWS(p2->build("Village",catan.getBoard(),2,2));
 }
 
 TEST_CASE("build city in the first turn") {
     setUP();
-    p1->startTurn();
+    p1->build("Village",catan.getBoard(),5,5);
     CHECK_THROWS(p1->build("City", catan.getBoard(), 5, 5));
 }
 TEST_CASE("build city not on your village"){
     setUP();
-    p1->startTurn();
     p1->build("Village",catan.getBoard(),5,5);
-    p1->endTurn();
     p1->startTurn();
+    Set<Card> set = reinterpret_cast<Set<Card>&>(Property("City",1).getCost());
+    p1->receive(set);
     CHECK_THROWS(p1->build("City",catan.getBoard(),8,8));
-            // Check if building a City win points as expected
 }
 
 TEST_CASE("Check Trade with yourself"){
