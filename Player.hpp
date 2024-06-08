@@ -40,9 +40,16 @@ public:
 
     int getWinPoints() { return _winPoints; }
 
-    void startTurn() {_turnCounter++;_isTurn = true;}
+    void startTurn() {
+        _turnCounter++;
+        _isTurn = true;
+        cout << _name << ": " << _cards << endl;
+    }
 
-    void endTurn() {_isTurn = false; }
+    void endTurn() {
+        _isTurn = false;
+        cout << _name << ": " << _cards << endl;
+    }
 
     int getTurn() { return _turnCounter; }
 
@@ -74,8 +81,6 @@ public:
     void useMonopolyCard(string desiredResource, Player *p, Player *m);
 
     int useKnightCard();
-
-    void getResources(Board& board,int rand=0);
 
     friend ostream &operator<<(ostream &out, Player* p) {
         out << "name: " << p->_name << endl;

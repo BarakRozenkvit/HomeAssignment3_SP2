@@ -25,21 +25,21 @@ TEST_CASE("Set Class"){
     set1.remove("Wood",1);
     CHECK(set1.toString() == "");
     set1.add("Wood",1);
-    CHECK(set1 > set2);
-    CHECK_FALSE(set2 > set1);
+    CHECK(set1.contains(set2));
+    CHECK_FALSE(set2.contains(set1));
     set2.add("Wood",3);
-    CHECK(set2 > set1);
+    CHECK(set2.contains(set1));
     set1.add("Wood",2);
     set1.add("Wool",1);
-    CHECK(set1>set2);
-    CHECK_FALSE(set2>set1);
+    CHECK(set1.contains(set2));
+    CHECK_FALSE(set2.contains(set1));
     set1.clear();
     set2.clear();
     CHECK(set1.toString() == "");
     set1.add("Wood",1);
     set2.add("Wool",1);
-    CHECK(set1 > set2);
-    CHECK(set2 > set1);
+    CHECK(set1.contains(set2));
+    CHECK(set2.contains(set1));
 }
 
 TEST_CASE("Check Throws when not enough resources to pay"){

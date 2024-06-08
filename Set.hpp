@@ -72,52 +72,33 @@ public:
         }
         return res;
     }
+    bool contains(Set<T>& set){
+        for(int i=0;i< set.size();i++){
+            T& inSet = set.getAt(i);
+            int result = this->search(inSet.getType());
+            if(result == -1){return false;}
+            T& inThis = this->getAt(result);
+            if(inThis.size() < inSet.size()){
+                return false;
+            }
+        }
+        return true;
+    }
 
     Set<T>& operator-=(Set<T>& set){
         for(int i=0;i<set.size();i++){
             T& inSet = set.getAt(i);
-            int res = this->search(inSet.getType());
-            if(res == -1){
-                return *this;
-            }
-            T& inThis = this->getAt(res);
-            inThis.remove(inSet.size());
+            this->remove(inSet.getType(),inSet.size());
         }
         return *this;
     }
     Set<T>& operator+=(Set<T>& set){
         for(int i=0;i<set.size();i++){
             T& inSet = set.getAt(i);
-            int res = this->search(inSet.getType());
-            if(res == -1){
-                this->add(inSet.getType(),inSet.size());
-            }
-            else {
-                T &inThis = this->getAt(res);
-                inThis.add(inSet.size());
-            }
+            this->add(inSet.getType(),inSet.size());
         }
         return *this;
     }
-    Set<T>& operator==(Set<T>& set){}
-
-    bool operator>(Set<T>& set){
-        if(this->size() < set.size()){
-            return false;
-        }
-        for(int i=0;i<this->size();i++){
-            T& inThis = this->getAt(i);
-            int res = set.search(inThis.getType());
-            if(res == -1){ continue;}
-            T& inSet = set.getAt(res);
-            if(inThis.size() < inSet.size()){
-                return false;
-            }
-
-        }
-        return true;
-    }
-
     friend ostream& operator<<(ostream& out,Set<T> set){
         out << set.toString();
         return out;

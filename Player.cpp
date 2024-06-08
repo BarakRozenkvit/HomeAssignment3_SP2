@@ -7,9 +7,10 @@ Player::Player(string name,int id): _name(name), _winPoints(0),_id(id){
     _isTurn = false;
 };
 
-bool Player::canPay(Set<Card> &toPay) {
+bool Player::canPay(Set<Card>& toPay) {
     if(!_turnCounter){return true;}
-    return _cards > toPay;
+    return _cards.contains(toPay);
+    //return _cards > toPay;
 }
 
 void Player::pay(Set<Card> &toPay) {
@@ -18,7 +19,6 @@ void Player::pay(Set<Card> &toPay) {
             throw invalid_argument("Not Enough Funds");
         }
         _cards -= toPay;
-        cout << _name + ": " << _cards << endl;
     }
 }
 
@@ -127,17 +127,8 @@ int Player::useKnightCard(){
     return res.getAmountFlashed();
 }
 
-void Player::getResources(Board& board,int rand){
-    Set<ResourceCard> res = board.getResources(_id,_turnCounter,rand);
-    Set<Card> resToCard = reinterpret_cast<Set<Card>&>(res);
-    cout << resToCard << endl;
-    if(_turnCounter == 0){_turnCounter++;}
-    receive(resToCard);
-}
-
 bool Player::receive(Set<Card>& resources){
     _cards += resources;
-    cout << _name + ": " << _cards << endl;
     return true;
 }
 

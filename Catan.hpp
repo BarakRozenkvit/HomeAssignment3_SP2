@@ -8,7 +8,7 @@
 class Catan {
     Board _board;
     Player* _turnsOrder[NUM_OF_PLAYERS] = {};
-    int _turnCounter = -1;
+//    int _turnCounter = -1;
 
     Player* largestArmy = nullptr;
     int _largestArmySize = 0;
@@ -19,6 +19,8 @@ public:
     Catan(Player* p1,Player* p2,Player* p3);
 
     Board& getBoard(){return _board;}
+
+    void distributeResources(int rand=0);
 
     bool checkWin();
 

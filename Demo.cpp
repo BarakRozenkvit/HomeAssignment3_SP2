@@ -17,36 +17,36 @@ int main() {
     Catan catan(Omri, Barak, Haim);
     // Starting of the game. Every player places two settlements and two roads.
 //    catan.ChooseStartingPlayer();   // should print the name of the starting player, assume it is Amit.
-    Board board = catan.getBoard(); // get the board of the game.
+    Board& board = catan.getBoard(); // get the board of the game.
 
     Omri->build("Village", board, 23, 23);
     Omri->build("Road", board, 23, 29);
     Omri->build("Village", board, 14, 14);
     Omri->build("Road", board, 14, 9);
-    Omri->getResources(board);
-    //Omri: Wood 1 Wheat 1 Wool 2 Iron 2
 
     Barak->build("Village", board, 45, 45);
     Barak->build("Road", board, 45, 41);
     Barak->build("Village", board, 22, 22);
     Barak->build("Road", board, 41, 36);
-    Barak->getResources(board);
-    //Barak: Iron 1 Wood 1 Brick 1 Wheat 2 Wool 1
 
     Haim->build("Village", board, 39, 39);
     Haim->build("Road", board, 39, 43);
     Haim->build("Village", board, 47, 47);
     Haim->build("Road", board, 47, 43);
-    Haim->getResources(board);
+
+    catan.distributeResources();
+    //Omri: Wood 1 Wheat 1 Wool 2 Iron 2
+    //Barak: Iron 1 Wood 1 Brick 1 Wheat 2 Wool 1
     //Haim: Brick 1 Wheat 1 Wood 2
+
+
+
 
     Omri->startTurn();
     int rand = Omri->rollDice(8);
-    Omri->getResources(board,rand);
+    catan.distributeResources(rand);
     // Omri got nothing: Wood 1 Wheat 1 Wool 2 Iron 2
-    Barak->getResources(board,rand);
     // Barak got Wool 1: Iron 1 Wood 1 Brick 1 Wheat 2 Wool 2
-    Haim->getResources(board,rand);
     // Haim got Brick 1: Brick 2 Wheat 1 Wood 2
 
     Omri->buyDevelopmentCard("WinningPoints", board);
@@ -55,11 +55,9 @@ int main() {
 
     Barak->startTurn();
     rand = Barak->rollDice(9);
-    Omri->getResources(board,rand);
+    catan.distributeResources(rand);
     // Omri got Wool 1: Wood 1 Wool 2 Iron 1
-    Barak->getResources(board,rand);
     // Barak got nothing: Iron 1 Wood 1 Brick 1 Wheat 2 Wool 2
-    Haim->getResources(board,rand);
     // Haim got nothing: Brick 2 Wheat 1 Wood 2
 
     Barak->build("Road", board, 22, 28);
@@ -88,11 +86,9 @@ int main() {
 
     Omri->startTurn();
     rand= Omri->rollDice(11);
-    Omri->getResources(board,rand);
+    catan.distributeResources(rand);
     // Omri got Wood 1: Wood 4 Wool 1 Iron 1
-    Barak->getResources(board,rand);
     // Barak got Wood 1: Wood 1 Wheat 2 Wool 3
-    Haim->getResources(board,rand);
     // Haim got nothing: Brick 2 Wheat 1 Iron 1
     Set<Card> omriTrade;omriTrade.add("Wood",1);
     Set<Card> haimTrade;haimTrade.add("Wheat",1);haimTrade.add("Brick",1);
@@ -106,11 +102,9 @@ int main() {
 
     Barak->startTurn();
     rand = Barak->rollDice(5);
-    Omri->getResources(board,rand);
+    catan.distributeResources(rand);
     // Omri got Iron 1: Wood 2 Wool 1 Iron 2 Wheat 1
-    Barak->getResources(board,rand);
     // Barak got nothing: Wood 1 Wheat 2 Wool 3
-    Haim->getResources(board,rand);
     // Haim got nothing: Brick 1 Iron 1 Wood 1
 
     omriTrade.clear();omriTrade.add("Iron",1);
@@ -124,11 +118,9 @@ int main() {
 
     Haim->startTurn();
     rand=Haim->rollDice(8);
-    Omri->getResources(board,rand);
+    catan.distributeResources(rand);
     // Omri got Iron 1: Wood 2 Wool 1 Iron 1 Wheat 2
-    Barak->getResources(board,rand);
     // Barak got Wool 1: Wood 1 Wool 3
-    Haim->getResources(board,rand);
     // Haim got Brick 1: Brick 2 Iron 1 Wood 1
     Haim->build("Road",board,38,43);
     // Haim: Brick 1 Iron 1
@@ -136,11 +128,9 @@ int main() {
 
     Omri->startTurn();
     rand=Omri->rollDice(5);
-    Omri->getResources(board,rand);
+    catan.distributeResources(rand);
     // Omri got Iron 1: Wood 2 Wool 1 Iron 2 Wheat 2
-    Barak->getResources(board,rand);
     // Barak got got nothing: Wood 1 Wool 3
-    Haim->getResources(board,rand);
     // Haim got nothing: Brick 1 Iron 1
     Omri->buyDevelopmentCard("Builder",board);
     // Omri: Wood 2 Iron 1 Wheat 1
@@ -154,43 +144,17 @@ int main() {
 
     Haim->startTurn();
     rand=Haim->rollDice(8);
-    Omri->getResources(board,rand);
+    catan.distributeResources(rand);
     // Omri got Iron 1: Wood 2 Iron 1 Wheat 1
-    Barak->getResources(board,rand);
     // Barak got Wool 1: Wood 1 Wool 4 Brick 1
-    Haim->getResources(board,rand);
     // Haim got nothing: Brick 1 Iron 1
     Haim->endTurn();
 
     Omri->startTurn();
     rand=Omri->rollDice(2);
-    Omri->getResources(board,rand);
+    catan.distributeResources(rand);
     // Omri got Iron 1: Wood 2 Iron 2 Wheat 1
-    Barak->getResources(board,rand);
     // Barak got nothing : Wood 1 Wool 4 Brick 1
-    Haim->getResources(board,rand);
     // Haim got nothing: Brick 1 Iron 1
     Omri->useBuilderCard(9,13,35,40,board);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
