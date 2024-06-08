@@ -30,7 +30,8 @@ public:
         if(res == -1){
             throw invalid_argument("no Development card with this name");
         }
-        _developmentCards.getAt(res).remove(1);
+        DevelopmentCard card = _developmentCards.getAt(res);
+        _developmentCards.remove(card.getType(),1);
         return _developmentCards.getAt(res);
     }
 

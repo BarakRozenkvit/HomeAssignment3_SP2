@@ -18,5 +18,4 @@ public:
     Property(string type,int amount);
     int getWinPoints(){return _pointsVal;}
     Set<ResourceCard>& getCost(){return _cost;}
-//    bool operator==(Property property);
 };

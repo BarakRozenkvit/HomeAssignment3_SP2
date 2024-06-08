@@ -41,7 +41,7 @@ int main() {
     //Haim: Brick 1 Wheat 1 Wood 2
 
     Omri->startTurn();
-    int rand = 8;//Omri->rollDice();
+    int rand = Omri->rollDice(8);
     Omri->getResources(board,rand);
     // Omri got nothing: Wood 1 Wheat 1 Wool 2 Iron 2
     Barak->getResources(board,rand);
@@ -54,7 +54,7 @@ int main() {
     Omri->endTurn();
 
     Barak->startTurn();
-    rand = 9;
+    rand = Barak->rollDice(9);
     Omri->getResources(board,rand);
     // Omri got Wool 1: Wood 1 Wool 2 Iron 1
     Barak->getResources(board,rand);
@@ -74,7 +74,7 @@ int main() {
     Barak->endTurn();
 
     Haim->startTurn();
-    rand = 7;
+    rand = Haim->rollDice(7);
     // Omri, Haim and Barak don't have more than 7 cards
 
     Set<Card> haimSet;
@@ -87,7 +87,7 @@ int main() {
     Haim->endTurn();
 
     Omri->startTurn();
-    rand= 11;
+    rand= Omri->rollDice(11);
     Omri->getResources(board,rand);
     // Omri got Wood 1: Wood 4 Wool 1 Iron 1
     Barak->getResources(board,rand);
@@ -105,7 +105,7 @@ int main() {
     Omri->endTurn();
 
     Barak->startTurn();
-    rand = 5;
+    rand = Barak->rollDice(5);
     Omri->getResources(board,rand);
     // Omri got Iron 1: Wood 2 Wool 1 Iron 2 Wheat 1
     Barak->getResources(board,rand);
@@ -123,7 +123,7 @@ int main() {
     Barak-> endTurn();
 
     Haim->startTurn();
-    rand=8;
+    rand=Haim->rollDice(8);
     Omri->getResources(board,rand);
     // Omri got Iron 1: Wood 2 Wool 1 Iron 1 Wheat 2
     Barak->getResources(board,rand);
@@ -135,7 +135,7 @@ int main() {
     Haim->endTurn();
 
     Omri->startTurn();
-    rand=5;
+    rand=Omri->rollDice(5);
     Omri->getResources(board,rand);
     // Omri got Iron 1: Wood 2 Wool 1 Iron 2 Wheat 2
     Barak->getResources(board,rand);
@@ -153,7 +153,7 @@ int main() {
     // Omri: Wood 2 Iron 1 Wheat 1
 
     Haim->startTurn();
-    rand=8;
+    rand=Haim->rollDice(8);
     Omri->getResources(board,rand);
     // Omri got Iron 1: Wood 2 Iron 1 Wheat 1
     Barak->getResources(board,rand);
@@ -163,7 +163,7 @@ int main() {
     Haim->endTurn();
 
     Omri->startTurn();
-    rand=2;
+    rand=Omri->rollDice(2);
     Omri->getResources(board,rand);
     // Omri got Iron 1: Wood 2 Iron 2 Wheat 1
     Barak->getResources(board,rand);

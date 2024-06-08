@@ -1,7 +1,6 @@
 #include "Board.hpp"
 
 void Board::init() {
-    // TODO: do it with Random
     Hexagon hexagons[19] = {Hexagon(0, 3, 4, 7, 8, 12),Hexagon(1, 4, 5, 8, 9, 13),
                             Hexagon(2, 5, 6, 9, 10, 14),Hexagon(7, 11, 12, 16, 17, 22),
                             Hexagon(8, 12, 13, 17, 18, 23),Hexagon(9, 13, 14, 18, 19, 24),

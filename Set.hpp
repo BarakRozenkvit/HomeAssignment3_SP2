@@ -30,7 +30,19 @@ public:
     void remove(string str,int amount){
         int result = search(str);
         if(result > -1){
-            this->getAt(result).remove(amount);
+            T& res = this->getAt(result);
+            if(res.size() == amount){
+                vector<T> cpy = {};
+                for(int i=0;i<this->size();i++){
+                    if(i!=result){
+                        cpy.push_back(this->getAt(i));
+                    }
+                }
+                _set = cpy;
+            }
+            else {
+                this->getAt(result).remove(amount);
+            }
         }
     }
     T& getAt(int i){
@@ -42,11 +54,21 @@ public:
     void clear(){
         _set.clear();
     }
-
     int total(){
         int res = 0;
         for(int i=0;i<size();i++){
             res += getAt(i).size();
+        }
+        return res;
+    }
+    string toString(){
+        string res ="";
+        for(int i=0;i< this->size();i++){
+            res += "[";
+            res += this->getAt(i).getType();
+            res += ": ";
+            res += to_string(this->getAt(i).size());
+            res += "],";
         }
         return res;
     }
@@ -77,8 +99,12 @@ public:
         }
         return *this;
     }
+    Set<T>& operator==(Set<T>& set){}
 
     bool operator>(Set<T>& set){
+        if(this->size() < set.size()){
+            return false;
+        }
         for(int i=0;i<this->size();i++){
             T& inThis = this->getAt(i);
             int res = set.search(inThis.getType());
@@ -93,15 +119,7 @@ public:
     }
 
     friend ostream& operator<<(ostream& out,Set<T> set){
-        string res ="";
-        for(int i=0;i<set.size();i++){
-            res += "[";
-            res += set.getAt(i).getType();
-            res += ": ";
-            res += to_string(set.getAt(i).size());
-            res += "],";
-        }
-        out << res;
+        out << set.toString();
         return out;
     }
 };

@@ -4,9 +4,18 @@
 #pragma once
 
 class Card  : public Identifiable, public Countable{
+
 public:
     Card(): Identifiable(), Countable(){};
-    Card(string type,int amount): Identifiable(type), Countable(amount){};
+    Card(string type,int amount): Identifiable(type), Countable(amount) {
+        bool resource = type == "Wool" || type == "Wood" || type == "Wheat" || type == "Iron" || type == "Brick";
+        bool development = type == "Knight" || type == "WinningPoints" || type == "Monopoly" || type == "Builder" ||
+                           type == "WealthyYear";
+        if(!resource && !development){
+            throw invalid_argument("No card in this game");
+        }
+    }
+
 };
 
 class ResourceCard : public Card{

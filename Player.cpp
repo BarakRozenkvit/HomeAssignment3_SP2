@@ -4,6 +4,7 @@ Player::Player(string name,int id): _name(name), _winPoints(0),_id(id){
     _properties.add("Road",15);
     _properties.add("Village",5);
     _properties.add("City",4);
+    _isTurn = false;
 };
 
 bool Player::canPay(Set<Card> &toPay) {
@@ -69,12 +70,10 @@ void Player::buyDevelopmentCard(string type, Board &board){
     if (!canPay(resource)) {
         throw invalid_argument("Not Funds ");
     }
+    DevelopmentCard card = board.getDevelopmentCard(temp.getType());
     if (type == "WinningPoints") {
         _winPoints++;
     }
-
-
-    DevelopmentCard card = board.getDevelopmentCard(temp.getType());
     _cards.add(card.getType(), 1);
     pay(resource);
 }
@@ -86,7 +85,7 @@ void Player::useWealthyYearCard(string resource1, string resource2){
     endTurn();
 }
 
-void Player::useBuilderCard(int x1, int y1, int x2, int y2, Board board){
+void Player::useBuilderCard(int x1, int y1, int x2, int y2, Board& board){
     bool placeValid1 = board.canBuild("Road", getID(), _turnCounter, x1, y1);
     bool placeValid2 = board.canBuild("Road", getID(), _turnCounter, x2, y2);
     if (placeValid1 && placeValid2) {
@@ -97,6 +96,7 @@ void Player::useBuilderCard(int x1, int y1, int x2, int y2, Board board){
         build("Road", board, x2, y2);
         _turnCounter = temp;
     }
+    endTurn();
 }
 
 void Player::useMonopolyCard(string desiredResource, Player *p, Player *m){
@@ -123,6 +123,7 @@ int Player::useKnightCard(){
     useDevelopmentCard("Knight");
     int i = _cards.search("Knight");
     DevelopmentCard& res = reinterpret_cast<DevelopmentCard&>(_cards.getAt(i));
+    endTurn();
     return res.getAmountFlashed();
 }
 

@@ -19,11 +19,7 @@ Property::Property(string type,int amount): Countable(amount), Identifiable(type
         _cost.add("Iron",3);
         _cost.add("Wheat",2);
     }
+    else{
+        throw invalid_argument("Invalid property created");
+    }
 }
-
-//bool Property::operator==(Property property){
-//    if(property.getType() == this->getType() && property.size() == this->size()){
-//        return true;
-//    }
-//    return false;
-//}

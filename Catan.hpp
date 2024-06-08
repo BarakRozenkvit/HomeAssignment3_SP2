@@ -15,6 +15,7 @@ class Catan {
     Player* longestRoad = nullptr;
 
 public:
+    Catan(){};
     Catan(Player* p1,Player* p2,Player* p3);
 
     Board& getBoard(){return _board;}

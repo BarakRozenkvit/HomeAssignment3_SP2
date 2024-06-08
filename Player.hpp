@@ -40,14 +40,9 @@ public:
 
     int getWinPoints() { return _winPoints; }
 
-    void startTurn() {
-        _turnCounter++;
-        _isTurn = true;
-    }
+    void startTurn() {_turnCounter++;_isTurn = true;}
 
-    void endTurn() {
-        cout << _name + " : " << this << endl;
-        _isTurn = false; }
+    void endTurn() {_isTurn = false; }
 
     int getTurn() { return _turnCounter; }
 
@@ -65,13 +60,16 @@ public:
 
     void buyDevelopmentCard(string type, Board &board);
 
-    int rollDice() {
-        return Dice::roll();
-    }
+    int rollDice(int rand=0) {
+        if(!_isTurn){throw invalid_argument("not his turn");}
+        if(rand){
+            return rand;
+        }
+        return Dice::roll();}
 
     void useWealthyYearCard(string resource1, string resource2);
 
-    void useBuilderCard(int x1, int y1, int x2, int y2, Board board);
+    void useBuilderCard(int x1, int y1, int x2, int y2, Board& board);
 
     void useMonopolyCard(string desiredResource, Player *p, Player *m);
 
