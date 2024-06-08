@@ -15,9 +15,8 @@ int main() {
     Player *Barak = new Player("Barak", 20);
     Player *Haim = new Player("Haim", 30);
     Catan catan(Omri, Barak, Haim);
-    // Starting of the game. Every player places two settlements and two roads.
-//    catan.ChooseStartingPlayer();   // should print the name of the starting player, assume it is Amit.
-    Board& board = catan.getBoard(); // get the board of the game.
+
+    Board& board = catan.getBoard();
 
     Omri->build("Village", board, 23, 23);
     Omri->build("Road", board, 23, 29);
