@@ -7,10 +7,22 @@ Catan::Catan(Player* p1, Player* p2, Player* p3) {
     _turnsOrder[0] = p1;_turnsOrder[1] = p2;_turnsOrder[2] = p3;
 }
 
-bool Catan::checkWin() {
-    if(_turnsOrder[0]->getWinPoints() == 10 ||_turnsOrder[1]->getWinPoints() == 10){//|| _turnsOrder[2]->getWinPoints() == 10){
-        return true;
+bool Catan::printWinner() {
+    cout << "Winner is: ";
+    if(_turnsOrder[0]->getWinPoints() == 10 ) {
+        cout << _turnsOrder[0]->getName();
     }
+    else if(_turnsOrder[1]->getWinPoints() == 10){
+        cout << _turnsOrder[1]->getName();
+    }
+    else if(_turnsOrder[2]->getWinPoints() == 10){
+        cout << _turnsOrder[2]->getName();
+    }
+    else{
+        cout << "No one" <<endl;
+        return false;
+    }
+    cout << endl;
     return false;
 }
 

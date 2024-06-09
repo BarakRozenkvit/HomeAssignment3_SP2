@@ -23,7 +23,7 @@ set(CMAKE_CXX_STANDARD 11)
 #        Property.hpp
 #        ResourceCard.cpp
 #        ResourceCard.hpp
-#        Set.hpp
+#        GameSet.hpp
 #)
 
 add_executable(Catan
@@ -42,7 +42,7 @@ add_executable(Catan
         Player.hpp
         Property.cpp
         Property.hpp
-        Set.hpp
+        GameSet.hpp
 )
 
 add_executable(Test Test.cpp TestCounter.cpp doctest.h
@@ -60,5 +60,5 @@ add_executable(Test Test.cpp TestCounter.cpp doctest.h
         Player.hpp
         Property.cpp
         Property.hpp
-        Set.hpp
+        GameSet.hpp
 )

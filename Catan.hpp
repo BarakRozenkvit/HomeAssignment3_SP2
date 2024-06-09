@@ -22,7 +22,7 @@ public:
 
     void distributeResources(int rand=0);
 
-    bool checkWin();
+    bool printWinner();
 
     void checkLargestArmy(Player* p,int n){
         if (largestArmy == nullptr && n == 3) {
