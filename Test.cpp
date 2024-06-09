@@ -1,6 +1,6 @@
+//314638669 | Barak10101998@gmail.com
 #include "doctest.h"
 #include "Catan.hpp"
-#include <set>
 
 Player* p1;
 Player* p2;

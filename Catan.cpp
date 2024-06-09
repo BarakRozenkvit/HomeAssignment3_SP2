@@ -1,7 +1,6 @@
 #include "Catan.hpp"
 #include <iostream>
-
-
+//314638669 | Barak10101998@gmail.com
 Catan::Catan(Player* p1, Player* p2, Player* p3) {
     _board = Board();
     _turnsOrder[0] = p1;_turnsOrder[1] = p2;_turnsOrder[2] = p3;

@@ -1,3 +1,4 @@
+//314638669 | Barak10101998@gmail.com
 #include "Property.hpp"
 
 Property::Property(string type,int amount): Countable(amount), Identifiable(type){
