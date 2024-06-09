@@ -4837,7 +4837,7 @@ namespace {
         ~FatalConditionHandler() { reset(); }
         static void reset() {
             if(isSet) {
-                // Set signals back to previous values -- hopefully nobody overwrote them in the meantime
+                // GameSet signals back to previous values -- hopefully nobody overwrote them in the meantime
                 for(std::size_t i = 0; i < DOCTEST_COUNTOF(signalDefs); ++i) {
                     sigaction(signalDefs[i].id, &oldSigActions[i], nullptr);
                 }

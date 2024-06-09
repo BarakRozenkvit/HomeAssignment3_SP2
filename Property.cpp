@@ -1,7 +1,7 @@
 #include "Property.hpp"
 
 Property::Property(string type,int amount): Countable(amount), Identifiable(type){
-    _cost = Set<ResourceCard>();
+    _cost = GameSet<ResourceCard>();
     if(type == "Road"){
         _pointsVal = 0;
         _cost.add("Brick",1);

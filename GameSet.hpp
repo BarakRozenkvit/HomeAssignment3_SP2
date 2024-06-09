@@ -4,12 +4,19 @@
 using namespace std;
 
 template <typename T>
-class Set {
+class GameSet {
     vector<T> _set;
 
 public:
-    Set(){
+    GameSet(){
         _set = {};
+    }
+    template<typename P> GameSet(GameSet<P>& set){
+        _set ={};
+        for(int i=0;i<set.size();i++){
+            P& inSet = set.getAt(i);
+            add(inSet.getType(),inSet.size());
+        }
     }
     int search(string str){
         for(int i=0;i<_set.size();i++){
@@ -72,7 +79,7 @@ public:
         }
         return res;
     }
-    bool contains(Set<T>& set){
+    bool contains(GameSet<T>& set){
         for(int i=0;i< set.size();i++){
             T& inSet = set.getAt(i);
             int result = this->search(inSet.getType());
@@ -85,21 +92,21 @@ public:
         return true;
     }
 
-    Set<T>& operator-=(Set<T>& set){
+    GameSet<T>& operator-=(GameSet<T>& set){
         for(int i=0;i<set.size();i++){
             T& inSet = set.getAt(i);
             this->remove(inSet.getType(),inSet.size());
         }
         return *this;
     }
-    Set<T>& operator+=(Set<T>& set){
+    GameSet<T>& operator+=(GameSet<T>& set){
         for(int i=0;i<set.size();i++){
             T& inSet = set.getAt(i);
             this->add(inSet.getType(),inSet.size());
         }
         return *this;
     }
-    friend ostream& operator<<(ostream& out,Set<T> set){
+    friend ostream& operator<<(ostream& out, GameSet<T> set){
         out << set.toString();
         return out;
     }

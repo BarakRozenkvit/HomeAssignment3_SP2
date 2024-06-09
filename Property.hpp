@@ -1,6 +1,6 @@
 #include "Identifiable.hpp"
 #include "Countable.hpp"
-#include "Set.hpp"
+#include "GameSet.hpp"
 #include "Card.hpp"
 #include <vector>
 #include <iostream>
@@ -10,12 +10,12 @@ using namespace std;
 
 class Property: public Countable,public Identifiable{
     int _pointsVal;
-    Set<ResourceCard> _cost = Set<ResourceCard>();
+    GameSet<ResourceCard> _cost = GameSet<ResourceCard>();
 
 
 public:
     Property(): Countable(), Identifiable(){};
     Property(string type,int amount);
     int getWinPoints(){return _pointsVal;}
-    Set<ResourceCard>& getCost(){return _cost;}
+    GameSet<ResourceCard>& getCost(){return _cost;}
 };

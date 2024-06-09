@@ -6,8 +6,8 @@ class Countable{
 public:
     Countable(){};
     Countable(int amount): _amount(amount){};
-    void add(int amount){_amount += amount;}
-    void remove(int amount){_amount -= amount;}
-    int size(){return _amount;}
-    void clear(){_amount=0;}
+    virtual void add(int amount){_amount += amount;}
+    virtual void remove(int amount){_amount -= amount;}
+    virtual int size() {return _amount;}
+    virtual void clear(){_amount=0;}
 };

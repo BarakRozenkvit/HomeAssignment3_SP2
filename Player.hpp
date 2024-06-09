@@ -3,7 +3,7 @@
 #include "Property.hpp"
 #include "Board.hpp"
 #include "Dice.hpp"
-#include "Set.hpp"
+#include "GameSet.hpp"
 #pragma once
 
 using namespace std;
@@ -15,11 +15,11 @@ class Player {
     int _turnCounter = 0;
     bool _isTurn;
     string _currentUseDevelopment;
-    Set<Card> _cards;
-    Set<Property> _properties;
+    GameSet<Card> _cards;
+    GameSet<Property> _properties;
 
     void useDevelopmentCard(string card);
-    bool canPay(Set<Card> &resources);
+    bool canPay(GameSet<Card> &resources);
 
 
 public:
@@ -41,11 +41,11 @@ public:
         cout << _name << ": " << _cards << endl;
     }
     int getTurn() { return _turnCounter; }
-    void pay(Set<Card> &resources);
-    bool receive(Set<Card> &resources);
-    void removeHalf(Set<ResourceCard> set);
+    void pay(GameSet<Card> &resources);
+    bool receive(GameSet<Card> &resources);
+    void removeHalf(GameSet<ResourceCard>& set);
     void build(string type, Board &board, int x, int y);
-    void trade(Set<Card> mySet, Player *player, Set<Card> playerSet);
+    void trade(GameSet<Card> mySet, Player *player, GameSet<Card> playerSet);
     void buyDevelopmentCard(string type, Board &board);
     int rollDice(int rand=0) {
         if(!_isTurn){throw invalid_argument("not his turn");}

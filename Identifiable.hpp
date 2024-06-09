@@ -7,7 +7,7 @@ class Identifiable{
 public:
     Identifiable(){}
     Identifiable(string type): _type(type){};
-    string getType(){
+    virtual string getType() const{
         return _type;
     }
 };

@@ -7,12 +7,12 @@ Player::Player(string name,int id): _name(name), _winPoints(0),_id(id){
     _isTurn = false;
 };
 
-bool Player::canPay(Set<Card>& toPay) {
+bool Player::canPay(GameSet<Card>& toPay) {
     if(!_turnCounter){return true;}
     return _cards.contains(toPay);
 }
 
-void Player::pay(Set<Card> &toPay) {
+void Player::pay(GameSet<Card> &toPay) {
     if (_turnCounter > 0) {
         if (!canPay(toPay)) {
             throw invalid_argument("Not Enough Funds to Pay");
@@ -22,18 +22,21 @@ void Player::pay(Set<Card> &toPay) {
 }
 
 void Player::build(string type, Board& board, int x, int y) {
+    // if not your turn and not your first turn
     if(!_isTurn && _turnCounter){
         throw invalid_argument("Not" + _name + "Turn");
     }
+    // if property not exist
     if(_properties.search(type) == -1){
         throw invalid_argument("No Property Exist");
     }
+    // if invalid place to build
     if(!board.canBuild(type, _id, _turnCounter, x, y)){
         throw invalid_argument("Invalid Place to build");
     }
 
     Property property = Property(type,1);
-    Set<Card> set = reinterpret_cast<Set<Card>&>(property.getCost());
+    GameSet<Card> set = GameSet<Card>(property.getCost());
     pay(set);
 
     board.build(type, _id, x, y);
@@ -67,7 +70,7 @@ void Player::buyDevelopmentCard(string type, Board &board){
     if (!_isTurn) {
         throw invalid_argument("Not your Turn");
     }
-    Set<Card>& resource = reinterpret_cast<Set<Card>&>(temp.getCost());
+    GameSet<Card> resource = GameSet<Card>(temp.getCost());
     if (!canPay(resource)) {
         throw invalid_argument("Not Funds ");
     }
@@ -105,16 +108,16 @@ void Player::useMonopolyCard(string desiredResource, Player *p, Player *m){
         throw invalid_argument("must include all participants");
     }
     useDevelopmentCard("Monopoly");
-    Set<Card> wallet;
-    Set<Card> desired;
-    desired.add(desiredResource, 1);
-    if (p->canPay(desired)) {
-        p->pay(desired);
-        wallet += desired;
+    GameSet<Card> wallet;
+    GameSet<ResourceCard> desired;desired.add(desiredResource, 1);
+    GameSet<Card> dest = GameSet<Card>(desired);
+    if (p->canPay(dest)) {
+        p->pay(dest);
+        wallet += dest;
     }
-    if (m->canPay(desired)) {
-        m->pay(desired);
-        wallet += desired;
+    if (m->canPay(dest)) {
+        m->pay(dest);
+        wallet += dest;
     }
     receive(wallet);
     endTurn();
@@ -123,42 +126,43 @@ void Player::useMonopolyCard(string desiredResource, Player *p, Player *m){
 int Player::useKnightCard(){
     useDevelopmentCard("Knight");
     int i = _cards.search("Knight");
-    DevelopmentCard& res = reinterpret_cast<DevelopmentCard&>(_cards.getAt(i));
+    Card& devCard = _cards.getAt(i);
+    DevelopmentCard& result = static_cast<DevelopmentCard&>(devCard);
     endTurn();
-    return res.getAmountFlashed();
+    return result.getAmountFlashed();
 }
 
-bool Player::receive(Set<Card>& resources){
+bool Player::receive(GameSet<Card>& resources){
     _cards += resources;
     return true;
 }
 
-void Player::removeHalf(Set<ResourceCard> set) {
+void Player::removeHalf(GameSet<ResourceCard>& set) {
     int size = 0;
     for(int i=0;i<_cards.size();i++){
-        if(typeid(_cards.getAt(i)) == typeid(ResourceCard)){
-            size++;
+        Card& card = _cards.getAt(i);
+        try{
+            ResourceCard res = ResourceCard(card.getType(),1);
+            size += card.size();
+        }
+        catch (const exception& exc) {
+            continue;
         }
     }
     if (size < 7) {
         throw invalid_argument("Cant reduce resources");
     }
-    Set<Card> set2 = reinterpret_cast<Set<Card>&>(set);
-    if (!canPay(set2)) {
-        throw invalid_argument("Cant Pay resources");
-    }
+    GameSet<Card> set2 = GameSet<Card>(set);
     pay(set2);
 }
 
-void Player::trade(Set<Card> mySet, Player *player, Set<Card> playerSet) {
+void Player::trade(GameSet<Card> mySet, Player *player, GameSet<Card> playerSet) {
     if (player == this) {
         throw invalid_argument("Cant trade with yourself");
     }
     if (!_isTurn) {
         throw invalid_argument("Not my turn");
     }
-    bool d=canPay(mySet);
-    bool f = player->canPay(playerSet);
     if (canPay(mySet) && player->canPay(playerSet)) {
         pay(mySet);
         player->pay(playerSet);

@@ -9,7 +9,7 @@ using namespace std;
 class Board{
     Graph _graph;
     Land _lands[19];
-    Set<DevelopmentCard> _developmentCards;
+    GameSet<DevelopmentCard> _developmentCards;
 
     void init();
 
@@ -20,7 +20,7 @@ public:
 
     void build(string property, char id, int x, int y);
 
-    Set<ResourceCard> getResources(char id,int turnCounter,int rand);
+    GameSet<ResourceCard> getResources(char id, int turnCounter, int rand);
 
     DevelopmentCard& getDevelopmentCard(string type){
         if(_developmentCards.size() == 0) {

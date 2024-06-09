@@ -99,8 +99,8 @@ void Board::build(string property, char id, int x, int y) {
     }
 }
 
-Set<ResourceCard> Board::getResources(char id,int turnCounter,int rand){
-    Set<ResourceCard> resources;
+GameSet<ResourceCard> Board::getResources(char id, int turnCounter, int rand){
+    GameSet<ResourceCard> resources;
     for(int i=0;i<_graph.size();i++){
         int amount = _graph.getValue(i,i) - id;
         if (amount < 0 || amount > 2){ continue;}

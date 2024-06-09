@@ -17,8 +17,8 @@ bool Catan::checkWin() {
 void Catan::distributeResources(int rand) {
     for (int i = 0; i < 3; i++) {
         Player *p = _turnsOrder[i];
-        Set<ResourceCard> res = _board.getResources(p->getID(), p->getTurn(), rand);
-        Set<Card> resToCard = reinterpret_cast<Set<Card> &>(res);
+        GameSet<ResourceCard> res = _board.getResources(p->getID(), p->getTurn(), rand);
+        GameSet<Card> resToCard = (GameSet<Card>)res;
         if(p->getTurn() == 0){p->startTurn();p->endTurn();}
         p->receive(resToCard);
         if(res.size() == 0){
