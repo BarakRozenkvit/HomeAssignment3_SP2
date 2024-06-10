@@ -53,6 +53,7 @@ public:
             return rand;
         }
         return Dice::roll();}
+    void buyDevelopmentCard(string type, Board &board);
     void useWealthyYearCard(string resource1, string resource2);
     void useBuilderCard(int x1, int y1, int x2, int y2, Board& board);
     void useMonopolyCard(string desiredResource, Player *p, Player *m);
