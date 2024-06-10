@@ -101,15 +101,15 @@ ___
 מימוש מחלקת השחקן `Player.hpp`
 -
 שדות פרטיים:
-- שם השחקן string _name
-- מספר מזהה של השחקן char _id
-- מספר נקודות הניצחון של השחקן int _winPoints
-- מספר הסיבוב בו נמצא השחקן כאשר 0 הוא הסיבוב הראשון int _turnCounter
-- האם תור השחקן כרגע bool _isTurn
+- שם השחקן `string _name`
+- מספר מזהה של השחקן `char _id`
+- מספר נקודות הניצחון של השחקן `int _winPoints`
+- מספר הסיבוב בו נמצא השחקן כאשר 0 הוא הסיבוב הראשון `int _turnCounter`
+- האם תור השחקן כרגע `bool _isTurn`
 - חפיסת הקלפים בראשות השחקן `GameSet<Card> _cards`
 - כל הרכוש של השחקן שנועד לבנייה `GameSet<Property> _properties`
   
-  מימוש מחלקת GameSet.hpp
+  מימוש מחלקת `GameSet.hpp`
   
   מחלקה זו היא מבנה נתונה גנרי `template <typename T> GameSet<T> (...)`
   מבנה נתונים זה מדמה חפיסה של חפיסות קלפים שונות:
@@ -117,17 +117,53 @@ ___
   
   מתודות ציבוריות:
   - `template<typename P> GameSet(GameSet<P>&)` בנאי המשמש לקאסטינג למחלקה אחרת (רק למחלקות היורשות גם Countable ו Identifiable)
-  - מתודה המוסיפה חפיסה חדשה add(string,int)
-  - מתודה המחפשת חפיסה search(string)
-  - מתודה המחסירה מחפיסה remove(string,int)
-  - מתודה המחזירה חפיסה באינדקס מסוים getAt(int)
-  - מתודה המחזירה את הגודל של המערך size()
-  - מתודה מנקה את המערך clear()
-  - מתודה מחזירה את המערך כמחרוזת toString()
-  - מתודה המחזירה האם תת מערך מוכל בו contains(GameSet<T>&)
+  - מתודה המוסיפה חפיסה חדשה `add(string,int)`
+  - מתודה המחפשת חפיסה `search(string)`
+  - מתודה המחסירה מחפיסה `remove(string,int)`
+  - מתודה המחזירה חפיסה באינדקס מסוים `getAt(int)`
+  - מתודה המחזירה את הגודל של המערך `size()`
+  - מתודה מנקה את המערך `clear()`
+  - מתודה מחזירה את המערך כמחרוזת `toString()`
+  - מתודה המחזירה האם תת מערך מוכל בו `contains(GameSet<T>&)`
   - אופטור חיסור שווה - מוריד איברים מהמערך`operator-=(GameSet<T>&)`
   - `operator+=(GameSet<T>&)`אופרטור פלוס שווה- מוסיף איברים למערך
 
-- שם השחקן string getName()
-- מספר הזיהוי של השחקן getID()
-- 
+- מתודה המשתמשת בקלף פיתוח של השחקן `useDevelopmentCard(string)`
+- מתודה הבודקת האם השחקן יכול לשלם בקלפים מסוימים `canPay(GameSet<Card> &)`
+מתודות ציבוריות:
+- בנאי בונה ובנאי הורס
+- מחזיר את השם של השחקן `string getName()`
+- מחזיר את מספר המזהה של השחקן `getID()`
+- מוסיף נקודות ניצחון לשחקן `addWinningPoints(int)`
+- מחסיר נקודות ניצחון לשחקן `removeWinningPoints(int)`
+- מחזיר את נקודות הניצחון של השחקן `getWinPoints()`
+- השחקן מתחיל את התור `startTurn()`
+- השחקן מסיים את התור `endTurn()`
+- מחזיר את הסיבוב שהשחקן נמצא בו כרגע `getTurn()`
+- `pay(GameSet<Card> &)`השחקן משלם בקלפים 
+- השחקן מקבל קלפים `pay(GameSet<Card> &)`
+- השחקן מוריד חצי מקלפי המשאבים שלו `removeHalf(GameSet<ResourceCard>&)`
+- לבנות `build(string,Board&,x,y)`
+- לסחור`trade(GameSet<Card>,Player*,GameSet<Card>)`
+- לקנות קלף פיתוח `buyDevelopmentCard(string,Board&)`
+- לזרוק קובייה `rollDice()`
+- להשתמש בקלף שנת שפע `useWealthyYearCard(string,string)`
+- להשתמש בקלף בנאי `useBuilderCard(int,int,int,int)`
+- להשתמש בקלף מונופול `useMonopolyCard(string,Player*,Player*)`
+- להשתמש בקלף אביר `useKnightCard()`
+
+מימוש מחלקת הקאטן `Catan.hpp`
+-
+מחלקת הקאטן היא מחלקה המקשרת בין השחקן ללוח ורוב המתודות שלה יהיו קשורות לכל השחקנים וללוח עצמו
+
+שדות פרטיים:
+- לוח המשחק `Board _board`
+- מערך השחקנים `Player* _turnOrder[3]`
+- שחקן בעל הצבא הכי גדול `Player* largestArmy`
+- גודל הצבא הכי גדול `int _largestArmy`
+
+מתודות ציבוריות:
+- החזרת לוח המשחק `getBoard()`
+- חלוקת משאבים לכל השחקנים לפי מספר רנדומלי `distributeResources(int)`
+- בדיקת הצבא הכי גדול `checkLargestArmy(Player*,int)`
+- הדפסת המנצח אם בכלל `printWinner()`

@@ -4,16 +4,14 @@
 #include "Property.hpp"
 #include <iostream>
 #include <unistd.h>
-#define NUM_OF_PLAYERS 3
 
 class Catan {
     Board _board;
-    Player* _turnsOrder[NUM_OF_PLAYERS] = {};
+    Player* _turnsOrder[3] = {};
 //    int _turnCounter = -1;
 
     Player* largestArmy = nullptr;
     int _largestArmySize = 0;
-    Player* longestRoad = nullptr;
 
 public:
     Catan(){};

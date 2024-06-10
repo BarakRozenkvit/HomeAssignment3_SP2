@@ -47,7 +47,6 @@ public:
     void removeHalf(GameSet<ResourceCard>& set);
     void build(string type, Board &board, int x, int y);
     void trade(GameSet<Card> mySet, Player *player, GameSet<Card> playerSet);
-    void buyDevelopmentCard(string type, Board &board);
     int rollDice(int rand=0) {
         if(!_isTurn){throw invalid_argument("not his turn");}
         if(rand){
