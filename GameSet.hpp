@@ -61,13 +61,6 @@ public:
     void clear(){
         _set.clear();
     }
-    int total(){
-        int res = 0;
-        for(int i=0;i<size();i++){
-            res += getAt(i).size();
-        }
-        return res;
-    }
     string toString(){
         string res ="";
         for(int i=0;i< this->size();i++){
