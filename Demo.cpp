@@ -152,5 +152,5 @@ int main() {
     // Haim got nothing: Brick 1 Iron 1
     Omri->useBuilderCard(9,13,35,40,board);
 
-    catan.printWinner();
+    cout << catan.printWinner() <<endl;
 }

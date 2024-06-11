@@ -40,11 +40,8 @@ public:
         _isTurn = false;
     }
     int getTurn() { return _turnCounter; }
-
     void pay(GameSet<Card> &resources);
-
     bool receive(GameSet<Card> &resources);
-
     void removeHalf(GameSet<ResourceCard>& set);
     void build(string type, Board &board, int x, int y);
     void trade(GameSet<Card> mySet, Player *player, GameSet<Card> playerSet);
