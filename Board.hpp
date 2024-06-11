@@ -22,22 +22,5 @@ public:
 
     GameSet<ResourceCard> getResources(char id, int turnCounter, int rand);
 
-    DevelopmentCard& getDevelopmentCard(string type){
-        if(_developmentCards.size() == 0) {
-            throw invalid_argument("No development Cards");
-        }
-        int res = _developmentCards.search(type);
-        if(res == -1){
-            throw invalid_argument("no Development card with this name");
-        }
-        DevelopmentCard card = _developmentCards.getAt(res);
-        _developmentCards.remove(card.getType(),1);
-        return _developmentCards.getAt(res);
-    }
-
-//    friend ostream& operator<<(ostream& out,Board& b){
-//        out << b._graph <<endl;
-//        return out;
-//    }
-
+    DevelopmentCard& getDevelopmentCard(string type);
 };

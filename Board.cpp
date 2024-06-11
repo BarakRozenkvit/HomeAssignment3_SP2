@@ -114,4 +114,16 @@ GameSet<ResourceCard> Board::getResources(char id, int turnCounter, int rand){
     return resources;
 }
 
+DevelopmentCard &Board::getDevelopmentCard(std::string type) {
+    if(_developmentCards.size() == 0) {
+        throw invalid_argument("No development Cards");
+    }
+    int res = _developmentCards.search(type);
+    if(res == -1){
+        throw invalid_argument("no Development card with this name");
+    }
+    DevelopmentCard card = _developmentCards.getAt(res);
+    _developmentCards.remove(card.getType(),1);
+    return _developmentCards.getAt(res);
+}
 

@@ -180,4 +180,12 @@ string Player::toString() {
     return res;
 }
 
+int Player::rollDice(int rand){
+    if(!_isTurn){throw invalid_argument("not his turn");}
+    if(rand){
+        return rand;
+    }
+    return Dice::roll();
+}
+
 

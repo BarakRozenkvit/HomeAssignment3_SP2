@@ -13,30 +13,13 @@ public:
 
 class ResourceCard : public Card{
 public:
-    ResourceCard(): Card(){};
-    ResourceCard(string type,int amount): Card(type,amount){
-        bool resource = type == "Wool" || type == "Wood" || type == "Wheat" || type == "Iron" || type == "Brick";
-        if(!resource){
-            throw invalid_argument("No card in this game");
-        }
-    };
+    ResourceCard(string type,int amount);
 };
-
 
 class DevelopmentCard: public Card{
     GameSet<ResourceCard> _cost;
 
 public:
-    DevelopmentCard(string type,int amount): Card(type,amount){
-        bool development = type == "Knight" || type == "WinningPoints" || type == "Monopoly" || type == "Builder" ||
-                           type == "WealthyYear";
-        if(!development) {
-            throw invalid_argument("No card in this game");
-        }
-        _cost.add("Iron",1);
-        _cost.add("Wool",1);
-        _cost.add("Wheat",1);
-    };
-
+    DevelopmentCard(string type,int amount);
     GameSet<ResourceCard>& getCost(){return _cost;}
 };

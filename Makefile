@@ -5,8 +5,8 @@ CXX=c++
 CXXFLAGS=-std=c++11 -Werror
 VALGRIND_FLAGS==-v --leak-check=full --show-leak-kinds=all  --error-exitcode=99
 
-SOURCES=Demo.cpp Board.cpp Catan.cpp Graph.cpp Player.cpp Property.cpp
-SOURCES_TESTS= Board.cpp Catan.cpp Graph.cpp Player.cpp Property.cpp TestCounter.cpp Test.cpp
+SOURCES=Demo.cpp Board.cpp Catan.cpp Graph.cpp Player.cpp Property.cpp Card.cpp Dice.cpp Land.cpp
+SOURCES_TESTS= Board.cpp Catan.cpp Graph.cpp Player.cpp Property.cpp TestCounter.cpp Test.cpp Card.cpp Dice.cpp Land.cpp
 OBJECTS=$(subst .cpp,.o,$(SOURCES))
 OBJECTS_TESTS = $(subst .cpp,.o,$(SOURCES_TESTS))
 
@@ -34,4 +34,4 @@ valgrind: catan test
 	$(CXX) $(CXXFLAGS) --compile $< -o $@
 
 clean:
-	rm -f *.o demo test
+	rm -f *.o Catan test

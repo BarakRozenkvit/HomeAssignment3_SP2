@@ -84,7 +84,6 @@ public:
         }
         return true;
     }
-
     GameSet<T>& operator-=(GameSet<T>& set){
         for(int i=0;i<set.size();i++){
             T& inSet = set.getAt(i);
