@@ -1,4 +1,5 @@
 #include "Card.hpp"
+#include <stdexcept>
 
 
 ResourceCard::ResourceCard(std::string type, int amount): Card(type,amount) {
