@@ -47,5 +47,5 @@ public:
     void useMonopolyCard(string desiredResource, Player *p, Player *m);
     int useKnightCard();
     string toString();
-    friend ostream& operator<<(ostream& out,Player* p){out<<p->toString()<<endl;return out;}
+    friend ostream& operator<<(ostream& out,Player& p){out<<p.toString()<<endl;return out;}
 };
