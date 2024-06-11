@@ -5,18 +5,18 @@ CXX=c++
 CXXFLAGS=-std=c++11 -Werror
 VALGRIND_FLAGS==-v --leak-check=full --show-leak-kinds=all  --error-exitcode=99
 
-SOURCES=Board.cpp Card.hpp
-SOURCES_TESTS= Graph.cpp Algorithms.cpp TestCounter.cpp Test.cpp
+SOURCES=Demo.cpp Board.hpp Board.cpp Catan.cpp Catan.hpp Countable.hpp Dice.hpp Graph.cpp Graph.hpp Identifiable.hpp Player.cpp Player.hpp Property.hpp GameSet.hpp
+SOURCES_TESTS= Board.hpp Board.cpp Catan.cpp Catan.hpp Countable.hpp Dice.hpp Graph.cpp Graph.hpp Identifiable.hpp Player.cpp Player.hpp Property.hpp GameSet.hpp TestCounter.cpp Test.cpp
 OBJECTS=$(subst .cpp,.o,$(SOURCES))
 OBJECTS_TESTS = $(subst .cpp,.o,$(SOURCES_TESTS))
 
-catan: demo
+runCatan: catan
 	./$^
 
-test: test
+runTest: test
 	./$^
 
-demo: Demo.o $(OBJECTS)
+catan: catan.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o demo
 
 
@@ -26,7 +26,7 @@ test: TestCounter.o Test.o $(OBJECTS_TESTS)
 tidy:
 	clang-tidy $(SOURCES) -checks=bugprone-*,clang-analyzer-*,cppcoreguidelines-*,performance-*,portability-*,readability-*,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-owning-memory --warnings-as-errors=-* --
 
-valgrind: demo test
+valgrind: catan test
 	valgrind --tool=memcheck $(VALGRIND_FLAGS) ./demo 2>&1 | { egrep "lost| at " || true; }
 	valgrind --tool=memcheck $(VALGRIND_FLAGS) ./test 2>&1 | { egrep "lost| at " || true; }
 
