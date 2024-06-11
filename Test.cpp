@@ -223,7 +223,6 @@ TEST_CASE("check winner"){
     CHECK(catan.printWinner() == "P1");
 }
 
-
 // Test Erros
 
 TEST_CASE("Check Throws when not enough resources to pay"){
