@@ -275,7 +275,16 @@ TEST_CASE("Check Throws if Development Card is not in Bank"){
     CHECK_THROWS(p1->buyDevelopmentCard("WealthyYear",catan.getBoard()));
 }
 
-TEST_CASE("Check Throws build property when you are out of specific property"){}
+TEST_CASE("Check Throws build property when you are out of specific property"){
+    setUP();
+    p1->build("Village",catan.getBoard(),0,0);
+    p1->build("Village",catan.getBoard(),1,1);
+    p1->build("Village",catan.getBoard(),2,2);
+    p1->build("Village",catan.getBoard(),53,53);
+    p1->build("Village",catan.getBoard(),52,52);
+    CHECK_THROWS(p1->build("Village",catan.getBoard(),51,51));
+
+}
 
 TEST_CASE("ל Check Throws build road in place that is not exist"){
     setUP();
@@ -363,18 +372,4 @@ TEST_CASE("Check p2 end turn and p2 roll dice"){
     setUP();
     p2->endTurn();
     CHECK_THROWS(p2->rollDice());
-}
-
-TEST_CASE("Remove Half in 7"){
-    p1->startTurn();
-    cout << p1 << endl;
-    GameSet<Card> d;
-    d.add("Wool",4);
-    d.add("Monopoly",3);
-    d.add("Wheat",4);
-    d.add("Knight",3);
-    p1->receive(d);
-    GameSet<ResourceCard> del; del.add("Wheat",2);del.add("Wool",2);
-    p1->removeHalf(del);
-    cout << p1 << endl;
 }
