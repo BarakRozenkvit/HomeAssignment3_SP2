@@ -151,6 +151,8 @@ ___
 - להשתמש בקלף בנאי `useBuilderCard(int,int,int,int)`
 - להשתמש בקלף מונופול `useMonopolyCard(string,Player*,Player*)`
 - להשתמש בקלף אביר `useKnightCard()`
+- החזרת השחקן כמחרוזת `toString()`
+- אופרטור הדפסה לשחקן `operator<<(ostream,Player*)`
 
 מימוש מחלקת הקאטן `Catan.hpp`
 -

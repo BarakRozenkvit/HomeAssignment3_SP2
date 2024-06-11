@@ -32,6 +32,9 @@ int main() {
     Haim->build("Road", board, 47, 43);
 
     catan.distributeResources();
+    cout << Omri << endl;
+    cout << Barak << endl;
+    cout << Haim << endl;
     //Omri: Wood 1 Wheat 1 Wool 2 Iron 2
     //Barak: Iron 1 Wood 1 Brick 1 Wheat 2 Wool 1
     //Haim: Brick 1 Wheat 1 Wood 2
@@ -39,6 +42,9 @@ int main() {
     Omri->startTurn();
     int rand = Omri->rollDice(8);
     catan.distributeResources(rand);
+    cout << Omri << endl;
+    cout << Barak << endl;
+    cout << Haim << endl;
     // Omri got nothing: Wood 1 Wheat 1 Wool 2 Iron 2
     // Barak got Wool 1: Iron 1 Wood 1 Brick 1 Wheat 2 Wool 2
     // Haim got Brick 1: Brick 2 Wheat 1 Wood 2
@@ -50,6 +56,9 @@ int main() {
     Barak->startTurn();
     rand = Barak->rollDice(9);
     catan.distributeResources(rand);
+    cout << Omri << endl;
+    cout << Barak << endl;
+    cout << Haim << endl;
     // Omri got Wool 1: Wood 1 Wool 2 Iron 1
     // Barak got nothing: Iron 1 Wood 1 Brick 1 Wheat 2 Wool 2
     // Haim got nothing: Brick 2 Wheat 1 Wood 2
@@ -81,6 +90,9 @@ int main() {
     Omri->startTurn();
     rand= Omri->rollDice(11);
     catan.distributeResources(rand);
+    cout << Omri << endl;
+    cout << Barak << endl;
+    cout << Haim << endl;
     // Omri got Wood 1: Wood 4 Wool 1 Iron 1
     // Barak got Wood 1: Wood 1 Wheat 2 Wool 3
     // Haim got nothing: Brick 2 Wheat 1 Iron 1
@@ -97,6 +109,9 @@ int main() {
     Barak->startTurn();
     rand = Barak->rollDice(5);
     catan.distributeResources(rand);
+    cout << Omri << endl;
+    cout << Barak << endl;
+    cout << Haim << endl;
     // Omri got Iron 1: Wood 2 Wool 1 Iron 2 Wheat 1
     // Barak got nothing: Wood 1 Wheat 2 Wool 3
     // Haim got nothing: Brick 1 Iron 1 Wood 1
@@ -113,6 +128,9 @@ int main() {
     Haim->startTurn();
     rand=Haim->rollDice(8);
     catan.distributeResources(rand);
+    cout << Omri << endl;
+    cout << Barak << endl;
+    cout << Haim << endl;
     // Omri got Iron 1: Wood 2 Wool 1 Iron 1 Wheat 2
     // Barak got Wool 1: Wood 1 Wool 3
     // Haim got Brick 1: Brick 2 Iron 1 Wood 1
@@ -123,6 +141,9 @@ int main() {
     Omri->startTurn();
     rand=Omri->rollDice(5);
     catan.distributeResources(rand);
+    cout << Omri << endl;
+    cout << Barak << endl;
+    cout << Haim << endl;
     // Omri got Iron 1: Wood 2 Wool 1 Iron 2 Wheat 2
     // Barak got got nothing: Wood 1 Wool 3
     // Haim got nothing: Brick 1 Iron 1
@@ -139,6 +160,9 @@ int main() {
     Haim->startTurn();
     rand=Haim->rollDice(8);
     catan.distributeResources(rand);
+    cout << Omri << endl;
+    cout << Barak << endl;
+    cout << Haim << endl;
     // Omri got Iron 1: Wood 2 Iron 1 Wheat 1
     // Barak got Wool 1: Wood 1 Wool 4 Brick 1
     // Haim got nothing: Brick 1 Iron 1
@@ -147,10 +171,13 @@ int main() {
     Omri->startTurn();
     rand=Omri->rollDice(2);
     catan.distributeResources(rand);
+    cout << Omri << endl;
+    cout << Barak << endl;
+    cout << Haim << endl;
     // Omri got Iron 1: Wood 2 Iron 2 Wheat 1
     // Barak got nothing : Wood 1 Wool 4 Brick 1
     // Haim got nothing: Brick 1 Iron 1
     Omri->useBuilderCard(9,13,35,40,board);
 
-    cout << catan.printWinner() <<endl;
+    cout << "the Winner is: "<< catan.printWinner() <<endl;
 }

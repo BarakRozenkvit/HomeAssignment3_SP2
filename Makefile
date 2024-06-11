@@ -5,8 +5,8 @@ CXX=c++
 CXXFLAGS=-std=c++11 -Werror
 VALGRIND_FLAGS==-v --leak-check=full --show-leak-kinds=all  --error-exitcode=99
 
-SOURCES=Demo.cpp Board.hpp Board.cpp Catan.cpp Catan.hpp Countable.hpp Dice.hpp Graph.cpp Graph.hpp Identifiable.hpp Player.cpp Player.hpp Property.hpp GameSet.hpp
-SOURCES_TESTS= Board.hpp Board.cpp Catan.cpp Catan.hpp Countable.hpp Dice.hpp Graph.cpp Graph.hpp Identifiable.hpp Player.cpp Player.hpp Property.hpp GameSet.hpp TestCounter.cpp Test.cpp
+SOURCES=Demo.cpp Board.cpp Catan.cpp Graph.cpp Player.cpp Property.cpp
+SOURCES_TESTS= Board.cpp Catan.cpp Graph.cpp Player.cpp Property.cpp TestCounter.cpp Test.cpp
 OBJECTS=$(subst .cpp,.o,$(SOURCES))
 OBJECTS_TESTS = $(subst .cpp,.o,$(SOURCES_TESTS))
 
@@ -16,8 +16,8 @@ runCatan: catan
 runTest: test
 	./$^
 
-catan: catan.o $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ -o demo
+catan: Catan.o $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o Catan
 
 
 test: TestCounter.o Test.o $(OBJECTS_TESTS)
