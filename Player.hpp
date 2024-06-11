@@ -13,9 +13,9 @@ class Player {
     string _name;
     char _id;
     int _winPoints;
-    int _turnCounter = 0;
+    int _turnCounter;
     bool _isTurn;
-    string _currentUseDevelopment;
+    int _armySize;
     GameSet<Card> _cards;
     GameSet<Property> _properties;
 
@@ -35,15 +35,16 @@ public:
     void startTurn() {
         _turnCounter++;
         _isTurn = true;
-        cout << _name << ": " << _cards << endl;
     }
     void endTurn() {
         _isTurn = false;
-        cout << _name << ": " << _cards << endl;
     }
     int getTurn() { return _turnCounter; }
+
     void pay(GameSet<Card> &resources);
+
     bool receive(GameSet<Card> &resources);
+
     void removeHalf(GameSet<ResourceCard>& set);
     void build(string type, Board &board, int x, int y);
     void trade(GameSet<Card> mySet, Player *player, GameSet<Card> playerSet);
@@ -58,11 +59,13 @@ public:
     void useBuilderCard(int x1, int y1, int x2, int y2, Board& board);
     void useMonopolyCard(string desiredResource, Player *p, Player *m);
     int useKnightCard();
-    friend ostream &operator<<(ostream &out, Player* p) {
-        out << "name: " << p->_name << endl;
-        out << "Winning Points: " << p->_winPoints << endl;
-        out << "Cards: " << p->_cards << endl;
-//        out << "Properties Left: " << p->_properties << endl;
-        return out;
-    }
+    string toString();
+
+//    friend ostream &operator<<(ostream &out, Player* p) {
+//        out << "name: " << p->_name << endl;
+//        out << "Winning Points: " << p->_winPoints << endl;
+//        out << "Cards: " << p->_cards << endl;
+////        out << "Properties Left: " << p->_properties << endl;
+//        return out;
+//    }
 };

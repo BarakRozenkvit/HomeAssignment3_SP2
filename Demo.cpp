@@ -8,9 +8,9 @@
 using namespace std;
 
 int main() {
-    Player *Omri = new Player("Omri", 10);
-    Player *Barak = new Player("Barak", 20);
-    Player *Haim = new Player("Haim", 30);
+    Player*Omri = new Player("Omri", 10);
+    Player* Barak = new Player("Barak", 20);
+    Player* Haim = new Player("Haim", 30);
     Catan catan(Omri, Barak, Haim);
 
     Board& board = catan.getBoard();
@@ -34,8 +34,6 @@ int main() {
     //Omri: Wood 1 Wheat 1 Wool 2 Iron 2
     //Barak: Iron 1 Wood 1 Brick 1 Wheat 2 Wool 1
     //Haim: Brick 1 Wheat 1 Wood 2
-
-
 
 
     Omri->startTurn();

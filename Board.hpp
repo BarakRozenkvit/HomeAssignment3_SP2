@@ -35,9 +35,9 @@ public:
         return _developmentCards.getAt(res);
     }
 
-    friend ostream& operator<<(ostream& out,Board& b){
-        out << b._graph <<endl;
-        return out;
-    }
+//    friend ostream& operator<<(ostream& out,Board& b){
+//        out << b._graph <<endl;
+//        return out;
+//    }
 
 };

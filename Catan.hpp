@@ -21,16 +21,22 @@ public:
 
     void distributeResources(int rand=0);
 
-    bool printWinner();
+    string printWinner();
 
     void checkLargestArmy(Player* p,int n){
         if (largestArmy == nullptr && n == 3) {
             largestArmy = p;
+            _largestArmySize = n;
             p->addWinningPoints(2);
         } else if (largestArmy != nullptr && _largestArmySize < n) {
             largestArmy->removeWinningPoints(2);
             largestArmy = p;
+            _largestArmySize = n;
             p->addWinningPoints(2);
         }
+    }
+
+    Player* getLargestArmy(){
+        return largestArmy;
     }
 };

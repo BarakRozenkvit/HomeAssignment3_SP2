@@ -14,6 +14,8 @@ void setUP(){
     catan = Catan(p1, p2, p3);
 }
 
+// Test Code
+
 TEST_CASE("GameSet Class"){
     GameSet<Card> set1;
     GameSet<Card> set2;
@@ -51,6 +53,179 @@ TEST_CASE("GameSet Class"){
     CHECK_FALSE(set2.contains(set1));
 }
 
+TEST_CASE("Remove Half"){
+    setUP();
+    p1->startTurn();
+    GameSet<Card> res;
+    res.add("Wool",4);res.add("Wood",4);
+    p1->receive(res);
+    p1->endTurn();
+
+    p2->startTurn();
+    p2->rollDice(7);
+    GameSet<ResourceCard> toCut;
+    toCut.add("Wool",4);
+    p1->removeHalf(toCut);
+    CHECK(p1->toString() == "P1: [Wood: 4],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+}
+
+TEST_CASE("build"){
+    setUP();
+    p1->build("Village",catan.getBoard(),48,48);
+    p1->build("Road",catan.getBoard(),48,44);
+    p1->build("Road",catan.getBoard(),39,44);
+    CHECK(p1->toString() == "P1: [Road: 13],[Village: 4],[City: 4],\nWinPoints: 1");
+    p1->startTurn();
+    GameSet<Card> set;
+    set.add("Brick",1);
+    set.add("Wood",1);
+    set.add("Wool",1);
+    set.add("Wheat",1);
+    p1->receive(set);
+    p1->build("Village",catan.getBoard(),39,39);
+    CHECK(p1->toString() == "P1: [Road: 13],[Village: 3],[City: 4],\nWinPoints: 2" );
+}
+
+TEST_CASE("trade"){
+    setUP();
+    p2->startTurn();
+    p2->endTurn();
+    GameSet<Card> t;t.add("Monopoly",1);t.add("Iron",2);
+    GameSet<Card> s;s.add("Wood",3);
+    p1->receive(t);
+    p2->receive(s);
+    p1->startTurn();
+    CHECK(p1->toString() == "P1: [Monopoly: 1],[Iron: 2],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+    CHECK(p2->toString() == "P2: [Wood: 3],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+    p1->trade(t,p2,s);
+    CHECK(p1->toString() == "P1: [Wood: 3],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+    CHECK(p2->toString() == "P2: [Monopoly: 1],[Iron: 2],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+}
+
+TEST_CASE("buy Development Card"){
+    setUP();
+    p1->startTurn();
+    GameSet<Card> r;
+    r.add("Iron",1);
+    r.add("Wool",1);
+    r.add("Wheat",1);
+    p1->receive(r);
+    p1->buyDevelopmentCard("Knight", catan.getBoard());
+    CHECK(p1->toString() == "P1: [Knight: 1],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+}
+
+TEST_CASE("use WealthyYear Card"){
+    setUP();
+    p1->startTurn();
+    GameSet<Card> r;r.add("WealthyYear",1);
+    p1->receive(r);
+    p1->useWealthyYearCard("Wool","Wool");
+    CHECK(p1->toString() == "P1: [Wool: 2],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+}
+
+TEST_CASE("use Knight Card and Largest army"){
+    int size =0 ;
+    p1->startTurn();
+    GameSet<Card> res;res.add("Knight",3);
+    p1->receive(res);
+    size= p1->useKnightCard();
+    catan.checkLargestArmy(p1,size);
+    p1->startTurn();
+    size = p1->useKnightCard();
+    catan.checkLargestArmy(p1,size);
+    p1->startTurn();
+    size =p1->useKnightCard();
+    catan.checkLargestArmy(p1,size);
+    CHECK(catan.getLargestArmy() == p1);
+    res.add("Knight",1);
+    p2->startTurn();
+    p2->receive(res);
+    size= p2->useKnightCard();
+    catan.checkLargestArmy(p2,size);
+    p2->startTurn();
+    size = p2->useKnightCard();
+    catan.checkLargestArmy(p2,size);
+    p2->startTurn();
+    size =p2->useKnightCard();
+    catan.checkLargestArmy(p2,size);
+    p2->startTurn();
+    size =p2->useKnightCard();
+    catan.checkLargestArmy(p2,size);
+    CHECK(catan.getLargestArmy() == p2);
+}
+
+TEST_CASE("use Builder card"){
+    setUP();
+    p1->build("Village",catan.getBoard(),48,48);
+    p1->startTurn();
+    GameSet<Card> r;r.add("Wood",1);r.add("Builder",1);
+    p1->receive(r);
+    p1->useBuilderCard(48,44,44,39,catan.getBoard());
+    CHECK(p1->toString() == "P1: [Wood: 1],[Road: 13],[Village: 4],[City: 4],\nWinPoints: 1");
+}
+
+TEST_CASE("use Monopoly Card"){
+    setUP();
+    GameSet<Card> s;s.add("Wheat",2);
+    GameSet<Card> r;r.add("Wheat",1);r.add("Monopoly",1);
+    p1->startTurn();
+    p1->receive(r);
+    p1->endTurn();
+    p2->startTurn();
+    p2->receive(s);
+    p2->endTurn();
+    p3->startTurn();
+    p3->receive(s);
+    p3->endTurn();
+    p1->startTurn();
+    CHECK(p1->toString() == "P1: [Wheat: 1],[Monopoly: 1],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+    CHECK(p2->toString() == "P2: [Wheat: 2],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+    CHECK(p3->toString() == "P3: [Wheat: 2],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+    p1->useMonopolyCard("Wheat",p2,p3);
+    CHECK(p1->toString() == "P1: [Wheat: 3],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+    CHECK(p2->toString() == "P2: [Wheat: 1],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+    CHECK(p3->toString() == "P3: [Wheat: 1],[Road: 15],[Village: 5],[City: 4],\nWinPoints: 0");
+
+}
+
+TEST_CASE("distribute resources"){
+    setUP();
+    p1->build("Village", catan.getBoard(), 23, 23);
+    p1->build("Road", catan.getBoard(), 23, 29);
+    p1->build("Village", catan.getBoard(), 14, 14);
+    p1->build("Road", catan.getBoard(), 14, 9);
+
+    p2->build("Village", catan.getBoard(), 45, 45);
+    p2->build("Road", catan.getBoard(), 45, 41);
+    p2->build("Village", catan.getBoard(), 22, 22);
+    p2->build("Road", catan.getBoard(), 41, 36);
+
+    p3->build("Village", catan.getBoard(), 39, 39);
+    p3->build("Road", catan.getBoard(), 39, 43);
+    p3->build("Village", catan.getBoard(), 47, 47);
+    p3->build("Road", catan.getBoard(), 47, 43);
+
+    catan.distributeResources();
+    CHECK(p1->toString() == "P1: [Wool: 2],[Iron: 2],[Wheat: 1],[Wood: 1],[Road: 13],[Village: 3],[City: 4],\nWinPoints: 2");
+    CHECK(p2->toString() == "P2: [Wheat: 2],[Wool: 1],[Wood: 1],[Iron: 1],[Brick: 1],[Road: 13],[Village: 3],[City: 4],\nWinPoints: 2");
+    CHECK(p3->toString() == "P3: [Wheat: 1],[Wood: 2],[Brick: 1],[Road: 13],[Village: 3],[City: 4],\nWinPoints: 2");
+    p1->startTurn();
+    int rand = p1->rollDice(8);
+    catan.distributeResources(rand);
+    CHECK(p1->toString() == "P1: [Wool: 2],[Iron: 2],[Wheat: 1],[Wood: 1],[Road: 13],[Village: 3],[City: 4],\nWinPoints: 2");
+    CHECK(p2->toString() == "P2: [Wheat: 2],[Wool: 2],[Wood: 1],[Iron: 1],[Brick: 1],[Road: 13],[Village: 3],[City: 4],\nWinPoints: 2");
+    CHECK(p3->toString() == "P3: [Wheat: 1],[Wood: 2],[Brick: 2],[Road: 13],[Village: 3],[City: 4],\nWinPoints: 2");
+}
+
+TEST_CASE("check winner"){
+    setUP();
+    p1->addWinningPoints(10);
+    CHECK(catan.printWinner() == "P1");
+}
+
+
+// Test Erros
+
 TEST_CASE("Check Throws when not enough resources to pay"){
     setUP();
     p1->startTurn();
@@ -65,13 +240,13 @@ TEST_CASE("Check Throws when creating card not exist in game"){
     CHECK_THROWS(receive.add("Crystal",1));
 }
 
-TEST_CASE("Check using Development card when has no Development Cards") {
+TEST_CASE("Check Throws using Development card when has no Development Cards") {
     setUP();
     p1->startTurn();
     DevelopmentCard KnightCard = DevelopmentCard("Knight",1);
     CHECK_THROWS(p1->useKnightCard());
 }
-TEST_CASE("Check has no specific Development Card") {
+TEST_CASE("Check Throws has no specific Development Card") {
     setUP();
     p1->startTurn();
     DevelopmentCard KnightCard = DevelopmentCard("Knight",1);
@@ -81,7 +256,7 @@ TEST_CASE("Check has no specific Development Card") {
     DevelopmentCard monopolyCard = DevelopmentCard("Monopoly",1);
     CHECK_THROWS(p1->useMonopolyCard("Wool",p2,p3));
 }
-TEST_CASE("Check continues turn after use Development Card") {
+TEST_CASE("Check Throws continues turn after use Development Card") {
     setUP();
     p1->startTurn();
     DevelopmentCard KnightCard = DevelopmentCard("Knight",1);
@@ -90,9 +265,7 @@ TEST_CASE("Check continues turn after use Development Card") {
     p1->useKnightCard();
     CHECK_THROWS(p1->build("Road", catan.getBoard(), 48, 44));
 }
-TEST_CASE("Check use card that bought in the same round"){}
-TEST_CASE("Check if bank of Development Card is empty"){}
-TEST_CASE("Check if Development Card is not in Bank"){
+TEST_CASE("Check Throws if Development Card is not in Bank"){
     setUP();
     p1->startTurn();
     DevelopmentCard card = DevelopmentCard("WealthyYear",1);
@@ -102,15 +275,14 @@ TEST_CASE("Check if Development Card is not in Bank"){
     CHECK_THROWS(p1->buyDevelopmentCard("WealthyYear",catan.getBoard()));
 }
 
-TEST_CASE("build property when you are out of properties"){}
-TEST_CASE("build property when you are out of specific property"){}
+TEST_CASE("Check Throws build property when you are out of specific property"){}
 
-TEST_CASE("ל Check build road in place that is not exist"){
+TEST_CASE("ל Check Throws build road in place that is not exist"){
     setUP();
     p1->startTurn();
     CHECK_THROWS(p1->build("Road",catan.getBoard(),48,49));
 }
-TEST_CASE("build road in place that is taken"){
+TEST_CASE("Check Throws build road in place that is taken"){
     setUP();
     p2->build("Village",catan.getBoard(),5,5);
     p2->build("Road",catan.getBoard(),5,2);
@@ -119,7 +291,7 @@ TEST_CASE("build road in place that is taken"){
     p1->build("Village",catan.getBoard(),6,6);
     CHECK_THROWS(p1->build("Road",catan.getBoard(),6,2));
 }
-TEST_CASE("build road not next to your village"){
+TEST_CASE("Check Throws build road not next to your village"){
     setUP();
 //    p2->startTurn();
     CHECK_THROWS(p2->build("Road",catan.getBoard(),5,2));
@@ -127,20 +299,20 @@ TEST_CASE("build road not next to your village"){
     CHECK_THROWS(p2->build("Road",catan.getBoard(),6,10));
 }
 
-TEST_CASE("build village in place that is not exist"){
+TEST_CASE("Check Throws build village in place that is not exist"){
     setUP();
     p1->startTurn();
     CHECK_THROWS(p1->build("Village",catan.getBoard(),5,50));
     CHECK_THROWS(p1->build("Village",catan.getBoard(),100,100));
     CHECK_THROWS(p1->build("Village",catan.getBoard(),-100,-100));
 }
-TEST_CASE("build village in place already been placed"){
+TEST_CASE("Check Throws build village in place already been placed"){
     setUP();
     p1->build("Village",catan.getBoard(),48,48);
     CHECK_THROWS(p1->build("Village",catan.getBoard(),48,48));
     CHECK_THROWS(p2->build("Village",catan.getBoard(),48,48));
 }
-TEST_CASE("build village in place not next to your road, not in first turn"){
+TEST_CASE("Check Throws build village in place not next to your road, not in first turn"){
     setUP();
     p1->build("Village",catan.getBoard(),5,5);
     p1->build("Road",catan.getBoard(),5,2);
@@ -150,18 +322,18 @@ TEST_CASE("build village in place not next to your road, not in first turn"){
     p1->receive(set);
     CHECK_THROWS(p1->build("Village",catan.getBoard(),10,10));
 }
-TEST_CASE("build village in place near other Village"){
+TEST_CASE("Check Throws build village in place near other Village"){
     setUP();
     p1->build("Village",catan.getBoard(),5,5);
     CHECK_THROWS(p2->build("Village",catan.getBoard(),2,2));
 }
 
-TEST_CASE("build city in the first turn") {
+TEST_CASE("Check Throws build city in the first turn") {
     setUP();
     p1->build("Village",catan.getBoard(),5,5);
     CHECK_THROWS(p1->build("City", catan.getBoard(), 5, 5));
 }
-TEST_CASE("build city not on your village"){
+TEST_CASE("Check Throws build city not on your village"){
     setUP();
     p1->build("Village",catan.getBoard(),5,5);
     p1->startTurn();
@@ -170,7 +342,7 @@ TEST_CASE("build city not on your village"){
     CHECK_THROWS(p1->build("City",catan.getBoard(),8,8));
 }
 
-TEST_CASE("Check Trade with yourself"){
+TEST_CASE("Check Throws Check Trade with yourself"){
     setUP();
     p1->startTurn();
     GameSet<Card> set;

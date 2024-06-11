@@ -6,6 +6,8 @@ Player::Player(string name,int id): _name(name), _winPoints(0),_id(id){
     _properties.add("Village",5);
     _properties.add("City",4);
     _isTurn = false;
+    _winPoints = 0;
+    _turnCounter = 0;
 };
 
 bool Player::canPay(GameSet<Card>& toPay) {
@@ -59,8 +61,9 @@ void Player::useDevelopmentCard(string type){
         throw invalid_argument("Development Card not found");
     }
     Card& devCard = _cards.getAt(res);
-    DevelopmentCard& result = static_cast<DevelopmentCard&>(devCard);
-    result.flashCard();
+    if(type == "Knight"){
+        _armySize++;
+    }
     if(card.getType() == "Monopoly" || card.getType() == "Builder" || card.getType() == "WealthyYear"){
         _cards.remove(card.getType(),card.size());
     }
@@ -84,23 +87,19 @@ void Player::buyDevelopmentCard(string type, Board &board){
 }
 
 void Player::useWealthyYearCard(string resource1, string resource2){
-    useDevelopmentCard("WhealthyYear");
+    useDevelopmentCard("WealthyYear");
     _cards.add(resource1, 1);
     _cards.add(resource2, 1);
     endTurn();
 }
 
 void Player::useBuilderCard(int x1, int y1, int x2, int y2, Board& board){
-    bool placeValid1 = board.canBuild("Road", getID(), _turnCounter, x1, y1);
-    bool placeValid2 = board.canBuild("Road", getID(), _turnCounter, x2, y2);
-    if (placeValid1 && placeValid2) {
-        useDevelopmentCard("Builder");
-        int temp = _turnCounter;
-        _turnCounter = 0;
-        build("Road", board, x1, y1);
-        build("Road", board, x2, y2);
-        _turnCounter = temp;
-    }
+    int temp = _turnCounter;
+    _turnCounter = 0;
+    build("Road", board, x1, y1);
+    build("Road", board, x2, y2);
+    _turnCounter = temp;
+    useDevelopmentCard("Builder");
     endTurn();
 }
 
@@ -126,11 +125,7 @@ void Player::useMonopolyCard(string desiredResource, Player *p, Player *m){
 
 int Player::useKnightCard(){
     useDevelopmentCard("Knight");
-    int i = _cards.search("Knight");
-    Card& devCard = _cards.getAt(i);
-    DevelopmentCard& result = static_cast<DevelopmentCard&>(devCard);
-    endTurn();
-    return result.getAmountFlashed();
+    return _armySize;
 }
 
 bool Player::receive(GameSet<Card>& resources){
@@ -172,6 +167,17 @@ void Player::trade(GameSet<Card> mySet, Player *player, GameSet<Card> playerSet)
     } else {
         throw invalid_argument("Invalid Trade");
     }
+}
+
+string Player::toString() {
+    string res = "";
+    res += this->_name;
+    res += ": ";
+    res += _cards.toString();
+    res += _properties.toString();
+    res += "\nWinPoints: ";
+    res += to_string(_winPoints);
+    return res;
 }
 
 
