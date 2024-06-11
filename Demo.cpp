@@ -15,6 +15,7 @@ int main() {
 
     Board& board = catan.getBoard();
 
+
     Omri->build("Village", board, 23, 23);
     Omri->build("Road", board, 23, 29);
     Omri->build("Village", board, 14, 14);
@@ -34,7 +35,6 @@ int main() {
     //Omri: Wood 1 Wheat 1 Wool 2 Iron 2
     //Barak: Iron 1 Wood 1 Brick 1 Wheat 2 Wool 1
     //Haim: Brick 1 Wheat 1 Wood 2
-
 
     Omri->startTurn();
     int rand = Omri->rollDice(8);
