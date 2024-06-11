@@ -151,7 +151,8 @@ TEST_CASE("use Knight Card and Largest army"){
     p2->startTurn();
     size =p2->useKnightCard();
     game.checkLargestArmy(p2,size);
-    CHECK(game.getLargestArmy() == p2);
+    Player* p = game.getLargestArmy();
+    CHECK(p == p2);
 }
 
 TEST_CASE("use Builder card"){
