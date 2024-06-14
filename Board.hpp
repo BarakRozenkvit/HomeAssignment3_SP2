@@ -22,5 +22,5 @@ public:
 
     GameSet<ResourceCard> getResources(char id, int turnCounter, int rand);
 
-    DevelopmentCard& getDevelopmentCard(string type);
+    DevelopmentCard getDevelopmentCard(string type);
 };
