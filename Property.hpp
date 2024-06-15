@@ -1,17 +1,12 @@
-#include "Identifiable.hpp"
-#include "Countable.hpp"
 #include "GameSet.hpp"
 #include "Card.hpp"
-#include <vector>
-#include <iostream>
 #pragma once
 
 using namespace std;
 
 class Property: public Countable,public Identifiable{
     int _pointsVal;
-    GameSet<ResourceCard> _cost = GameSet<ResourceCard>();
-
+    GameSet<ResourceCard> _cost;
 
 public:
     Property(): Countable(), Identifiable(){};

@@ -44,20 +44,26 @@ void Board::init() {
 }
 
 bool Board::canBuild(string property, char id, int turnCounter, int x, int y) {
+    // if x or y are valid
     if(x >= _graph.size() || y>= _graph.size() || x < 0 || y<0){return false;}
     if (property == "Road") {
+        // if is taken
         if(_graph.getValue(x, y) != 1 ){return false;}
+        // if next to city or village
         if (_graph.getValue(x, x) == id + 1 || _graph.getValue(x, x) == id + 2 ||
             _graph.getValue(y, y) == id + 1 || _graph.getValue(y, y) == id + 2) {
             return true;
         }
         for (int k = 0; k < _graph.size(); k++) {
+            // if next to other road
             if (_graph.getValue(x, k) == id || _graph.getValue(y, k) == id) {
                 return true;
             }
         }
     } else if (property == "Village") {
+        // if x and y doesnt represent vertex
         if(x!=y){return false;}
+        // if is taker
         if(_graph.getValue(x, y) != 0){return false;}
         bool noAdj = true, isPath = false;
         // scan for neighbors
@@ -69,8 +75,9 @@ bool Board::canBuild(string property, char id, int turnCounter, int x, int y) {
                 noAdj = true;
             }
         }
-
+        //if no other villages next and his first turn
         if(noAdj && !turnCounter) {return true;}
+        //if no other villages next and next to road
         if (noAdj && isPath) { return true; }
         return false;
 
@@ -102,9 +109,13 @@ void Board::build(string property, char id, int x, int y) {
 GameSet<ResourceCard> Board::getResources(char id, int turnCounter, int rand){
     GameSet<ResourceCard> resources;
     for(int i=0;i<_graph.size();i++){
+        // go through all vertices
         int amount = _graph.getValue(i,i) - id;
+        // if not belong to id continue
         if (amount < 0 || amount > 2){ continue;}
+        // go through all lands
         for(int j=0;j<19;j++){
+            // if vertex is on land and random value or first turn
             if(_lands[j].sitOn(i) && (_lands[j].getValue() == rand|| !turnCounter)){
                 if(_lands[j].getResourceType() == ""){ continue;}
                 resources.add(_lands[j].getResourceType(),amount);

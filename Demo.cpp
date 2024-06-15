@@ -1,7 +1,5 @@
 //314638669 | Barak10101998@gmail.com
 #include <iostream>
-#include <stdexcept>
-#include <vector>
 #include "Catan.hpp"
 #include "Player.hpp"
 #include "Board.hpp"

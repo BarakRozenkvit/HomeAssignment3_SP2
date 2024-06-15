@@ -37,14 +37,16 @@ void Player::build(string type, Board& board, int x, int y) {
     if(!board.canBuild(type, _id, _turnCounter, x, y)){
         throw invalid_argument("Invalid Place to build");
     }
-
+    // create property instance and get cost and pay
     Property property = Property(type,1);
     GameSet<Card> set = GameSet<Card>(property.getCost());
     pay(set);
-
+    // build the property and remove from set
     board.build(type, _id, x, y);
     _properties.remove(type,1);
+    // add to winPoints
     _winPoints += property.getWinPoints();
+    // if build city, replace with village
     if(type == "City"){
         _properties.add("Village",1);
         _winPoints -= Property("Village",1).getWinPoints();
@@ -60,10 +62,11 @@ void Player::useDevelopmentCard(string type){
     if(res == -1){
         throw invalid_argument("Development Card not found");
     }
-    Card& devCard = _cards.getAt(res);
+    // if uses knight card add armysize
     if(type == "Knight"){
         _armySize++;
     }
+    // if uses Monopoly or builder or wealthyYear is not usable, remove it from set
     if(card.getType() == "Monopoly" || card.getType() == "Builder" || card.getType() == "WealthyYear"){
         _cards.remove(card.getType(),card.size());
     }
@@ -108,6 +111,7 @@ void Player::useMonopolyCard(string desiredResource, Player *p, Player *m){
         throw invalid_argument("must include all participants");
     }
     useDevelopmentCard("Monopoly");
+    // Create set for player (this) to receive
     GameSet<Card> wallet;
     GameSet<ResourceCard> desired;desired.add(desiredResource, 1);
     GameSet<Card> dest = GameSet<Card>(desired);
@@ -134,6 +138,7 @@ bool Player::receive(GameSet<Card>& resources){
 }
 
 void Player::removeHalf(GameSet<ResourceCard>& set) {
+    // get number of Resource cards
     int size = 0;
     for(int i=0;i<_cards.size();i++){
         Card& card = _cards.getAt(i);
@@ -148,6 +153,7 @@ void Player::removeHalf(GameSet<ResourceCard>& set) {
     if (size < 7) {
         throw invalid_argument("Cant reduce resources");
     }
+    // remove set2 from _cards
     GameSet<Card> set2 = GameSet<Card>(set);
     pay(set2);
 }

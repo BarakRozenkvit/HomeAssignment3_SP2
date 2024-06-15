@@ -21,5 +21,6 @@ class DevelopmentCard: public Card{
 
 public:
     DevelopmentCard(string type,int amount);
+
     GameSet<ResourceCard>& getCost(){return _cost;}
 };
