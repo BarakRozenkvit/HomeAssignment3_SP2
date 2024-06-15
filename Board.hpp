@@ -1,6 +1,7 @@
 #include "Land.hpp"
 #include "Graph.hpp"
 #include "Card.hpp"
+#include <stdexcept>
 #pragma once
 
 using namespace std;
