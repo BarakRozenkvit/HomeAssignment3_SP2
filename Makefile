@@ -10,14 +10,8 @@ SOURCES_TESTS= Board.cpp Catan.cpp Graph.cpp Player.cpp Property.cpp TestCounter
 OBJECTS=$(subst .cpp,.o,$(SOURCES))
 OBJECTS_TESTS = $(subst .cpp,.o,$(SOURCES_TESTS))
 
-runCatan: Catan
-	./$^
-
-runTest: test
-	./$^
-
-Catan: Catan.o $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ -o Catan
+catan: Catan.o $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o catan
 
 
 test: TestCounter.o Test.o $(OBJECTS_TESTS)
